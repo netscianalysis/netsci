@@ -8,7 +8,7 @@ import netsci
 def test_MutualInformation2X1D_1000n4k09covGaussian_GpuCpu():
     n = 1000
     k = 4
-    X = np.load("data/2X_1D_1000_4.npy").astype(np.float32)
+    X = np.load("../../data/2X_1D_1000_4.npy").astype(np.float32)
     Xa = cuarray.FloatCuArray()
     Xb = cuarray.FloatCuArray()
     Xa.fromNumpy1D(X[:n])
@@ -31,7 +31,7 @@ def test_MutualInformation2X1D_1000n4k09covGaussian_GpuCpu():
 def test_MutualInformation2X1D_2000n4k09covGaussian_GpuCpu():
     n = 2000
     k = 4
-    X = np.load("data/2X_1D_2000_4.npy").astype(np.float32)
+    X = np.load("../../data/2X_1D_2000_4.npy").astype(np.float32)
     Xa = cuarray.FloatCuArray()
     Xb = cuarray.FloatCuArray()
     Xa.fromNumpy1D(X[:n])

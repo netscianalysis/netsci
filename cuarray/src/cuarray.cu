@@ -25,6 +25,11 @@ CuArrayError CuArray<T>::init(
     this->allocatedDevice_ = 0;
     this->allocatedHost_ = 1;
     this->host_ = new T[this->size_];
+    std::fill(
+            this->host_,
+            this->host_ + this->size_,
+            0
+    );
     this->device_ = nullptr;
 }
 

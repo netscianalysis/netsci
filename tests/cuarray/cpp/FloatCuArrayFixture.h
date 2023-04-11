@@ -2,13 +2,13 @@
 // Created by andy on 4/4/23.
 //
 
-#ifndef NETSCI_CUARRAYFLOATFIXTURE_H
-#define NETSCI_CUARRAYFLOATFIXTURE_H
+#ifndef NETSCI_FLOATCUARRAYFIXTURE_H
+#define NETSCI_FLOATCUARRAYFIXTURE_H
 
 #include "gtest/gtest.h"
 #include "cuarray.h"
 
-class CuArrayFloatTest : public ::testing::Test {
+class FloatCuArrayFixture : public ::testing::Test {
 protected:
     void SetUp() override {
         data = new float[2000];
@@ -40,4 +40,4 @@ protected:
     float *data;
 };
 
-#endif //NETSCI_CUARRAYFLOATFIXTURE_H
+#endif //NETSCI_FLOATCUARRAYFIXTURE_H

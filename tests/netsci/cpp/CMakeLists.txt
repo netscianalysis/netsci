@@ -1,7 +1,5 @@
 
 set(NETSCI_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-file(COPY ${NETSCI_TEST_DIR}/data DESTINATION ${CMAKE_BINARY_DIR}/tests/netsci)
-
 #Mutual Information tests
 add_executable(
         MutualInformation_test

@@ -1,8 +1,10 @@
 
-#When make clean is called, all files in the lib directory are deleted
+set(CLEAN_FILES_AND_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/*
+        )
 set_directory_properties(
         PROPERTIES
-        ADDITIONAL_MAKE_CLEAN_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*"
+        ADDITIONAL_CLEAN_FILES "${CLEAN_FILES_AND_DIRS}"
 )
 
 add_library(

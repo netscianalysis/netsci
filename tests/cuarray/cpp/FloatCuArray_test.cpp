@@ -1,54 +1,54 @@
 
 #include <gtest/gtest.h>
 
-#include "CuArrayFloatFixture.h"
+#include "FloatCuArrayFixture.h"
 
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoData_m
+        FloatCuArrayFixture,
+        FloatCuArrayNoData_m
 ) {
     EXPECT_EQ(cuArrayNoData->m(), 20);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoData_n
+        FloatCuArrayFixture,
+        FloatCuArrayNoData_n
 ) {
     EXPECT_EQ(cuArrayNoData->n(), 100);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoData_bytes
+        FloatCuArrayFixture,
+        FloatCuArrayNoData_bytes
 ) {
     EXPECT_EQ(cuArrayNoData->bytes(), 2000 * sizeof(float));
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoData_size
+        FloatCuArrayFixture,
+        FloatCuArrayNoData_size
 ) {
     EXPECT_EQ(cuArrayNoData->size(), 2000);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoData_allocatedHost
+        FloatCuArrayFixture,
+        FloatCuArrayNoData_allocatedHost
 ) {
     EXPECT_EQ(cuArrayNoData->allocatedHost(), 1);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoData_allocatedDevice
+        FloatCuArrayFixture,
+        FloatCuArrayNoData_allocatedDevice
 ) {
     EXPECT_EQ(cuArrayNoData->allocatedDevice(), 0);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoData_host
+        FloatCuArrayFixture,
+        FloatCuArrayNoData_host
 ) {
     for (int i = 0; i < 2000; i++) {
         EXPECT_EQ(cuArrayNoData->host()[i], 0);
@@ -56,8 +56,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoData_allocateDevice
+        FloatCuArrayFixture,
+        FloatCuArrayNoData_allocateDevice
 ) {
     cuArrayNoData->allocateDevice();
     EXPECT_EQ(cuArrayNoData->allocatedDevice(), 1);
@@ -65,8 +65,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoDataTest_toDeviceNegative
+        FloatCuArrayFixture,
+        FloatCuArrayNoDataTest_toDeviceNegative
 ) {
     cuArrayNoData->toDevice();
     EXPECT_EQ(cuArrayNoData->allocatedDevice(), 0);
@@ -74,8 +74,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoDataTest_toDevicePositive
+        FloatCuArrayFixture,
+        FloatCuArrayNoDataTest_toDevicePositive
 ) {
     cuArrayNoData->allocateDevice();
     cuArrayNoData->toDevice();
@@ -84,8 +84,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoDataTest_toHostNegative
+        FloatCuArrayFixture,
+        FloatCuArrayNoDataTest_toHostNegative
 ) {
     cuArrayNoData->toHost();
     EXPECT_EQ(cuArrayNoData->allocatedHost(), 0);
@@ -93,8 +93,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatNoDataTest_toHostPositive
+        FloatCuArrayFixture,
+        FloatCuArrayNoDataTest_toHostPositive
 ) {
     cuArrayNoData->allocateHost();
     cuArrayNoData->toHost();
@@ -103,50 +103,50 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithData_m
+        FloatCuArrayFixture,
+        FloatCuArrayWithData_m
 ) {
     EXPECT_EQ(cuArrayWithData->m(), 20);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithData_n
+        FloatCuArrayFixture,
+        FloatCuArrayWithData_n
 ) {
     EXPECT_EQ(cuArrayWithData->n(), 100);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithData_bytes
+        FloatCuArrayFixture,
+        FloatCuArrayWithData_bytes
 ) {
     EXPECT_EQ(cuArrayWithData->bytes(), 2000 * sizeof(float));
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithData_size
+        FloatCuArrayFixture,
+        FloatCuArrayWithData_size
 ) {
     EXPECT_EQ(cuArrayWithData->size(), 2000);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithData_allocatedHost
+        FloatCuArrayFixture,
+        FloatCuArrayWithData_allocatedHost
 ) {
     EXPECT_EQ(cuArrayWithData->allocatedHost(), 1);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithData_allocatedDevice
+        FloatCuArrayFixture,
+        FloatCuArrayWithData_allocatedDevice
 ) {
     EXPECT_EQ(cuArrayWithData->allocatedDevice(), 0);
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithData_host
+        FloatCuArrayFixture,
+        FloatCuArrayWithData_host
 ) {
     for (int i = 0; i < 2000; i++) {
         EXPECT_EQ(cuArrayWithData->host()[i], data[i]);
@@ -154,8 +154,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithData_at
+        FloatCuArrayFixture,
+        FloatCuArrayWithData_at
 ) {
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 100; j++) {
@@ -165,8 +165,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithData_allocateDevice
+        FloatCuArrayFixture,
+        FloatCuArrayWithData_allocateDevice
 ) {
     cuArrayWithData->allocateDevice();
     EXPECT_EQ(cuArrayWithData->allocatedDevice(), 1);
@@ -174,8 +174,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithDataTest_toDeviceNegative
+        FloatCuArrayFixture,
+        FloatCuArrayWithDataTest_toDeviceNegative
 ) {
     cuArrayWithData->toDevice();
     EXPECT_EQ(cuArrayWithData->allocatedDevice(), 0);
@@ -183,8 +183,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithDataTest_toDevicePositive
+        FloatCuArrayFixture,
+        FloatCuArrayWithDataTest_toDevicePositive
 ) {
     cuArrayWithData->allocateDevice();
     cuArrayWithData->toDevice();
@@ -193,8 +193,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithDataTest_toHostNegative
+        FloatCuArrayFixture,
+        FloatCuArrayWithDataTest_toHostNegative
 ) {
     cuArrayWithData->toHost();
     EXPECT_EQ(cuArrayWithData->allocatedHost(), 0);
@@ -202,8 +202,8 @@ TEST_F(
 }
 
 TEST_F(
-        CuArrayFloatTest,
-        CuArrayFloatWithDataTest_toHostPositive
+        FloatCuArrayFixture,
+        FloatCuArrayWithDataTest_toHostPositive
 ) {
     cuArrayWithData->allocateHost();
     cuArrayWithData->toHost();
