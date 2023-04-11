@@ -1,18 +1,15 @@
-%module netsci
+%module cuarray
 
-%{
-#define SWIG_FILE_WITH_INIT
-#include "cuarray.h"
-%}
+%include "std_string.i"
+%include "python_cuarray_headers.i"
+%include "numpy_float_array.i"
+%include "numpy_int_array.i"
 
-%include "numpy.i"
-%init %{
-import_array();
-%}
-%include "python_cuarray_typemaps.i"
+%include "python_cuarray_include.i"
+%include "python_cuarray_rename.i"
+%include "python_cuarray_template.i"
 
-%include cuarray.h
 
-%template(IntCuArray) CuArray<int>;
-%template(FloatCuArray) CuArray<float>;
-%template(DoubleCuArray) CuArray<double>;
+
+
+

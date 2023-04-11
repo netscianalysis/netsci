@@ -13,10 +13,12 @@ TEST(
 ) {
     int n = 1000;
     int k = 4;
-    auto *Xa = new CuArray<float>(
+    auto *Xa = new CuArray<float>;
+    Xa->init(
             1, n
     );
-    auto *Xb = new CuArray<float>(
+    auto *Xb = new CuArray<float>;
+    Xb->init(
             1, n
     );
     float incr = M_PI / (float) n;
@@ -65,10 +67,12 @@ TEST(
 ) {
     int n = 1000;
     int k = 4;
-    auto *Xa = new CuArray<float>(
+    auto *Xa = new CuArray<float>;
+    Xa->init(
             1, n
     );
-    auto *Xb = new CuArray<float>(
+    auto *Xb = new CuArray<float>;
+    Xb->init(
             1, n
     );
     float incr = M_PI / (float) n;
@@ -105,10 +109,12 @@ TEST(
 ) {
     int n = 1000;
     int k = 4;
-    auto *Xa = new CuArray<float>(
+    auto *Xa = new CuArray<float>;
+    Xa->init(
             1, n
     );
-    auto *Xb = new CuArray<float>(
+    auto *Xb = new CuArray<float>;
+    Xb->init(
             1, n
     );
     float incr = M_PI / (float) n;
@@ -157,10 +163,12 @@ TEST(
 ) {
     int n = 2000;
     int k = 4;
-    auto *Xa = new CuArray<float>(
+    auto *Xa = new CuArray<float>;
+    Xa->init(
             1, 2 * n
     );
-    auto *Xb = new CuArray<float>(
+    auto *Xb = new CuArray<float>;
+    Xb->init(
             1, 2 * n
     );
     float incr = M_PI / (float) n;

@@ -16,11 +16,13 @@ protected:
             data[i] = static_cast<float>(rand()) /
                       static_cast<float>(RAND_MAX);
         }
-        cuArrayNoData = new CuArray<float>(
+        cuArrayNoData = new CuArray<float>;
+        cuArrayNoData->init(
                 20,
                 100
         );
-        cuArrayWithData = new CuArray<float>(
+        cuArrayWithData = new CuArray<float>;
+        cuArrayWithData->init(
                 data,
                 20,
                 100

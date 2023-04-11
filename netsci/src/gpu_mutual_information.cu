@@ -638,13 +638,16 @@ float gpuMutualInformation2X1D(
         int k,
         int n
 ) {
-    auto psi = new CuArray<float>(1, n + 1);
+    auto psi = new CuArray<float>;
+    psi->init(1, n + 1);
     generatePsi(
             psi,
             n
     );
-    auto nXa = new CuArray<int>(1, n);
-    auto nXb = new CuArray<int>(1, n);
+    auto nXa = new CuArray<int>;
+    nXa->init(1, n);
+    auto nXb = new CuArray<int>;
+    nXb->init(1, n);
     Xa->allocateDevice();
     Xb->allocateDevice();
     Xa->toDevice();
@@ -681,7 +684,7 @@ float gpuMutualInformation2X1D(
     averageXaXbPsiK /= (float) n;
     float mutualInformation =
             psi->host()[n] + psi->host()[k]
-                -(float)(1.0 / (float) k) - averageXaXbPsiK;
+            - (float) (1.0 / (float) k) - averageXaXbPsiK;
     delete psi;
     delete nXa;
     delete nXb;
@@ -694,13 +697,16 @@ float gpuMutualInformation2X2D(
         int k,
         int n
 ) {
-    auto psi = new CuArray<float>(1, n + 1);
+    auto psi = new CuArray<float>;
+    psi->init(1, n + 1);
     generatePsi(
             psi,
             n
     );
-    auto nXa = new CuArray<int>(1, n);
-    auto nXb = new CuArray<int>(1, n);
+    auto nXa = new CuArray<int>;
+    nXa->init(1, n);
+    auto nXb = new CuArray<int>;
+    nXb->init(1, n);
     Xa->allocateDevice();
     Xb->allocateDevice();
     Xa->toDevice();
@@ -737,7 +743,7 @@ float gpuMutualInformation2X2D(
     averageXaXbPsiK /= (float) n;
     float mutualInformation =
             psi->host()[n] + psi->host()[k]
-                -(float)(1.0 / (float) k) - averageXaXbPsiK;
+            - (float) (1.0 / (float) k) - averageXaXbPsiK;
     delete psi;
     delete nXa;
     delete nXb;

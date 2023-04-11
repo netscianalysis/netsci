@@ -1,8 +1,16 @@
+set(CLEAN_FILES_AND_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/*
+        ${CMAKE_CURRENT_SOURCE_DIR}/python/build
+        ${CMAKE_CURRENT_SOURCE_DIR}/python/cuarray.egg-info
+        ${CMAKE_CURRENT_SOURCE_DIR}/python/dist
+        ${CMAKE_CURRENT_SOURCE_DIR}/python/cuarray/*.so*
+        ${CMAKE_CURRENT_SOURCE_DIR}/python/cuarray/cuarray.py
+        ${CMAKE_CURRENT_SOURCE_DIR}/python/cuarray/*.cxx*
+        )
 set_directory_properties(
         PROPERTIES
-        ADDITIONAL_MAKE_CLEAN_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*"
+        ADDITIONAL_CLEAN_FILES "${CLEAN_FILES_AND_DIRS}"
 )
-
 set_source_files_properties(
         ${CMAKE_CURRENT_SOURCE_DIR}/swig/python_cuarray.i
         PROPERTIES
@@ -24,12 +32,17 @@ set_target_properties(
 )
 swig_add_library(python_cuarray
         LANGUAGE python
-        OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib
+        OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/python/cuarray
         SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/swig/python_cuarray.i
         )
 set_target_properties(
         python_cuarray
         PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib
+        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/cuarray
         LINK_LIBRARIES "${CUARRAY_PYTHON_LINK_LIBRARIES}"
 )
+set(PYTHON_CUARRAY_INSTALL_ARGS "setup.py" "install")
+add_custom_target(PythonCuArrayInstall
+        COMMAND ${Python3_EXECUTABLE} ${PYTHON_CUARRAY_INSTALL_ARGS}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/cuarray/python
+        )

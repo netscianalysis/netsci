@@ -1,3 +1,6 @@
+%init %{
+    import_array();
+%}
 %apply (
         int *IN_ARRAY2,
         int DIM1,

@@ -11,15 +11,19 @@ float cpuMutualInformation2X1D(
         int k,
         int n
 ) {
-    auto *psi = new CuArray<float>(1, n + 1);
+    auto *psi = new CuArray<float>;
+    psi->init(1, n + 1);
     generatePsi(psi, n);
-    auto *nXa = new CuArray<int>(1, n);
-    auto *nXb = new CuArray<int>(1, n);
+    auto *nXa = new CuArray<int>;
+    nXa->init(1, n);
+    auto *nXb = new CuArray<int>;
+    nXb->init(1, n);
     float averageXaXbPsiK = 0.0;
     for (int i = 0; i < n; i++) {
         (*nXa)[i] = 0;
         (*nXb)[i] = 0;
-        auto *dZ = new CuArray<float>(1, n);
+        auto *dZ = new CuArray<float>;
+        dZ->init(1, n);
         for (int j = 0; j < n; j++) {
             (*dZ)[j] = std::max(
                     std::abs((*Xa)[i] - (*Xa)[j]),
@@ -72,15 +76,19 @@ float cpuMutualInformation2X2D(
         int k,
         int n
 ) {
-    auto *psi = new CuArray<float>(1, n + 1);
+    auto *psi = new CuArray<float>;
+    psi->init(1, n + 1);
     generatePsi(psi, n);
-    auto *nXa = new CuArray<int>(1, n);
-    auto *nXb = new CuArray<int>(1, n);
+    auto *nXa = new CuArray<int>;
+    nXa->init(1, n);
+    auto *nXb = new CuArray<int>;
+    nXb->init(1, n);
     float averageXaXbPsiK = 0.0;
     for (int i = 0; i < n; i++) {
         (*nXa)[i] = 0;
         (*nXb)[i] = 0;
-        auto *dZ = new CuArray<float>(1, n);
+        auto *dZ = new CuArray<float>;
+        dZ->init(1, n);
         for (int j = 0; j < n; j++) {
             float dXa = std::abs((*Xa)[i] - (*Xa)[j]);
             dXa = std::max(

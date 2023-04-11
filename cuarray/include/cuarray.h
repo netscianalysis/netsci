@@ -7,18 +7,21 @@
 
 
 #include <cstddef>
+#include <string>
 
 typedef int CuArrayError;
 
 template<typename T>
 class CuArray {
 public:
-    explicit CuArray(
+    CuArray();
+
+    CuArrayError init(
             int m,
             int n
     );
 
-    CuArray(
+    CuArrayError init(
             T *host,
             int m,
             int n
@@ -60,15 +63,39 @@ public:
             int NUMPY_ARRAY_DIM2
     );
 
+    CuArrayError fromNumpy(
+            T *NUMPY_ARRAY,
+            int NUMPY_ARRAY_DIM1
+    );
+
+    void toNumpy(
+            T **NUMPY_ARRAY,
+            int **NUMPY_ARRAY_DIM1,
+            int **NUMPY_ARRAY_DIM2
+    );
+
+    void toNumpy(
+            T **NUMPY_ARRAY,
+            int **NUMPY_ARRAY_DIM1
+    );
+
     T at(
             int i,
             int j
     ) const;
 
-    void at(
+    CuArrayError at(
             T value,
             int i,
             int j
+    );
+
+    CuArrayError load(
+            const std::string &fname
+    );
+
+    void save(
+            const std::string &fname
     );
 
     T &operator[](int i) const;

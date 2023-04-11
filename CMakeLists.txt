@@ -102,11 +102,7 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/netsci)
 enable_testing()
 #add tests directory to the build
 add_subdirectory(${CMAKE_SOURCE_DIR}/tests)
-
-#Scratch executable for quick manual testing
-add_executable(main ${CMAKE_SOURCE_DIR}/main.cpp)
-set_target_properties(
-        main
-        PROPERTIES
-        LINK_LIBRARIES cuarray
+add_custom_target(
+        python
+        DEPENDS PythonCuArrayInstall PythonNetSciInstall
 )
