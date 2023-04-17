@@ -111,4 +111,4 @@ jobs:
           make python
       - name: Run tests
         working-directory: ${{ env.build_dir }}
-        run: ctest
+        run: ctest --output-on-failure
