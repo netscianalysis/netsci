@@ -11,7 +11,7 @@ on:
       - "!*.md"
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       # explicit include-based build matrix, of known valid options
@@ -102,5 +102,6 @@ jobs:
           cmake --build . --target all -j
           make python
       - name: Run tests
+        runs-on: self-hosted
         working-directory: ${{ env.build_dir }}
         run: ctest --output-on-failure
