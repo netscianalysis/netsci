@@ -62,9 +62,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: conda-incubator/setup-miniconda@v2
-        - with:
-            auto-activate-base: true
-            activate-environment: ""
+        with:
+          auto-activate-base: true
+          activate-environment: ""
       - run: conda install -c conda-forge boost swig numpy
       - run: echo $CONDA_PREFIX
       - name: Install CUDA
