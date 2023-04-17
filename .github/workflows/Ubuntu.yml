@@ -86,7 +86,7 @@ jobs:
           echo "CUDAHOSTCXX=/usr/bin/g++-${{ matrix.gcc }}" >> $GITHUB_ENV
       - name: Configure cmake
         id: configure
-        run: cmake . -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCONDA_DIR=$CONDA_PREFIX
+        run: cmake . -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCONDA_DIR=$CONDA_PREFIX -DCMAKE_CUDA_ARCHITECTURES=52
 
       - name: Configure Error Processing
         if: ${{ failure() && steps.configure.outcome == 'failure' }}
