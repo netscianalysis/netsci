@@ -107,3 +107,7 @@ add_custom_target(
         python
         DEPENDS PythonCuArrayInstall PythonNetSciInstall
 )
+add_executable(
+        main
+        ${CMAKE_SOURCE_DIR}/main.cpp
+)
