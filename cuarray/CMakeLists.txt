@@ -41,8 +41,10 @@ set_target_properties(
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/cuarray
         LINK_LIBRARIES "${CUARRAY_PYTHON_LINK_LIBRARIES}"
 )
+set(PIP_UNINSTALL_CUARRAY_ARGS "uninstall" "cuarray" "-y")
 set(PYTHON_CUARRAY_INSTALL_ARGS "setup.py" "install")
 add_custom_target(PythonCuArrayInstall
+        COMMAND pip ${PIP_UNINSTALL_CUARRAY_ARGS}
         COMMAND ${Python3_EXECUTABLE} ${PYTHON_CUARRAY_INSTALL_ARGS}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/cuarray/python
         )

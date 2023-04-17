@@ -121,13 +121,25 @@ add_test(
 )
 
 add_test(
-        NAME FloatCuArrayWithData_at
-        COMMAND FloatCuArray_test --gtest_filter=*FloatCuArrayWithData_at*
+        NAME FloatCuArrayWithData_get
+        COMMAND FloatCuArray_test --gtest_filter=*FloatCuArrayWithData_get*
         WORKING_DIRECTORY ${CUARRAY_TEST_DIR}
 )
 
 add_test(
         NAME FloatCuArrayWithData_allocateDevice
         COMMAND FloatCuArray_test --gtest_filter=*FloatCuArrayWithData_allocateDevice*
+        WORKING_DIRECTORY ${CUARRAY_TEST_DIR}
+)
+
+add_test(
+        NAME FloatCuArray_fromCuArrayShallowCopy
+        COMMAND FloatCuArray_test --gtest_filter=*FloatCuArray_fromCuArrayShallowCopy*
+        WORKING_DIRECTORY ${CUARRAY_TEST_DIR}
+)
+
+add_test(
+        NAME FloatCuArray_fromCuArrayDeepCopy
+        COMMAND FloatCuArray_test --gtest_filter=*FloatCuArray_fromCuArrayDeepCopy*
         WORKING_DIRECTORY ${CUARRAY_TEST_DIR}
 )

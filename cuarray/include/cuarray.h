@@ -27,6 +27,23 @@ public:
             int n
     );
 
+    CuArrayError fromCuArrayShallowCopy(
+            CuArray<T> *cuArray,
+            int start,
+            int count,
+            int m,
+            int n
+    );
+
+    CuArrayError fromCuArrayDeepCopy(
+            CuArray<T> *cuArray,
+            int start,
+            int count,
+            int m,
+            int n
+    );
+
+
     ~CuArray();
 
     int n() const;
@@ -79,12 +96,12 @@ public:
             int **NUMPY_ARRAY_DIM1
     );
 
-    T at(
+    T get(
             int i,
             int j
     ) const;
 
-    CuArrayError at(
+    CuArrayError set(
             T value,
             int i,
             int j
@@ -100,6 +117,7 @@ public:
 
     T &operator[](int i) const;
 
+    int owner() const;
 
 private:
     T *host_;
@@ -110,6 +128,8 @@ private:
     size_t bytes_{};
     int allocatedDevice_{};
     int allocatedHost_{};
+    int owner_{};
+
 };
 
 

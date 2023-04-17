@@ -1,3 +1,6 @@
+import cuarray
+
+
 def test_FloatCuArrayNoData_m(FloatCuArrayNoDataFixture):
     assert FloatCuArrayNoDataFixture.m() == 20
 
@@ -25,7 +28,7 @@ def test_FloatCuArrayNoData_allocatedDevice(FloatCuArrayNoDataFixture):
 def test_FloatCuArrayNoData_host(FloatCuArrayNoDataFixture):
     for i in range(FloatCuArrayNoDataFixture.m()):
         for j in range(FloatCuArrayNoDataFixture.n()):
-            assert FloatCuArrayNoDataFixture.at(i, j) == 0.0
+            assert FloatCuArrayNoDataFixture.get(i, j) == 0.0
 
 
 def test_FloatCuArrayNoData_toDeviceNegative(FloatCuArrayNoDataFixture):
@@ -34,8 +37,31 @@ def test_FloatCuArrayNoData_toDeviceNegative(FloatCuArrayNoDataFixture):
     FloatCuArrayNoDataFixture.deallocateDevice()
 
 
-def test_FloatCuArrayNoData_toDevocePositive(FloatCuArrayNoDataFixture):
+def test_FloatCuArrayNoData_toDevicePositive(FloatCuArrayNoDataFixture):
     FloatCuArrayNoDataFixture.allocateDevice()
     FloatCuArrayNoDataFixture.toDevice()
     assert FloatCuArrayNoDataFixture.allocatedDevice() == 1
     FloatCuArrayNoDataFixture.deallocateDevice()
+
+
+def test_FloatCuArray_fromCuArray(FloatCuArrayWithDataFixture):
+    floatCuArray = cuarray.FloatCuArray()
+    floatCuArray.fromCuArray(
+        cuArray=FloatCuArrayWithDataFixture,
+        start=1800,
+        count=200,
+        m=2,
+        n=100,
+    )
+    assert floatCuArray.m() == 2
+    assert floatCuArray.n() == 100
+    assert floatCuArray.bytes() == 800
+    assert floatCuArray.size() == 200
+    assert floatCuArray.allocatedHost() == 1
+    assert floatCuArray.allocatedDevice() == 0
+    assert floatCuArray.owner() == 1
+    for i in range(floatCuArray.m()):
+        for j in range(floatCuArray.n()):
+            assert floatCuArray.get(i, j) == FloatCuArrayWithDataFixture.get(
+                18 + i, j
+            )

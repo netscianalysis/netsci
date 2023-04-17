@@ -6,6 +6,7 @@
 %include "numpy_int_array.i"
 
 %include "python_cuarray_include.i"
+%include "python_cuarray_ignore.i"
 %include "python_cuarray_rename.i"
 %include "python_cuarray_template.i"
 
