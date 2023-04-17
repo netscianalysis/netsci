@@ -1,4 +1,3 @@
-
 import pytest
 import numpy as np
 import cuarray
@@ -13,17 +12,21 @@ def test_MutualInformation2X1D_1000n4k09covGaussian_GpuCpu():
     Xb = cuarray.FloatCuArray()
     Xa.fromNumpy1D(X[:n])
     Xb.fromNumpy1D(X[n:])
-    gpuMutualInformation = netsci.gpuMutualInformation2X1D(
+    gpuMutualInformation = netsci.gpuMutualInformation(
         Xa=Xa,
         Xb=Xb,
         k=k,
         n=n,
+        xd=2,
+        d=1,
     )
-    cpuMutualInformation = netsci.cpuMutualInformation2X1D(
+    cpuMutualInformation = netsci.cpuMutualInformation(
         Xa=Xa,
         Xb=Xb,
         k=k,
         n=n,
+        xd=2,
+        d=1,
     )
     assert gpuMutualInformation == cpuMutualInformation == 0.8449974060058594
 
@@ -36,17 +39,21 @@ def test_MutualInformation2X1D_2000n4k09covGaussian_GpuCpu():
     Xb = cuarray.FloatCuArray()
     Xa.fromNumpy1D(X[:n])
     Xb.fromNumpy1D(X[n:])
-    gpuMutualInformation = netsci.gpuMutualInformation2X1D(
+    gpuMutualInformation = netsci.gpuMutualInformation(
         Xa=Xa,
         Xb=Xb,
         k=k,
         n=n,
+        xd=2,
+        d=1,
     )
-    cpuMutualInformation = netsci.cpuMutualInformation2X1D(
+    cpuMutualInformation = netsci.cpuMutualInformation(
         Xa=Xa,
         Xb=Xb,
         k=k,
         n=n,
+        xd=2,
+        d=1,
     )
     assert gpuMutualInformation == cpuMutualInformation == 0.8485465049743652
 
@@ -60,25 +67,38 @@ def test_MutualInformation2X2D_1000n4k_GpuCpu():
     Xb.init(2, n)
     x = 0.001
     for i in range(n):
-        Xa.at(float(np.sin(x)), 0, i)
-        Xa.at(
-            float(np.cos(x)),
-            1, i
+        Xa.set(
+            float(np.sin(x)),
+            0, i,
         )
-        Xb.at(float(x), 0, i)
-        Xb.at(float(2 * x), 1, i)
+        Xa.set(
+            float(np.cos(x)),
+            1, i,
+        )
+        Xb.set(
+            float(x),
+            0, i,
+        )
+        Xb.set(
+            float(2 * x),
+            1, i,
+        )
         x += float(np.pi / n)
-    gpuMutualInformation = netsci.gpuMutualInformation2X2D(
+    gpuMutualInformation = netsci.gpuMutualInformation(
         Xa=Xa,
         Xb=Xb,
         k=k,
         n=n,
+        xd=2,
+        d=2,
     )
-    cpuMutualInformation = netsci.cpuMutualInformation2X2D(
+    cpuMutualInformation = netsci.cpuMutualInformation(
         Xa=Xa,
         Xb=Xb,
         k=k,
         n=n,
+        xd=2,
+        d=2,
     )
     assert gpuMutualInformation == cpuMutualInformation
 
@@ -92,24 +112,37 @@ def test_MutualInformation2X2D_2000n4k_GpuCpu():
     Xb.init(2, n)
     x = 0.001
     for i in range(n):
-        Xa.at(float(np.sin(x)), 0, i)
-        Xa.at(
-            float(np.cos(x)),
-            1, i
+        Xa.set(
+            float(np.sin(x)),
+            0, i,
         )
-        Xb.at(float(x), 0, i)
-        Xb.at(float(2 * x), 1, i)
+        Xa.set(
+            float(np.cos(x)),
+            1, i,
+        )
+        Xb.set(
+            float(x),
+            0, i,
+        )
+        Xb.set(
+            float(2 * x),
+            1, i,
+        )
         x += float(np.pi / n)
-    gpuMutualInformation = netsci.gpuMutualInformation2X2D(
+    gpuMutualInformation = netsci.gpuMutualInformation(
         Xa=Xa,
         Xb=Xb,
         k=k,
         n=n,
+        xd=2,
+        d=2,
     )
-    cpuMutualInformation = netsci.cpuMutualInformation2X2D(
+    cpuMutualInformation = netsci.cpuMutualInformation(
         Xa=Xa,
         Xb=Xb,
         k=k,
         n=n,
+        xd=2,
+        d=2,
     )
     assert gpuMutualInformation == cpuMutualInformation

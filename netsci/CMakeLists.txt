@@ -22,7 +22,11 @@ set_source_files_properties(
 
 add_library(netsci SHARED
         ${CMAKE_CURRENT_SOURCE_DIR}/src/gpu_mutual_information.cu
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/gpu_generalized_correlation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/cpu_mutual_information.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/cpu_generalized_correlation.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/mutual_information.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/generalized_correlation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/psi.cpp
         )
 add_dependencies(netsci cuarray)
@@ -46,8 +50,11 @@ set_target_properties(
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/netsci
         LINK_LIBRARIES "${NETSCI_PYTHON_LINK_LIBRARIES}"
 )
+
+set(PIP_UNINSTALL_NETSCI_ARGS "uninstall" "netsci" "-y")
 set(PYTHON_NETSCI_INSTALL_ARGS "setup.py" "install")
 add_custom_target(PythonNetSciInstall
+        COMMAND pip ${PIP_UNINSTALL_NETSCI_ARGS}
         COMMAND ${Python3_EXECUTABLE} ${PYTHON_NETSCI_INSTALL_ARGS}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/netsci/python
         )

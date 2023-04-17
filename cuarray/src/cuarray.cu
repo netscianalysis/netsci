@@ -20,6 +20,7 @@ CuArrayError CuArray<T>::init(
 ) {
     this->n_ = n;
     this->m_ = m;
+    this->owner_ = 1;
     this->size_ = n * m;
     this->bytes_ = m * n * sizeof(T);
     this->allocatedDevice_ = 0;
@@ -31,6 +32,7 @@ CuArrayError CuArray<T>::init(
             0
     );
     this->device_ = nullptr;
+    return 0;
 }
 
 template<typename T>
@@ -45,14 +47,16 @@ CuArrayError CuArray<T>::init(
     this->bytes_ = this->size_ * sizeof(T);
     this->allocatedDevice_ = 0;
     this->allocatedHost_ = 1;
+    this->owner_ = 1;
     this->host_ = new T[this->size_];
     std::copy(host, host + this->size_, this->host_);
     this->device_ = nullptr;
+    return 0;
 }
 
 template<typename T>
 CuArray<T>::~CuArray() {
-    if (this->allocatedHost_ == 1) {
+    if (this->allocatedHost_ == 1 && this->owner_) {
         this->deallocateHost();
     }
     if (this->allocatedDevice_ == 1) {
@@ -82,7 +86,7 @@ T *&CuArray<T>::device() {
 
 template<typename T>
 CuArrayError CuArray<T>::allocateHost() {
-    if (this->allocatedHost_ == 0) {
+    if (this->allocatedHost_ == 0 && this->owner_) {
         this->host_ = new T[this->size_];
         this->allocatedHost_ = 1;
     }
@@ -130,7 +134,7 @@ CuArrayError CuArray<T>::toHost() {
 
 template<typename T>
 CuArrayError CuArray<T>::deallocateHost() {
-    if (this->allocatedHost_ == 1) {
+    if (this->allocatedHost_ == 1 && this->owner_) {
         delete[] this->host_;
         this->allocatedHost_ = 0;
     }
@@ -171,6 +175,7 @@ CuArrayError CuArray<T>::fromNumpy(
     this->n_ = NUMPY_ARRAY_DIM1;
     this->size_ = this->m_ * this->n_;
     this->bytes_ = this->size_ * sizeof(T);
+    this->owner_ = 1;
     if (this->allocatedHost_ == 1) {
         err = this->deallocateHost();
     }
@@ -193,6 +198,7 @@ CuArrayError CuArray<T>::fromNumpy(
     this->n_ = NUMPY_ARRAY_DIM2;
     this->size_ = this->m_ * this->n_;
     this->bytes_ = this->size_ * sizeof(T);
+    this->owner_ = 1;
     if (this->allocatedHost_ == 1) {
         err = this->deallocateHost();
     }
@@ -205,7 +211,7 @@ CuArrayError CuArray<T>::fromNumpy(
 }
 
 template<typename T>
-T CuArray<T>::at(
+T CuArray<T>::get(
         int i,
         int j
 ) const {
@@ -213,7 +219,7 @@ T CuArray<T>::at(
 }
 
 template<typename T>
-CuArrayError CuArray<T>::at(
+CuArrayError CuArray<T>::set(
         T value,
         int i,
         int j
@@ -270,6 +276,66 @@ void CuArray<T>::toNumpy(
     *(NUMPY_ARRAY_DIM1)[0] = this->n_;
     *NUMPY_ARRAY = new T[this->size_];
     std::copy(this->host_, this->host_ + this->size_, *NUMPY_ARRAY);
+}
+
+template<typename T>
+CuArrayError CuArray<T>::fromCuArrayShallowCopy(
+        CuArray<T> *cuArray,
+        int start,
+        int count,
+        int m,
+        int n
+) {
+    if (m * n != count) {
+        return 1;
+    }
+    if (n != cuArray->n_) {
+        return 1;
+    }
+    else {
+        this->owner_ = 0;
+        this->m_ = m;
+        this->n_ = n;
+        this->size_ = count;
+        this->size_ = this->m_ * this->n_;
+        this->bytes_ = this->size_ * sizeof(T);
+        this->allocatedHost_ = 1;
+        this->allocatedDevice_ = 0;
+        this->host_ = cuArray->host_ + start;
+        return 0;
+    }
+}
+
+template<typename T>
+CuArrayError CuArray<T>::fromCuArrayDeepCopy(
+        CuArray<T> *cuArray,
+        int start,
+        int count,
+        int m,
+        int n
+) {
+    if (m * n != count) {
+        return 1;
+    } else {
+        this->owner_ = 1;
+        this->m_ = m;
+        this->n_ = n;
+        this->size_ = count;
+        this->size_ = this->m_ * this->n_;
+        this->bytes_ = this->size_ * sizeof(T);
+        this->allocatedHost_ = 1;
+        this->allocatedDevice_ = 0;
+        this->host_ = new T[this->size_];
+        std::copy(cuArray->host_ + start,
+                  cuArray->host_ + start + this->size_, this->host_
+        );
+        return 0;
+    }
+}
+
+template<typename T>
+int CuArray<T>::owner() const {
+    return this->owner_;
 }
 
 template

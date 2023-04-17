@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 #include "FloatCuArrayFixture.h"
+#include "cuarray.h"
 
 
 TEST_F(
@@ -155,11 +156,11 @@ TEST_F(
 
 TEST_F(
         FloatCuArrayFixture,
-        FloatCuArrayWithData_at
+        FloatCuArrayWithData_get
 ) {
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 100; j++) {
-            EXPECT_EQ(cuArrayWithData->at(i, j), data[i * 100 + j]);
+            EXPECT_EQ(cuArrayWithData->get(i, j), data[i * 100 + j]);
         }
     }
 }
@@ -209,6 +210,76 @@ TEST_F(
     cuArrayWithData->toHost();
     EXPECT_EQ(cuArrayWithData->allocatedHost(), 1);
     cuArrayWithData->deallocateHost();
+}
+
+TEST_F(
+        FloatCuArrayFixture,
+        FloatCuArray_fromCuArrayShallowCopy
+) {
+    auto cuArrayShallowCopy = new CuArray<float>;
+    cuArrayShallowCopy->fromCuArrayShallowCopy(
+            cuArrayWithData,
+            1900,
+            100,
+            1,
+            100
+    );
+    EXPECT_EQ(cuArrayShallowCopy->m(), 1);
+    EXPECT_EQ(cuArrayShallowCopy->n(), 100);
+    EXPECT_EQ(cuArrayShallowCopy->bytes(), 100 * sizeof(float));
+    EXPECT_EQ(cuArrayShallowCopy->size(), 100);
+    EXPECT_EQ(cuArrayShallowCopy->allocatedHost(), 1);
+    EXPECT_EQ(cuArrayShallowCopy->allocatedDevice(), 0);
+    EXPECT_EQ(
+            cuArrayShallowCopy->owner(), 0
+    );
+    for (int i = 0; i < 100; i++) {
+        EXPECT_EQ(
+                cuArrayShallowCopy->get(0, i),
+                cuArrayWithData->get(19, i)
+        );
+    }
+    delete cuArrayShallowCopy;
+    for (int i = 0; i < 100; i++) {
+        EXPECT_NO_FATAL_FAILURE(
+                cuArrayWithData->get(19, i)
+        );
+    }
+}
+
+TEST_F(
+        FloatCuArrayFixture,
+        FloatCuArray_fromCuArrayDeepCopy
+) {
+    auto cuArrayDeepCopy = new CuArray<float>;
+    cuArrayDeepCopy->fromCuArrayDeepCopy(
+            cuArrayWithData,
+            1900,
+            100,
+            1,
+            100
+    );
+    EXPECT_EQ(cuArrayDeepCopy->m(), 1);
+    EXPECT_EQ(cuArrayDeepCopy->n(), 100);
+    EXPECT_EQ(cuArrayDeepCopy->bytes(), 100 * sizeof(float));
+    EXPECT_EQ(cuArrayDeepCopy->size(), 100);
+    EXPECT_EQ(cuArrayDeepCopy->allocatedHost(), 1);
+    EXPECT_EQ(cuArrayDeepCopy->allocatedDevice(), 0);
+    EXPECT_EQ(
+            cuArrayDeepCopy->owner(), 1
+    );
+    for (int i = 0; i < 100; i++) {
+        EXPECT_EQ(
+                cuArrayDeepCopy->get(0, i),
+                cuArrayWithData->get(19, i)
+        );
+    }
+    delete cuArrayDeepCopy;
+    for (int i = 0; i < 100; i++) {
+        EXPECT_NO_FATAL_FAILURE(
+                cuArrayWithData->get(19, i)
+        );
+    }
 }
 
 int main(

@@ -54,6 +54,7 @@ set(
         CUARRAY_LINK_LIBRARIES
         "${CNPY_LINK_LIBRARIES}"
         "${Boost_LIBRARIES}"
+        "${CUDA_LIBRARIES}"
         cnpy
 )
 #Libraries the python cuarray swig module is linked against
@@ -105,4 +106,8 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/tests)
 add_custom_target(
         python
         DEPENDS PythonCuArrayInstall PythonNetSciInstall
+)
+add_executable(
+        main
+        ${CMAKE_SOURCE_DIR}/main.cpp
 )

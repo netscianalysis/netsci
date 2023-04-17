@@ -1,16 +1,14 @@
 //
-// Created by andy on 3/17/23.
+// Created by andy on 4/17/23.
 //
 
-#ifndef MUTUAL_INFORMATION_SHARED_MEMORY_MUTUAL_INFORMATION_H
-#define MUTUAL_INFORMATION_SHARED_MEMORY_MUTUAL_INFORMATION_H
-
+#ifndef NETSCI_GENERALIZED_CORRELATION_H
+#define NETSCI_GENERALIZED_CORRELATION_H
 #include "cuarray.h"
 
-
-int mutualInformation(
+int generalizedCorrelation(
         CuArray<float> *X,
-        CuArray<float> *I,
+        CuArray<float> *R,
         CuArray<int> *ab,
         int k,
         int n,
@@ -19,7 +17,16 @@ int mutualInformation(
         const std::string &platform
 );
 
-float gpuMutualInformation(
+float gpuGeneralizedCorrelation(
+        CuArray<float> *Xa,
+        CuArray<float> *Xb,
+        int k,
+        int n,
+        int xd,
+        int d
+);
+
+float cpuGeneralizedCorrelation(
         CuArray<float> *Xa,
         CuArray<float> *Xb,
         int k,
@@ -29,13 +36,4 @@ float gpuMutualInformation(
 );
 
 
-float cpuMutualInformation(
-        CuArray<float> *Xa,
-        CuArray<float> *Xb,
-        int k,
-        int n,
-        int xd,
-        int d
-);
-
-#endif //MUTUAL_INFORMATION_SHARED_MEMORY_MUTUAL_INFORMATION_H
+#endif //NETSCI_GENERALIZED_CORRELATION_H

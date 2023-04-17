@@ -36,3 +36,4 @@
         int **NUMPY_ARRAY_DIM1,
         int **NUMPY_ARRAY_DIM2
 );
+%rename(fromCuArray) fromCuArrayDeepCopy;
