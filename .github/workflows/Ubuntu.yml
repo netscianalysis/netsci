@@ -107,7 +107,7 @@ jobs:
       - name: Build everything else
         working-directory: ${{ env.build_dir }}
         run: |
-          cmake --build . --target all -j`
+          cmake --build . --target all -j
           make python
       - name: Run tests
         working-directory: ${{ env.build_dir }}
