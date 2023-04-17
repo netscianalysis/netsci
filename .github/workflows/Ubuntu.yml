@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       # explicit include-based build matrix, of known valid options
-      matrix:
+      self-hosted:
         include:
           # 22.04 supports CUDA 11.7+
           - os: ubuntu-22.04
@@ -62,7 +62,7 @@ jobs:
       - run: echo "$CONDA_PREFIX"
       - name: Install CUDA
         env:
-          cuda: ${{ matrix.cuda }}
+          cuda: ${{ self-hosted.cuda }}
         run: |
           chmod +x scripts/actions/install_cuda_ubuntu.sh
           ./scripts/actions/install_cuda_ubuntu.sh
@@ -71,10 +71,10 @@ jobs:
       # Specify the correct host compilers
       - name: Install/Select gcc and g++
         run: |
-          sudo apt-get install -y gcc-${{ matrix.gcc }} g++-${{ matrix.gcc }}
-          echo "CC=/usr/bin/gcc-${{ matrix.gcc }}" >> $GITHUB_ENV
-          echo "CXX=/usr/bin/g++-${{ matrix.gcc }}" >> $GITHUB_ENV
-          echo "CUDAHOSTCXX=/usr/bin/g++-${{ matrix.gcc }}" >> $GITHUB_ENV
+          sudo apt-get install -y gcc-${{ self-hosted.gcc }} g++-${{ self-hosted.gcc }}
+          echo "CC=/usr/bin/gcc-${{ self-hosted.gcc }}" >> $GITHUB_ENV
+          echo "CXX=/usr/bin/g++-${{ self-hosted.gcc }}" >> $GITHUB_ENV
+          echo "CUDAHOSTCXX=/usr/bin/g++-${{ self-hosted.gcc }}" >> $GITHUB_ENV
       - name: Configure cmake
         id: configure
         run: cmake . -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }} -DCONDA_DIR=$CONDA_PREFIX -DCMAKE_CUDA_ARCHITECTURES=52
