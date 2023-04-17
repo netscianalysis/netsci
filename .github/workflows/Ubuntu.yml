@@ -58,7 +58,9 @@ jobs:
     env:
       build_dir: "build"
       config: "Release"
-
+    defaults:
+      run:
+        shell: bash -l {0}
     steps:
       - uses: actions/checkout@v3
       - uses: conda-incubator/setup-miniconda@v2
@@ -66,7 +68,7 @@ jobs:
           auto-activate-base: true
           activate-environment: ""
       - run: conda install -c conda-forge boost swig numpy
-      - run: echo $CONDA_PREFIX
+      - run: echo "$CONDA_PREFIX"
       - name: Install CUDA
         env:
           cuda: ${{ matrix.cuda }}
