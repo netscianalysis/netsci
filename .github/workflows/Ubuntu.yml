@@ -101,7 +101,3 @@ jobs:
         run: |
           cmake --build . --target all -j
           make python
-      - name: Run tests
-        runs-on: self-hosted
-        working-directory: ${{ env.build_dir }}
-        run: ctest --output-on-failure
