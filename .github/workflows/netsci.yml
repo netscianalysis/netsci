@@ -3,9 +3,22 @@ on: [push]
 jobs:
   run:
     runs-on: [self-hosted, gpu]
+    env:
+      repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - name: cml_run
-        env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-        run: nvidia-smi
+      - name: Setup anaconda
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+      - name: Install netsci dependencies
+        run: |
+            conda install -c conda-forge swig boost numpy cmake
+      - name: build
+        run: |
+            mkdir build
+            cd build
+            cmake .. -DCONDA_DIR=$CONDA_PREFIX
+            cmake --build . -j
+            make python
+            ctest
