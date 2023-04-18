@@ -1,0 +1,12 @@
+name: netsci
+on: [push]
+jobs:
+  run:
+    runs-on: [self-hosted, gpu]
+    steps:
+      - uses: actions/checkout@v2
+      - name: cml_run
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          nvidia-smi
