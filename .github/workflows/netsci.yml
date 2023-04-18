@@ -22,10 +22,12 @@ jobs:
             cmake --build . -j
             make python
       - name: ctest
-        run: ctest
+        run: |
+          cd build
+          ctest
       - name: pytest
         run: |
-            cd ../tests/cuarray/python
+            cd tests/cuarray/python
             pytest
             cd ../../netsci/python
             pytest
