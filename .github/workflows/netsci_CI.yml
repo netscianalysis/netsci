@@ -2,7 +2,8 @@ name: netsci
 on: [push]
 jobs:
   run:
-    runs-on: [self-hosted, gpu]
+    runs-on: [self-hosted]
+    container: dvcorg/cml-py3
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
