@@ -3,6 +3,7 @@ on: [push]
 jobs:
   run:
     runs-on: [self-hosted]
+    container: dvcorg/cml-py3:latest
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
