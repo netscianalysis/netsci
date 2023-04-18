@@ -21,7 +21,10 @@ jobs:
             cmake .. -DCONDA_DIR=$CONDA_PREFIX
             cmake --build . -j
             make python
-            ctest
+      - name: ctest
+        run: ctest
+      - name: pytest
+        run: |
             cd ../tests/cuarray/python
             pytest
             cd ../../netsci/python
