@@ -8,13 +8,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup anaconda
-        - uses: conda-incubator/setup-miniconda@v2
-          with:
-            miniconda-version: "latest"
-            channels: bioconda, conda-forge, defaults
-            use-only-tar-bz2: true  # IMPORTANT: This needs to be set for caching to work properly!
-            auto-update-conda: true
-            auto-activate-base: true
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          channels: bioconda, conda-forge, defaults
+          use-only-tar-bz2: true  # IMPORTANT: This needs to be set for caching to work properly!
+          auto-update-conda: true
+          auto-activate-base: true
       - name: Install netsci dependencies
         run: |
             conda install -c conda-forge swig boost numpy cmake pytest
