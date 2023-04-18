@@ -13,7 +13,7 @@ jobs:
           python-version: 3.10.5
       - name: Install netsci dependencies
         run: |
-            conda install -c conda-forge swig boost numpy cmake
+            conda install -c conda-forge swig boost numpy cmake pytest
       - name: build
         run: |
             mkdir build
@@ -22,3 +22,7 @@ jobs:
             cmake --build . -j
             make python
             ctest
+            cd ../tests/cuarray/python
+            pytest
+            cd ../../netsci/python
+            pytest
