@@ -8,4 +8,4 @@ jobs:
       - name: cml_run
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "Test"
+        run: nvidia-smi
