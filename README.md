@@ -28,3 +28,15 @@ make python
 ```
 ctest
 ```
+```
+cd ../tests/cuarray/python
+```
+```
+pytest
+```
+```
+cd ../../netsci/python
+```
+```
+pytest
+```
