@@ -1,6 +1,3 @@
-//
-// Created by andy on 4/11/22.
-//
 
 /***************************************************************************
  *cr                                                                       
@@ -22,12 +19,6 @@
  *   Code for reading and writing CHARMM, NAMD, and X-PLOR format 
  *   molecular dynamic trajectory files.
  *
- * TODO:
- *   Integrate improvements from the NAMD source tree
- *    - NAMD's writer code has better type-correctness for the sizes
- *      of "int".  NAMD uses "int32" explicitly, which is required on
- *      machines like the T3E.  VMD's version of the code doesn't do that
- *      presently.
  *
  *  Try various alternative I/O API options:
  *   - use mmap(), with read-once flags
