@@ -59,7 +59,7 @@ cd ../../netsci/python
 pytest
 ```
 
-## Computing generalized correlation for a pyrophosphatase and calcium phosphate hydrolysis simulation
+## Computing the generalized correlation for a pyrophosphatase molecular dynamics simulation
 
 ```
 cd tutorial
@@ -77,6 +77,8 @@ import netsci
 ```
 
 ``` python
+'''
+Untar 
 tutorial_files= tarfile.open(f'{os.getcwd()}/pyro.tar.gz')
 tutorial_files.extractall(os.getcwd())
 tutorial_files.close()
