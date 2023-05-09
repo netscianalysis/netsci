@@ -26,7 +26,7 @@ cd netsci
 conda env create -f netsci.yml
 ```
 ```
-conda activate netsci
+source activate netsci
 ```
 ```
 mkdir build
