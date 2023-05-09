@@ -112,7 +112,7 @@ R = cuarray.FloatCuArray()
 ``` python
 num_nodes = graph.numNodes()
 num_generalized_correlation_pairs = num_nodes**2
-ab = netsci.IntCuArray()
+ab = cuarray.IntCuArray()
 ab.init(num_generalized_correlation_pairs, 2)
 for a in range(num_nodes):
     for b in range(num_nodes):
