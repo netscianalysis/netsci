@@ -110,7 +110,11 @@ R = cuarray.FloatCuArray()
 ```
 
 ``` python
-num_nodes = graph.numNodes()
+'''
+Number of nodes in the graph netchem creates from 
+the trajectory.
+'''
+num_nodes = graph.numNodes() 
 num_generalized_correlation_pairs = num_nodes**2
 ab = cuarray.IntCuArray()
 ab.init(num_generalized_correlation_pairs, 2)
