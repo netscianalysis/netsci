@@ -7,3 +7,4 @@ dependencies:
   - conda-forge::doxygen
   - conda-forge::boost
   - conda-forge::swig
+  - conda-forge::pytest
