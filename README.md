@@ -133,3 +133,24 @@ netsci.generalizedCorrelation(
     platform=platform,
 )
 ```
+
+``` python
+x = [node_index for node_index in range(num_nodes)]
+y = [node_index for node_index in range(num_nodes)]
+z = R.toNumpy1D().reshape(
+    num_nodes,
+    num_nodes,
+)
+``` python
+
+fig = go.Figure(
+    data=go.Heatmap(
+        x=x, 
+        y=y,
+        z=z,
+        colorscale='jet',
+        zsmooth='best',
+    )
+)
+fig.show()
+```
