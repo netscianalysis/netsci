@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 project(netsci LANGUAGES CXX CUDA)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_BUILD_TYPE Release)
 
 #Absolute path to conda environment
 set(CONDA_DIR "" CACHE PATH "Path to conda environment")
@@ -36,11 +37,15 @@ set(
         INCLUDE_DIRS
         ${Python3_INCLUDE_DIRS}
         ${Python3_NumPy_INCLUDE_DIRS}
+        ${CONDA_DIR}/include
         ${CMAKE_SOURCE_DIR}/cnpy/include
         ${CMAKE_SOURCE_DIR}/netsci/include
+        ${CMAKE_SOURCE_DIR}/netchem/include
+        ${CMAKE_SOURCE_DIR}/netchem/include
         ${CMAKE_SOURCE_DIR}/cuarray/include
         "${CUDA_INCLUDE_DIRS}"
 )
+message(${Python3_NumPy_INCLUDE_DIRS})
 include_directories("${INCLUDE_DIRS}")
 
 #Libraries cnpy is linked against
@@ -92,12 +97,37 @@ set (
         gtest
 )
 
+#Libraries netchem is linked against
+set(
+        NETCHEM_LINK_LIBRARIES
+        "${NETSCI_LINK_LIBRARIES}"
+        "${Boost_LIBRARIES}"
+        cuarray
+)
+
+#Libraries the python netchem swig module is linked against
+set(
+        NETCHEM_PYTHON_LINK_LIBRARIES
+        "${NETCHEM_LINK_LIBRARIES}"
+        netchem
+)
+
+#Libraries the netchem tests are linked against
+set (
+        NETCHEM_TEST_LINK_LIBRARIES
+        "${NETCHEM_LINK_LIBRARIES}"
+        netchem
+        gtest
+)
+
 #Add cnpy src directory to the build
 add_subdirectory(${CMAKE_SOURCE_DIR}/cnpy)
 #Add cuarray src directory to the build
 add_subdirectory(${CMAKE_SOURCE_DIR}/cuarray)
 #Add netsci src directory to the build
 add_subdirectory(${CMAKE_SOURCE_DIR}/netsci)
+#Add netchem src directory to the build
+add_subdirectory(${CMAKE_SOURCE_DIR}/netchem)
 
 #Write all unit tests to the build directory
 enable_testing()
@@ -105,5 +135,5 @@ enable_testing()
 add_subdirectory(${CMAKE_SOURCE_DIR}/tests)
 add_custom_target(
         python
-        DEPENDS PythonCuArrayInstall PythonNetSciInstall
+        DEPENDS PythonCuArrayInstall PythonNetSciInstall PythonNetChemInstall
 )

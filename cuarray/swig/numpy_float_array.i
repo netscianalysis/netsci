@@ -195,7 +195,6 @@ int    **NUMPY_ARRAY_DIM1,
 int    **NUMPY_ARRAY_DIM2
 ) {
 npy_intp dims[2] = {(*($2))[0], (*($3))[0]};
-printf("%f\n", (*($1))[0]);
 PyObject      *obj   = PyArray_SimpleNewFromData(
         2,
         dims,

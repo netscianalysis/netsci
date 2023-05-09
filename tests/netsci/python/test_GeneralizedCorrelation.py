@@ -249,7 +249,7 @@ def test_GeneralizedCorrelation_UsedCpuPlatform():
         n=n,
         xd=2,
         d=1,
-        platform='cpu',
+        platform=1,
     ) == 1
 
 
@@ -282,5 +282,5 @@ def test_GeneralizedCorrelation_UsedGpuPlatform():
         n=n,
         xd=2,
         d=1,
-        platform='gpu',
+        platform=0,
     ) == 0

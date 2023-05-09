@@ -2,6 +2,7 @@
 #include "psi.h"
 #include <map>
 #include <vector>
+#include <iostream>
 
 __device__ void warpReduce(
         volatile int *s_a,

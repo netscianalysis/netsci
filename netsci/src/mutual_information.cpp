@@ -12,7 +12,7 @@ int mutualInformation(
         int n,
         int xd,
         int d,
-        const std::string& platform
+        int platform
 ) {
     I->init(
             1, ab->m()
@@ -21,6 +21,7 @@ int mutualInformation(
     for (int i = 0; i < ab->m(); i++) {
         int a = ab->get(i, 0);
         int b = ab->get(i, 1);
+        std::cout << a << " " << b << std::endl;
         auto Xa = new CuArray<float>;
         auto Xb = new CuArray<float>;
         Xa->fromCuArrayShallowCopy(
@@ -37,14 +38,14 @@ int mutualInformation(
                 1,
                 d * n
         );
-        if (platform == "gpu")
+        if (platform == 0)
             I->set(
                     gpuMutualInformation(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i
             );
-        else if (platform == "cpu")
+        else if (platform == 1)
             I->set(
                     cpuMutualInformation(
                             Xa, Xb, k, n, xd, d
@@ -57,5 +58,5 @@ int mutualInformation(
         delete Xa;
         delete Xb;
     }
-    return platform == "gpu" ? 0 : 1;
+    return platform;
 }

@@ -291,8 +291,7 @@ CuArrayError CuArray<T>::fromCuArrayShallowCopy(
     }
     if (n != cuArray->n_) {
         return 1;
-    }
-    else {
+    } else {
         this->owner_ = 0;
         this->m_ = m;
         this->n_ = n;
@@ -337,6 +336,44 @@ template<typename T>
 int CuArray<T>::owner() const {
     return this->owner_;
 }
+
+template<typename T>
+CuArray<T> *CuArray<T>::sort(int i) {
+    auto cuArray = new CuArray<T>();
+    cuArray->fromCuArrayDeepCopy(
+            this,
+            i * this->n(),
+            this->n(),
+            1,
+            this->n()
+    );
+    std::sort(
+            cuArray->host_,
+            cuArray->host_ + cuArray->n(),
+            std::greater<T>()
+    );
+    return cuArray;
+}
+
+template<typename T>
+CuArray<int> *CuArray<T>::argsort(int i) {
+    auto cuArray = new CuArray<int>();
+    cuArray->init(1, this->n());
+    std::iota(
+            cuArray->host(),
+            cuArray->host() + cuArray->n(),
+            0
+    );
+    std::sort(
+            cuArray->host(),
+            cuArray->host() + cuArray->n(),
+            [this, i](int a, int b) {
+                return this->get(i, a) > this->get(i, b);
+            }
+    );
+    return cuArray;
+}
+
 
 template
 class CuArray<int>;

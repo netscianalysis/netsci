@@ -13,7 +13,7 @@ int generalizedCorrelation(
         int n,
         int xd,
         int d,
-        const std::string &platform
+        int platform
 ) {
     R->init(
             1, ab->m()
@@ -38,14 +38,14 @@ int generalizedCorrelation(
                 1,
                 d * n
         );
-        if (platform == "gpu")
+        if (platform == 0)
             R->set(
                     gpuGeneralizedCorrelation(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i
             );
-        else if (platform == "cpu")
+        else if (platform == 1)
             R->set(
                     cpuGeneralizedCorrelation(
                             Xa, Xb, k, n, xd, d
@@ -58,6 +58,6 @@ int generalizedCorrelation(
         delete Xa;
         delete Xb;
     }
-    return platform == "gpu" ? 0 : 1;
+    return platform;
 }
 

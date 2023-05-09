@@ -16,7 +16,7 @@ int mutualInformation(
         int n,
         int xd,
         int d,
-        const std::string &platform
+        int platform
 );
 
 float gpuMutualInformation(

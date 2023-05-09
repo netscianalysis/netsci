@@ -115,9 +115,15 @@ public:
             const std::string &fname
     );
 
+    CuArray<T> *sort(
+            int i
+    );
+
     T &operator[](int i) const;
 
     int owner() const;
+
+    CuArray<int> *argsort(int i);
 
 private:
     T *host_;
@@ -129,7 +135,6 @@ private:
     int allocatedDevice_{};
     int allocatedHost_{};
     int owner_{};
-
 };
 
 

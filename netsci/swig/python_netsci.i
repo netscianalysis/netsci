@@ -1,11 +1,6 @@
 %module netsci
 
 %include "std_string.i"
-%{
-#define SWIG_FILE_WITH_INIT
-#include "mutual_information.h"
-#include "generalized_correlation.h"
-%}
+%include "python_netsci_headers1.i"
+%include "python_netsci_headers2.i"
 
-%include mutual_information.h
-%include generalized_correlation.h

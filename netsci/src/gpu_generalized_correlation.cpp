@@ -22,8 +22,12 @@ float gpuGeneralizedCorrelation(
                     xd,
                     d
             );
-    return (float) std::sqrt(
-            1.0 - (float) exp(-(2.0 / (float) d) * mutualInformation)
-    );
+    if (mutualInformation <= 0.0) {
+        return 0.0;
+    } else {
+        return (float) std::sqrt(
+                1.0 - (float) exp(-(2.0 / (float) d) * mutualInformation)
+        );
+    }
 }
 

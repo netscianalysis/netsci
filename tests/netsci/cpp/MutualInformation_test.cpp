@@ -352,7 +352,7 @@ TEST(
     );
     ASSERT_EQ(
             mutualInformation(
-                    X, R, ab, k, n, 2, 1, "cpu"
+                    X, R, ab, k, n, 2, 1, 1
             ), 1);
     delete X;
     delete R;
@@ -409,7 +409,7 @@ TEST(
     );
     ASSERT_EQ(
             mutualInformation(
-                    X, R, ab, k, n, 2, 1, "gpu"
+                    X, R, ab, k, n, 2, 1, 0
             ), 0);
     delete X;
     delete R;
