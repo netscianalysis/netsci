@@ -106,7 +106,7 @@ platform = 0 #gpu
 ```
 
 ``` python
-R = netsci.FloatCuArray()
+R = cuarray.FloatCuArray()
 ```
 
 ``` python
