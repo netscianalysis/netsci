@@ -8,7 +8,10 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ```
 ```
-source activate ~/.bashrc
+./Miniconda3-latest-Linux-x86_64.sh
+```
+```
+source ~/.bashrc
 ```
 ```
 conda install -c conda-forge git
@@ -21,6 +24,9 @@ cd netsci
 ```
 ```
 conda env create -f netsci.yml
+```
+```
+conda activate netsci
 ```
 ```
 mkdir build
@@ -59,7 +65,71 @@ pytest
 cd tutorial
 ```
 ``` python
+import os
 import tarfile
 
-tutorial_files = tarfile.
+import plotly.graph_objects as go
+import numpy as np
+
+import cuarray
+import netchem
+import netsci
+```
+
+``` python
+tutorial_files= tarfile.open(f'{os.getcwd()}/pyro.tar.gz')
+tutorial_files.extractall(os.getcwd())
+tutorial_files.close()
+```
+
+``` python
+trajectory_file = f'{os.getcwd()}/pyro.dcd'
+topology_file = f'{os.getcwd()}/pyro.pdb'
+first_frame = 0
+last_frame = 999
+
+graph = netchem.Graph()
+graph.init(
+    trajectoryFile=trajectory_file,
+    topologyFile=topology_file,
+    firstFrame=first_frame,
+    lastFrame=last_frame,
+)
+```
+
+``` python
+n = graph.numFrames()
+k = 4
+xd = 2
+d = 3
+platform = 0 #gpu
+```
+
+``` python
+R = netsci.FloatCuArray()
+```
+
+``` python
+num_nodes = graph.numNodes()
+num_generalized_correlation_pairs = num_nodes**2
+ab = netsci.IntCuArray()
+ab.init(num_generalized_correlation_pairs, 2)
+for a in range(num_nodes):
+    for b in range(num_nodes):
+        pair_index = a * num_nodes + b
+        ab.set(a, pair_index, 0)
+        ab.set(b, pair_index, 1)
+```
+
+``` python
+netsci.generalizedCorrelation(
+    X=graph.nodeCoordinates(),
+    R=R,
+    ab=ab,
+    n=n,
+    k=k,
+    xd=xd,
+    d=d,
+    platform=platform,
+)
 ```
