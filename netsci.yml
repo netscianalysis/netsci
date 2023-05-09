@@ -9,3 +9,4 @@ dependencies:
   - conda-forge::boost
   - conda-forge::swig
   - conda-forge::pytest
+  - conda-forge::plotly
