@@ -1,7 +1,7 @@
 # NetSci
 ## A Library for High Performance Scientific Network Analysis Computation
 ## Installation
-```
+``` Shell
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 ```
 ```
