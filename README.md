@@ -59,7 +59,28 @@ cd ../../netsci/python
 pytest
 ```
 
-## Computing the generalized correlation for a pyrophosphatase molecular dynamics simulation
+## A Brief Overview of CuArray: NetSci's CUDA-Compatible Array Library
+
+``` python
+import numpy as np
+
+from cuarray import FloatCuArray, IntCuArray
+```
+
+``` python
+a = FloatCuArray()
+m, n = 100, 100
+a.init(m, n)
+```
+``` python
+for i in range(m):
+    for j in range(n):
+        val = np.random.rand(1)[0]
+        a.set(val, i, j)
+```
+
+
+## Analyzing a Pyrophosphatase Molecular Dynamics Simulation with NetSci
 
 ```
 cd tutorial
@@ -77,8 +98,6 @@ import netsci
 ```
 
 ``` python
-'''
-Untar 
 tutorial_files= tarfile.open(f'{os.getcwd()}/pyro.tar.gz')
 tutorial_files.extractall(os.getcwd())
 tutorial_files.close()
