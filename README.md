@@ -141,8 +141,9 @@ z = R.toNumpy1D().reshape(
     num_nodes,
     num_nodes,
 )
-``` python
+```
 
+``` python
 fig = go.Figure(
     data=go.Heatmap(
         x=x, 
