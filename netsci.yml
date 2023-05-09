@@ -1,0 +1,12 @@
+name: netsci
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - conda-forge::cmake
+  - conda-forge::numpy
+  - conda-forge::doxygen
+  - conda-forge::boost
+  - conda-forge::swig
+  - conda-forge::pytest
+  - conda-forge::plotly
