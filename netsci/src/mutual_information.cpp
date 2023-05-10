@@ -26,17 +26,15 @@ int mutualInformation(
         auto Xb = new CuArray<float>;
         Xa->fromCuArrayShallowCopy(
                 X,
-                a * n * d,
-                d * n,
-                1,
-                d * n
+                a,
+                a,
+                1, X->n()
         );
         Xb->fromCuArrayShallowCopy(
                 X,
-                b * n * d,
-                d * n,
-                1,
-                d * n
+                b,
+                b,
+                1, X->n()
         );
         if (platform == 0)
             I->set(

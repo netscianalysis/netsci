@@ -67,9 +67,34 @@ import numpy as np
 from cuarray import FloatCuArray, IntCuArray
 ```
 
+```python
+def print_CuArray(
+        cuArray,
+):
+    for i in range(cuArray.m()):
+        row_repr = ''
+        for j in range(cuArray.n()):
+            val = cuArray.get(i, j)
+            row_repr += f'{val:.2f} '
+        print(row_repr)
+```
+
+```python
+def print_numpy_array(
+        numpy_array,
+):
+    m, n = numpy_array.shape
+    for i in range(m):
+        row_repr = ''
+        for j in range(n):
+            val = numpy_array[i, j]
+            row_repr += f'{val:.2f} '
+        print(row_repr)
+```
+
 ``` python
 a = FloatCuArray()
-m, n = 100, 100
+m, n = 10, 10
 a.init(m, n)
 ```
 ``` python
@@ -80,10 +105,93 @@ for i in range(m):
 ```
 
 ``` python
-for i in range(m):
-    for j in range(n):
-        val = a.get(i, j)
-        print(i, j, val)
+print_CuArray(a)
+```
+
+``` python
+a_copy = FloatCuArray()
+a_copy.fromCuArray(
+    cuArray=a,
+    start=0,
+    end = a.m() - 1,
+    m=a.m(),
+    n=a.n(),
+)
+```
+
+``` python
+print_CuArray(a_copy)
+```
+
+``` python
+a_row0 = FloatCuArray()
+a_row0.fromCuArray(
+    cuArray=a,
+    start=0,
+    end=0,
+    m=1,
+    n=a.n(),
+)
+```
+
+``` python
+print_CuArray(a_row0)
+```
+
+``` python
+a_row0_reshape_5x2 = FloatCuArray()
+a_row0_reshape_5x2.fromCuArray(
+    cuArray=a,
+    start=0,
+    end=0,
+    m=5,
+    n=2,
+)
+```
+
+``` python
+print_CuArray(a_row0_reshape_5x2)
+```
+
+``` python
+a.save('a.npy')
+```
+
+``` python
+b = FloatCuArray()
+b.load('a.npy')
+```
+
+``` python
+print_CuArray(b)
+```
+
+``` python
+np_a_2D = a.toNumpy2D()
+```
+
+``` python
+print_numpy_array(np_a_2D)
+```
+
+``` python
+a_np_2D = FloatCuArray()
+a_np_2D.fromNumpy2D(np_a_2D)
+```
+
+``` python
+print_CuArray(a_np_2D)
+```
+
+``` python
+np_a_row0_1D = a_row0.toNumpy1D()
+```
+
+``` python
+print_numpy_array(np_a_row0_1D)
+```
+
+``` python
 ```
 
 

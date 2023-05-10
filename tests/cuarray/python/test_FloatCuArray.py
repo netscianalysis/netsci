@@ -48,8 +48,8 @@ def test_FloatCuArray_fromCuArray(FloatCuArrayWithDataFixture):
     floatCuArray = cuarray.FloatCuArray()
     floatCuArray.fromCuArray(
         cuArray=FloatCuArrayWithDataFixture,
-        start=1800,
-        count=200,
+        start=18,
+        end=19,
         m=2,
         n=100,
     )

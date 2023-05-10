@@ -279,54 +279,39 @@ void CuArray<T>::toNumpy(
 }
 
 template<typename T>
-CuArrayError CuArray<T>::fromCuArrayShallowCopy(
-        CuArray<T> *cuArray,
-        int start,
-        int count,
-        int m,
-        int n
-) {
-    if (m * n != count) {
-        return 1;
-    }
-    if (n != cuArray->n_) {
+CuArrayError CuArray<T>::fromCuArrayShallowCopy(CuArray<T> *cuArray, int start, int end, int m, int n) {
+    if (((end - start) + 1) * cuArray->n_ != m * n) {
         return 1;
     } else {
         this->owner_ = 0;
         this->m_ = m;
         this->n_ = n;
-        this->size_ = count;
         this->size_ = this->m_ * this->n_;
         this->bytes_ = this->size_ * sizeof(T);
         this->allocatedHost_ = 1;
         this->allocatedDevice_ = 0;
-        this->host_ = cuArray->host_ + start;
+        this->host_ = cuArray->host_ + start * cuArray->n_;
         return 0;
     }
 }
 
 template<typename T>
-CuArrayError CuArray<T>::fromCuArrayDeepCopy(
-        CuArray<T> *cuArray,
-        int start,
-        int count,
-        int m,
-        int n
-) {
-    if (m * n != count) {
+CuArrayError
+CuArray<T>::fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n) {
+    if (((end - start) + 1) * cuArray->n_ != m * n) {
         return 1;
     } else {
         this->owner_ = 1;
         this->m_ = m;
         this->n_ = n;
-        this->size_ = count;
         this->size_ = this->m_ * this->n_;
         this->bytes_ = this->size_ * sizeof(T);
         this->allocatedHost_ = 1;
         this->allocatedDevice_ = 0;
         this->host_ = new T[this->size_];
-        std::copy(cuArray->host_ + start,
-                  cuArray->host_ + start + this->size_, this->host_
+        std::copy(cuArray->host_ + start * cuArray->n_,
+                  cuArray->host_ + (end + 1) * cuArray->n_,
+                  this->host_
         );
         return 0;
     }
@@ -342,10 +327,9 @@ CuArray<T> *CuArray<T>::sort(int i) {
     auto cuArray = new CuArray<T>();
     cuArray->fromCuArrayDeepCopy(
             this,
-            i * this->n(),
-            this->n(),
-            1,
-            this->n()
+            i,
+            i,
+            1, this->n()
     );
     std::sort(
             cuArray->host_,

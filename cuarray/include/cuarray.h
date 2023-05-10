@@ -27,21 +27,9 @@ public:
             int n
     );
 
-    CuArrayError fromCuArrayShallowCopy(
-            CuArray<T> *cuArray,
-            int start,
-            int count,
-            int m,
-            int n
-    );
+    CuArrayError fromCuArrayShallowCopy(CuArray<T> *cuArray, int start, int end, int m, int n);
 
-    CuArrayError fromCuArrayDeepCopy(
-            CuArray<T> *cuArray,
-            int start,
-            int count,
-            int m,
-            int n
-    );
+    CuArrayError fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n);
 
 
     ~CuArray();

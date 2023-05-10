@@ -6,6 +6,9 @@ set(CMAKE_BUILD_TYPE Release)
 #Absolute path to conda environment
 set(CONDA_DIR "" CACHE PATH "Path to conda environment")
 
+#Create a cuda architecture cache variable
+set(CUDA_ARCHITECTURE 52 CACHE STRING "CUDA architecture to compile for")
+
 #CMake build type defaults to Release
 set(CMAKE_BUILD_TYPE Release)
 

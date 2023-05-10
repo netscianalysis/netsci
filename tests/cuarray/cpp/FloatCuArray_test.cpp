@@ -219,10 +219,8 @@ TEST_F(
     auto cuArrayShallowCopy = new CuArray<float>;
     cuArrayShallowCopy->fromCuArrayShallowCopy(
             cuArrayWithData,
-            1900,
-            100,
-            1,
-            100
+            19,
+            19, 1, 100
     );
     EXPECT_EQ(cuArrayShallowCopy->m(), 1);
     EXPECT_EQ(cuArrayShallowCopy->n(), 100);
@@ -254,10 +252,8 @@ TEST_F(
     auto cuArrayDeepCopy = new CuArray<float>;
     cuArrayDeepCopy->fromCuArrayDeepCopy(
             cuArrayWithData,
-            1900,
-            100,
-            1,
-            100
+            19,
+            19, 1, 100
     );
     EXPECT_EQ(cuArrayDeepCopy->m(), 1);
     EXPECT_EQ(cuArrayDeepCopy->n(), 100);
