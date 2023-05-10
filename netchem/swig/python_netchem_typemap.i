@@ -89,3 +89,9 @@ class GraphIterator{
             return GraphIterator($self->nodes().begin(), $self->nodes().size());
         }
 };
+
+%extend Atoms{
+    Atom *__getitem__(int atomIndex) {
+        return $self->atoms().at(atomIndex);
+    }
+};

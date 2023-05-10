@@ -242,7 +242,7 @@ print_CuArray(b)
 ```
 
 ``` python
-# Use the CuArray toNumpy2D method to convert "a" into a 
+# Use the CuArray toNumpy2D method to copy "a" into a 
 # 2D numpy array named "np_a_2D".
 np_a_2D = a.toNumpy2D()
 ```
@@ -357,8 +357,28 @@ print(num_frames)
 ```
 
 ``` python
+node_coordinates = graph.nodeCoordinates()
+print(node_coordinates)
+```
+
+``` python
+nodes = graph.nodes()
+print(nodes)
+```
+
+``` python
+atoms = graph.atoms()
+print(atoms)
+```
+
+``` python
 for node in graph:
-    print(node)
+    print(node.__class__)
+```
+
+``` python
+for atom in graph.atoms():
+    print(atom.__class__)
 ```
 
 ``` python
