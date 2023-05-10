@@ -79,6 +79,13 @@ for i in range(m):
         a.set(val, i, j)
 ```
 
+``` python
+for i in range(m):
+    for j in range(n):
+        val = a.get(i, j)
+        print(i, j, val)
+```
+
 
 ## Analyzing a Pyrophosphatase Molecular Dynamics Simulation with NetSci
 
