@@ -53,14 +53,14 @@ cd ../tests/cuarray/python
 pytest
 ```
 ```
-cd ../../netsci/python
+cd ../../netcalc/python
 ```
 ```
 pytest
 ```
 
 <h1 align="center">
-<b>Usage</b>
+<b>Tutorial</b>
 </h1>
 
 <h2 align="center">
