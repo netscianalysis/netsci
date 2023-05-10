@@ -378,7 +378,7 @@ import numpy as np
 
 import cuarray
 import netchem
-import netsci
+import netcalc 
 ```
 
 ``` python
@@ -431,7 +431,7 @@ for a in range(num_nodes):
 ```
 
 ``` python
-netsci.generalizedCorrelation(
+netcalc.generalizedCorrelation(
     X=graph.nodeCoordinates(),
     R=R,
     ab=ab,

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(netsci LANGUAGES CXX CUDA)
+project(netcalc LANGUAGES CXX CUDA)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE Release)
 
@@ -42,7 +42,7 @@ set(
         ${Python3_NumPy_INCLUDE_DIRS}
         ${CONDA_DIR}/include
         ${CMAKE_SOURCE_DIR}/cnpy/include
-        ${CMAKE_SOURCE_DIR}/netsci/include
+        ${CMAKE_SOURCE_DIR}/netcalc/include
         ${CMAKE_SOURCE_DIR}/netchem/include
         ${CMAKE_SOURCE_DIR}/netchem/include
         ${CMAKE_SOURCE_DIR}/cuarray/include
@@ -79,31 +79,31 @@ set (
         gtest
 )
 
-#Libraries netsci is linked against
+#Libraries netcalc is linked against
 set(
-        NETSCI_LINK_LIBRARIES
+        NETCALC_LINK_LIBRARIES
         "${CUARRAY_LINK_LIBRARIES}"
         "${Boost_LIBRARIES}"
         cuarray
 )
-#Libraries the python netsci swig module is linked against
+#Libraries the python netcalc swig module is linked against
 set(
-        NETSCI_PYTHON_LINK_LIBRARIES
-        "${NETSCI_LINK_LIBRARIES}"
-        netsci
+        NETCALC_PYTHON_LINK_LIBRARIES
+        "${NETCALC_LINK_LIBRARIES}"
+        netcalc
 )
-#Libraries the netsci tests are linked against
+#Libraries the netcalc tests are linked against
 set (
-        NETSCI_TEST_LINK_LIBRARIES
-        "${NETSCI_LINK_LIBRARIES}"
-        netsci
+        NETCALC_TEST_LINK_LIBRARIES
+        "${NETCALC_LINK_LIBRARIES}"
+        netcalc
         gtest
 )
 
 #Libraries netchem is linked against
 set(
         NETCHEM_LINK_LIBRARIES
-        "${NETSCI_LINK_LIBRARIES}"
+        "${NETCALC_LINK_LIBRARIES}"
         "${Boost_LIBRARIES}"
         cuarray
 )
@@ -127,8 +127,8 @@ set (
 add_subdirectory(${CMAKE_SOURCE_DIR}/cnpy)
 #Add cuarray src directory to the build
 add_subdirectory(${CMAKE_SOURCE_DIR}/cuarray)
-#Add netsci src directory to the build
-add_subdirectory(${CMAKE_SOURCE_DIR}/netsci)
+#Add netcalc src directory to the build
+add_subdirectory(${CMAKE_SOURCE_DIR}/netcalc)
 #Add netchem src directory to the build
 add_subdirectory(${CMAKE_SOURCE_DIR}/netchem)
 
@@ -138,5 +138,5 @@ enable_testing()
 add_subdirectory(${CMAKE_SOURCE_DIR}/tests)
 add_custom_target(
         python
-        DEPENDS PythonCuArrayInstall PythonNetSciInstall PythonNetChemInstall
+	DEPENDS PythonCuArrayInstall PythonNetCalcInstall PythonNetChemInstall
 )

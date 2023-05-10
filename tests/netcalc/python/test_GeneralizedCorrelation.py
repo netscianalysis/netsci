@@ -1,6 +1,6 @@
 import numpy as np
 import cuarray
-import netsci
+import netcalc 
 
 
 def test_GeneralizedCorrelation_2X1D_1000n4k_GpuCpu():
@@ -21,7 +21,7 @@ def test_GeneralizedCorrelation_2X1D_1000n4k_GpuCpu():
             0, i,
         )
         x += float(np.pi / n)
-    gpuGeneralizedCorrelation = netsci.gpuGeneralizedCorrelation(
+    gpuGeneralizedCorrelation = netcalc.gpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -29,7 +29,7 @@ def test_GeneralizedCorrelation_2X1D_1000n4k_GpuCpu():
         xd=2,
         d=1,
     )
-    cpuGeneralizedCorrelation = netsci.cpuGeneralizedCorrelation(
+    cpuGeneralizedCorrelation = netcalc.cpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -58,7 +58,7 @@ def test_GeneralizedCorrelation_2X1D_2000n4k_GpuCpu():
             0, i,
         )
         x += float(np.pi / n)
-    gpuGeneralizedCorrelation = netsci.gpuGeneralizedCorrelation(
+    gpuGeneralizedCorrelation = netcalc.gpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -66,7 +66,7 @@ def test_GeneralizedCorrelation_2X1D_2000n4k_GpuCpu():
         xd=2,
         d=1,
     )
-    cpuGeneralizedCorrelation = netsci.cpuGeneralizedCorrelation(
+    cpuGeneralizedCorrelation = netcalc.cpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -103,7 +103,7 @@ def test_GeneralizedCorrelation_2X2D_1000n4k_GpuCpu():
             1, i,
         )
         x += float(np.pi / n)
-    gpuGeneralizedCorrelation = netsci.gpuGeneralizedCorrelation(
+    gpuGeneralizedCorrelation = netcalc.gpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -111,7 +111,7 @@ def test_GeneralizedCorrelation_2X2D_1000n4k_GpuCpu():
         xd=2,
         d=2,
     )
-    cpuGeneralizedCorrelation = netsci.cpuGeneralizedCorrelation(
+    cpuGeneralizedCorrelation = netcalc.cpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -148,7 +148,7 @@ def test_GeneralizedCorrelation_2X2D_2000n4k_GpuCpu():
             1, i,
         )
         x += float(np.pi / n)
-    gpuGeneralizedCorrelation = netsci.gpuGeneralizedCorrelation(
+    gpuGeneralizedCorrelation = netcalc.gpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -156,7 +156,7 @@ def test_GeneralizedCorrelation_2X2D_2000n4k_GpuCpu():
         xd=2,
         d=2,
     )
-    cpuGeneralizedCorrelation = netsci.cpuGeneralizedCorrelation(
+    cpuGeneralizedCorrelation = netcalc.cpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -201,7 +201,7 @@ def test_GeneralizedCorrelation_2X3D_2000n4k_GpuCpu():
             2, i,
         )
         x += float(np.pi / n)
-    gpuGeneralizedCorrelation = netsci.gpuGeneralizedCorrelation(
+    gpuGeneralizedCorrelation = netcalc.gpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -209,7 +209,7 @@ def test_GeneralizedCorrelation_2X3D_2000n4k_GpuCpu():
         xd=2,
         d=3,
     )
-    cpuGeneralizedCorrelation = netsci.cpuGeneralizedCorrelation(
+    cpuGeneralizedCorrelation = netcalc.cpuGeneralizedCorrelation(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -241,7 +241,7 @@ def test_GeneralizedCorrelation_UsedCpuPlatform():
             1, i,
         )
         x += float(np.pi / n)
-    assert netsci.generalizedCorrelation(
+    assert netcalc.generalizedCorrelation(
         X=X,
         R=R,
         ab=ab,
@@ -274,7 +274,7 @@ def test_GeneralizedCorrelation_UsedGpuPlatform():
             1, i,
         )
         x += float(np.pi / n)
-    assert netsci.generalizedCorrelation(
+    assert netcalc.generalizedCorrelation(
         X=X,
         R=R,
         ab=ab,

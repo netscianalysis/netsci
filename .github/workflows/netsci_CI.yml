@@ -1,4 +1,4 @@
-name: netsci
+name: netcalc
 on: [push]
 jobs:
   run:
@@ -16,7 +16,7 @@ jobs:
           use-only-tar-bz2: true  # IMPORTANT: This needs to be set for caching to work properly!
           auto-update-conda: true
           auto-activate-base: true
-      - name: Install netsci dependencies
+      - name: Install netcalc dependencies
         run: |
             conda install -c conda-forge swig boost numpy cmake pytest
       - name: build
