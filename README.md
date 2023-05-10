@@ -1,6 +1,15 @@
-# NetSci
-## A Library for High Performance Scientific Network Analysis Computation
-## Installation
+
+<h1 align="center" style="margin-bottom: 0">
+<b>NetSci</b>
+</h1>
+<h2 align="center" style="margin-top: 0">
+<b>High Performance Scientific Network Analysis Computation</b>
+</h2>
+
+<h1 align="center">
+<b>Installation</b>
+</h1>
+
 ``` Shell
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 ```
@@ -59,7 +68,13 @@ cd ../../netsci/python
 pytest
 ```
 
-## A Brief Overview of CuArray: NetSci's CUDA-Compatible Array Library
+<h1 align="center">
+<b>Usage</b>
+</h1>
+
+<h2 align="center">
+<b>CuArray: NetSci's CUDA-Compatible Array Library</b>
+</h2>
 
 ``` python
 import numpy as np
@@ -303,15 +318,66 @@ for i in range(n):
     print(f'{argsort_idx}: {val:.5f}')
 ```
 
+<h1 align="center">
+NetChem: NetSci's Molecular Dynamics Trajectory Graph Library
+</h1>
+
+``` python
+import os
+import tarfile
+
+from netchem import Graph
+```
+
+``` python
+tutorial_files= tarfile.open(f'{os.getcwd()}/pyro.tar.gz')
+tutorial_files.extractall(os.getcwd())
+tutorial_files.close()
+```
+
+``` python
+trajectory_file = f'{os.getcwd()}/pyro.dcd'
+topology_file = f'{os.getcwd()}/pyro.pdb'
+```
+
+``` python
+first_frame = 1
+last_frame = 1000
+```
+
+``` python
+graph = Graph()
+graph.init(
+    trajectoryFile=trajectory_file,
+    topologyFile=topology_file,
+    firstFrame=first_frame,
+    lastFrame=last_frame,
+)
+```
+
+``` python
+num_nodes = graph.numNodes()
+print(num_nodes)
+```
+
+``` python
+num_frames = graph.numFrames()
+print(num_frames)
+```
+
+``` python
+for node in graph:
+    print(node)
+```
+
 ``` python
 ```
 
 
-## Analyzing a Pyrophosphatase Molecular Dynamics Simulation with NetSci
+<h1 align="center">
+Analyzing a Pyrophosphatase Molecular Dynamics Simulation with NetSci
+</h1>
 
-```
-cd tutorial
-```
 ``` python
 import os
 import tarfile
