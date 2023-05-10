@@ -76,8 +76,6 @@ and untar **tutorial.tar.gz**.
 ``` Shell
 tar -xvzf tutorial.tar.gz
 ```
-Make sure that the **tutorial** directory is the working directory 
-when running the tutorial.
 
 <h2 align="center">
 <b>CuArray: NetSci's CUDA-Compatible Array Library</b>
