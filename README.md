@@ -64,8 +64,25 @@ pytest
 </h1>
 
 <h2 align="center">
+<b>Untar Tutorial Files</b>
+</h2>
+If you plan to run the tutorial, you will need to untar the tutorial files tarball. 
+Navigate to the netsci root directory and enter the tutorial directory.
+
+``` Shell
+cd tutorial
+```
+and untar **tutorial.tar.gz**.
+``` Shell
+tar -xvzf tutorial.tar.gz
+```
+Make sure that the **tutorial** directory is the working directory 
+when running the tutorial.
+
+<h2 align="center">
 <b>CuArray: NetSci's CUDA-Compatible Array Library</b>
 </h2>
+
 
 ``` python
 import numpy as np
@@ -315,15 +332,8 @@ NetChem: NetSci's Molecular Dynamics Trajectory Graph Library
 
 ``` python
 import os
-import tarfile
 
 from netchem import Graph
-```
-
-``` python
-tutorial_files= tarfile.open(f'{os.getcwd()}/pyro.tar.gz')
-tutorial_files.extractall(os.getcwd())
-tutorial_files.close()
 ```
 
 ``` python
@@ -391,7 +401,6 @@ Analyzing a Pyrophosphatase Molecular Dynamics Simulation with NetSci
 
 ``` python
 import os
-import tarfile
 
 import plotly.graph_objects as go
 import numpy as np
@@ -399,12 +408,6 @@ import numpy as np
 import cuarray
 import netchem
 import netcalc 
-```
-
-``` python
-tutorial_files= tarfile.open(f'{os.getcwd()}/pyro.tar.gz')
-tutorial_files.extractall(os.getcwd())
-tutorial_files.close()
 ```
 
 ``` python
