@@ -75,7 +75,7 @@ def print_CuArray(
         row_repr = ''
         for j in range(cuArray.n()):
             val = cuArray.get(i, j)
-            row_repr += f'{val:.2f} '
+            row_repr += f'{val:.5f} '
         print(row_repr)
 ```
 
@@ -88,7 +88,7 @@ def print_numpy_array(
         row_repr = ''
         for j in range(n):
             val = numpy_array[i, j]
-            row_repr += f'{val:.2f} '
+            row_repr += f'{val:.5f} '
         print(row_repr)
 ```
 
@@ -106,6 +106,21 @@ for i in range(m):
 
 ``` python
 print_CuArray(a)
+```
+
+``` python
+m, n = a.m(), a.n()
+print(f'm: {m}, n: {n}')
+```
+
+``` python
+a_bytes = a.bytes()
+print(f'bytes: {a_bytes}')
+```
+
+``` python
+a_size = a.size()
+print(f'size: {a_size}')
 ```
 
 ``` python
@@ -192,6 +207,26 @@ print_numpy_array(np_a_row0_1D)
 ```
 
 ``` python
+sorted_a_row0 = a.sort(0)
+```
+
+``` python
+print_CuArray(a_row0)
+print_CuArray(sorted_a_row0)
+```
+
+``` python
+argsort_a_row0 = a.argsort(0)
+```
+
+``` python
+for i in range(n):
+    argsort_idx = argsort_a_row0.get(0, i)
+    val = a_row0.get(0, argsort_idx)
+    print(f'{argsort_idx}: {val:.5f}')
+```
+
+``` python
 ```
 
 
@@ -221,8 +256,8 @@ tutorial_files.close()
 ``` python
 trajectory_file = f'{os.getcwd()}/pyro.dcd'
 topology_file = f'{os.getcwd()}/pyro.pdb'
-first_frame = 0
-last_frame = 999
+first_frame = 1
+last_frame = 1000
 
 graph = netchem.Graph()
 graph.init(
