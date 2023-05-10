@@ -1,14 +1,6 @@
-
-<h1 align="center" style="margin-bottom: 0">
-<b>NetSci</b>
-</h1>
-<h2 align="center" style="margin-top: 0">
-<b>High Performance Scientific Network Analysis Computation</b>
-</h2>
-
-<h1 align="center">
-<b>Installation</b>
-</h1>
+# NetSci
+## A Library for High Performance Scientific Network Analysis Computation
+## Installation
 
 ``` Shell
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
