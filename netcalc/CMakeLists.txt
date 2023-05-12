@@ -21,11 +21,14 @@ set_source_files_properties(
 )
 
 add_library(netcalc SHARED
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/gpu_mutual_information.cu
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/gpu_generalized_correlation.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/cpu_mutual_information.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/cpu_generalized_correlation.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/mutual_information_gpu.cu
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/generalized_correlation_gpu.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/mutual_information_cpu.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/generalized_correlation_cpu.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mutual_information.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hedetniemi_cpu.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hedetniemi.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hedetniemi_gpu.cu
         ${CMAKE_CURRENT_SOURCE_DIR}/src/generalized_correlation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/psi.cpp
         )

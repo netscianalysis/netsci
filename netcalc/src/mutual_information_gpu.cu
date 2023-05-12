@@ -479,9 +479,9 @@ __global__ void mutualInformation2X3D_kernel(
                                         abs(r_Xai[1] -
                                             r_Xa[registerIndex +
                                                  XRegisterSize]),
-                                        r_Xai[2] - r_Xa[registerIndex +
+                                        abs(r_Xai[2] - r_Xa[registerIndex +
                                                         2 *
-                                                        XRegisterSize]
+                                                        XRegisterSize])
                                 )
 
                         ),

@@ -24,13 +24,13 @@ int mutualInformation(
         std::cout << a << " " << b << std::endl;
         auto Xa = new CuArray<float>;
         auto Xb = new CuArray<float>;
-        Xa->fromCuArrayShallowCopy(
+        Xa->fromCuArrayDeepCopy(
                 X,
                 a,
                 a,
                 1, X->n()
         );
-        Xb->fromCuArrayShallowCopy(
+        Xb->fromCuArrayDeepCopy(
                 X,
                 b,
                 b,

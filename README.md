@@ -80,7 +80,7 @@ tar -xvzf tutorial.tar.gz
 <h2 align="center">
 <b>CuArray: NetSci's CUDA-Compatible Array Library</b>
 </h2>
-
+CuArray is the core mathematical data structure used by all NetSci libraries. 
 
 ``` python
 import numpy as np
