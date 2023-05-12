@@ -6,13 +6,43 @@
 #include "hedetniemi.h"
 #include <limits>
 
-void hedetniemi(CuArray<float> *X, CuArray<float> *H, CuArray<int> *paths, int platform) {
-    paths->init(X->m(), X->n() * 10);
-    for (int i = 0; i < X->m(); i++) {
-        for (int j = 0; j < 10 * X->n(); j++) {
+void hedetniemiShortestPaths(
+        CuArray<float> *A,
+        CuArray<float> *H, CuArray<int> *paths,
+        int maxPathLength, int platform
+) {
+    paths->init(A->m(), A->n() * maxPathLength);
+    for (int i = 0; i < A->m(); i++) {
+        for (int j = 0; j < maxPathLength * A->n(); j++) {
             paths->set(-1, i, j);
         }
     }
-    H->init(X->m(), X->n());
-    gpuHedetniemi(X, H, paths);
+    H->init(A->m(), A->n());
+    if (platform == 0) {
+        hedetniemiShortestPathsGpu(A, H, paths, maxPathLength);
+    }
+}
+
+void hedetniemiShortestPathLengths(
+        CuArray<float> *A,
+        CuArray<float> *H,
+        int maxPathLength, int platform
+) {
+    H->init(A->m(), A->n());
+    if (platform == 0) {
+        hedetniemiShortestPathLengthsGpu(A, H, maxPathLength);
+    }
+}
+
+void correlationToAdjacency(
+        CuArray<float> *A,
+        CuArray<float> *C,
+        int n,
+        int platform
+) {
+    A->init(n, n);
+    if (platform == 0) {
+        correlationToAdjacencyGpu(A, C, n);
+    }
+
 }

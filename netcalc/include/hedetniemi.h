@@ -7,10 +7,47 @@
 
 #include "cuarray.h"
 
-void hedetniemi(CuArray<float> *X, CuArray<float> *H, CuArray<int>* paths, int platform);
+void hedetniemiShortestPaths(
+        CuArray<float> *A,
+        CuArray<float> *H,
+        CuArray<int> *paths,
+        int maxPathLength,
+        int platform
+);
 
-void gpuHedetniemi(CuArray<float> *X, CuArray<float> *H, CuArray<int>* paths);
+void hedetniemiShortestPathLengths(
+        CuArray<float> *A,
+        CuArray<float> *H,
+        int maxPathLength,
+        int platform
+);
 
+void hedetniemiShortestPathsGpu(
+        CuArray<float> *A,
+        CuArray<float> *H,
+        CuArray<int> *paths,
+        int maxPathLength
+);
+
+void hedetniemiShortestPathLengthsGpu(
+        CuArray<float> *A,
+        CuArray<float> *H,
+        int maxPathLength
+);
+
+void correlationToAdjacency(
+        CuArray<float> *A,
+        CuArray<float> *C,
+        int n,
+        int platform
+);
+
+
+void correlationToAdjacencyGpu(
+        CuArray<float> *A,
+        CuArray<float> *C,
+        int n
+);
 
 
 #endif //NETCALC_HEDETNIEMI_H

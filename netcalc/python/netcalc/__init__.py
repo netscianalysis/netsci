@@ -4,7 +4,9 @@ from .netcalc import cpuMutualInformation
 from .netcalc import generalizedCorrelation
 from .netcalc import gpuGeneralizedCorrelation
 from .netcalc import cpuGeneralizedCorrelation
-from .netcalc import hedetniemi
+from .netcalc import hedetniemiShortestPaths
+from .netcalc import hedetniemiShortestPathLengths
+from .netcalc import correlationToAdjacency
 
 
 
