@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 3.21)
-project(netcalc LANGUAGES CXX CUDA)
+project(netsci LANGUAGES CXX CUDA)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_BUILD_TYPE Release)
 
 #Absolute path to conda environment
 set(CONDA_DIR "" CACHE PATH "Path to conda environment")
 
-#Create a cuda architecture cache variable
-set(CUDA_ARCHITECTURE 52 CACHE STRING "CUDA architecture to compile for")
+set(CMAKE_CUDA_ARCHITECTURES 52)
 
 #CMake build type defaults to Release
 set(CMAKE_BUILD_TYPE Release)
@@ -22,7 +21,8 @@ FetchContent_MakeAvailable(googletest)
 
 #Make sure Boost is installed
 find_package(Boost REQUIRED COMPONENTS filesystem system)
-
+#Print boost include directories
+message(${Boost_INCLUDE_DIRS})
 #Make sure CUDA is installed
 find_package(CUDA REQUIRED)
 
