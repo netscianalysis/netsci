@@ -16,8 +16,8 @@ public:
     ~Graph();
 
     void init(
-            const std::string& trajectoryFile,
-            const std::string& topologyFile,
+            const std::string &trajectoryFile,
+            const std::string &topologyFile,
             int firstFrame,
             int lastFrame
     );
@@ -38,8 +38,15 @@ public:
 
     void parseDcd(const std::string &nodeCoordinates, int firstFrame, int lastFrame);
 
+    void save(const std::string &jsonFile);
+
+    void load(const std::string &jsonFile);
+
+    void nodeCoordinates(const std::string &nodeCoordinatesFile);
+
 private:
-    std::vector<Node*> nodeAtomIndexVector_;
+    friend nlohmann::adl_serializer<Graph *>;
+    std::vector<Node *> nodeAtomIndexVector_;
     std::vector<Node *> nodes_;
     int numNodes_;
     int numFrames_;

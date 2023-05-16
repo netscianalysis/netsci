@@ -9,6 +9,7 @@
 #include "atom.h"
 #include <vector>
 #include <set>
+#include "nlohmann/json.hpp"
 
 
 class Atoms {
@@ -26,6 +27,7 @@ public:
     std::vector<Atom*> &atoms();
 
 private:
+    friend nlohmann::adl_serializer<Atoms*>;
     std::vector<Atom*> atoms_;
     std::set<std::string> uniqueTags_;
 };

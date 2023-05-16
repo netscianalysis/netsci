@@ -340,3 +340,7 @@ float Atom::z(
     return coordinates->get(0, numFrames * numAtoms * 2 + this->_index * numFrames + frame);
 }
 
+void Atom::load(const std::string &jsonFile) {
+
+}
+

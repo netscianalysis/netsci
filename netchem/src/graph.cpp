@@ -7,8 +7,14 @@
 #include "graph.h"
 #include "utils.h"
 #include "dcd/dcd.h"
+#include "serializer.h"
 
-Graph::Graph() = default;
+Graph::Graph() {
+    this->numNodes_ = 0;
+    this->numFrames_ = 0;
+    this->nodeCoordinates_ = new CuArray<float>();
+    this->atoms_ = new Atoms;
+};
 
 Graph::~Graph() {
     for (auto node: this->nodes_) {
@@ -137,7 +143,7 @@ void Graph::parseDcd(const std::string &fname, int firstFrame, int lastFrame) {
         );
         nodeCoordinates->set(nodeZ, nodeIndex, frame + 2 * numFrames);
         if (frame == numFrames - 1 && nodeAtomIndexVector.at(atomIndex)->atoms_.back()->index() == atomIndex) {
-            for (auto frameIndex : boost::irange(numFrames)) {
+            for (auto frameIndex: boost::irange(numFrames)) {
                 nodeX = nodeCoordinates->get(
                         nodeIndex,
                         frameIndex
@@ -241,4 +247,38 @@ void Graph::parsePdb(
             atomIndex++;
         }
     }
+}
+
+void Graph::save(const std::string &jsonFile) {
+    nlohmann::json j;
+    j["numNodes_"] = this->numNodes_;
+    j["numFrames_"] = this->numFrames_;
+    j["nodes_"] = this->nodes_;
+    j["nodeAtomIndexVector_"] = this->nodeAtomIndexVector_;
+    j["atoms_"] = this->atoms_;
+    std::ofstream o(jsonFile);
+    o << std::setw(4) << j << std::endl;
+}
+
+void Graph::load(const std::string &jsonFile) {
+    nlohmann::json j;
+    std::ifstream i(jsonFile);
+    i >> j;
+    i.close();
+    this->numFrames_ = j.at("numFrames_").get<int>();
+    this->numNodes_ = j.at("numNodes_").get<int>();
+    this->nodes_ = j.at("nodes_").get<std::vector<Node *>>();
+    this->nodeAtomIndexVector_ = j.at("nodeAtomIndexVector_").get<std::vector<Node *>>();
+    this->atoms_ = j.at("atoms_").get<Atoms *>();
+}
+
+void Graph::nodeCoordinates(
+        const std::string& nodeCoordinatesFile
+) {
+    delete this->nodeCoordinates_;
+    this->nodeCoordinates_ = new CuArray<float>(
+    );
+    this->nodeCoordinates_->load(
+            nodeCoordinatesFile
+    );
 }

@@ -21,6 +21,7 @@ set_source_files_properties(
 )
 
 add_library(netchem SHARED
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serializer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dcd/dcd.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/atom.cpp

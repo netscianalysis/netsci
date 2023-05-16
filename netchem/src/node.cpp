@@ -23,8 +23,10 @@
 #include <utility>
 #include <boost/range/irange.hpp>
 #include <iostream>
+#include <fstream>
 #include "node.h"
 #include "utils.h"
+#include "serializer.h"
 
 Node::Node() = default;
 
@@ -119,25 +121,7 @@ unsigned int Node::hash() const {
     return this->_hash;
 }
 
-std::string Node::serializationDirectory() {
-    return this->_serializationDirectory;
-}
-
-void Node::serializationDirectory(
-        std::string serializationDirectory
-) {
-    this->_serializationDirectory = std::move(serializationDirectory);
-
-}
-
-void Node::calculationName(std::string calculationName) {
-    this->_calculationName = std::move(calculationName);
-}
-
-std::string Node::calculationName() {
-    return this->_calculationName;
-}
-
 std::vector<Atom *> Node::atoms() const {
     return this->atoms_;
 }
+

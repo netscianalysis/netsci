@@ -7,6 +7,8 @@
 
 #include <string>
 #include "cuarray.h"
+#include "nlohmann/json.hpp"
+
 
 class Atom {
 public:
@@ -67,7 +69,14 @@ public:
             int numFrames
     ) const;
 
+    void load(const std::string& jsonFile);
+
 private:
+
+    friend nlohmann::adl_serializer<Atom>;
+
+    friend nlohmann::adl_serializer<Atom *>;
+
     int _index;
 
     std::string _name;

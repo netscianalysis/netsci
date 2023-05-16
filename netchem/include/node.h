@@ -34,9 +34,7 @@ public:
 
     Node(unsigned int numFrames, unsigned int index_);
 
-
     void addAtom(Atom *atom, CuArray<float> *coordinates, CuArray<float> *nodeCoordinates);
-
 
     std::string tag();
 
@@ -46,20 +44,14 @@ public:
 
     float totalMass() const;
 
-    std::string serializationDirectory();
-
-    void serializationDirectory(std::string serializationDirectory);
-
-    std::string calculationName();
-
-    void calculationName(std::string calculationName);
-
     unsigned int hash() const;
 
-    std::vector<Atom*> atoms() const;
-
+    std::vector<Atom *> atoms() const;
 
 private:
+
+    friend nlohmann::adl_serializer<Node *>;
+
     friend class Graph;
 
     unsigned int _numAtoms;
@@ -75,10 +67,6 @@ private:
     std::vector<Atom *> atoms_;
 
     unsigned int _hash = 0;
-
-    std::string _serializationDirectory;
-
-    std::string _calculationName;
 
     unsigned int _numFrames;
 };

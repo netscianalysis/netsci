@@ -44,6 +44,7 @@ set(
         ${CMAKE_SOURCE_DIR}/cnpy/include
         ${CMAKE_SOURCE_DIR}/netcalc/include
         ${CMAKE_SOURCE_DIR}/netchem/include
+        ${CMAKE_SOURCE_DIR}/netchem/include/json/include
         ${CMAKE_SOURCE_DIR}/netchem/include
         ${CMAKE_SOURCE_DIR}/cuarray/include
         "${CUDA_INCLUDE_DIRS}"
