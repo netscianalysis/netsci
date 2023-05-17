@@ -21,16 +21,15 @@ int mutualInformation(
     for (int i = 0; i < ab->m(); i++) {
         int a = ab->get(i, 0);
         int b = ab->get(i, 1);
-        std::cout << a << " " << b << std::endl;
         auto Xa = new CuArray<float>;
         auto Xb = new CuArray<float>;
-        Xa->fromCuArrayDeepCopy(
+        Xa->fromCuArrayShallowCopy(
                 X,
                 a,
                 a,
                 1, X->n()
         );
-        Xb->fromCuArrayDeepCopy(
+        Xb->fromCuArrayShallowCopy(
                 X,
                 b,
                 b,
@@ -38,14 +37,14 @@ int mutualInformation(
         );
         if (platform == 0)
             I->set(
-                    gpuMutualInformation(
+                    mutualInformationGpu(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i
             );
         else if (platform == 1)
             I->set(
-                    cpuMutualInformation(
+                    mutualInformationCpu(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i

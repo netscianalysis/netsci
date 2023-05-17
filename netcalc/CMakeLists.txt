@@ -22,6 +22,8 @@ set_source_files_properties(
 
 add_library(netcalc SHARED
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mutual_information_gpu.cu
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/math_utils_gpu.cu
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/math_utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/generalized_correlation_gpu.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mutual_information_cpu.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/generalized_correlation_cpu.cpp

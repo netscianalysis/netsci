@@ -12,7 +12,7 @@ def test_MutualInformation2X1D_1000n4k09covGaussian_GpuCpu():
     Xb = cuarray.FloatCuArray()
     Xa.fromNumpy1D(X[:n])
     Xb.fromNumpy1D(X[n:])
-    gpuMutualInformation = netcalc.gpuMutualInformation(
+    mutualInformationGpu = netcalc.mutualInformationGpu(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -20,7 +20,7 @@ def test_MutualInformation2X1D_1000n4k09covGaussian_GpuCpu():
         xd=2,
         d=1,
     )
-    cpuMutualInformation = netcalc.cpuMutualInformation(
+    mutualInformationCpu = netcalc.mutualInformationCpu(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -28,7 +28,7 @@ def test_MutualInformation2X1D_1000n4k09covGaussian_GpuCpu():
         xd=2,
         d=1,
     )
-    assert gpuMutualInformation == cpuMutualInformation == 0.8449974060058594
+    assert mutualInformationGpu == mutualInformationCpu == 0.8449974060058594
 
 
 def test_MutualInformation2X1D_2000n4k09covGaussian_GpuCpu():
@@ -39,7 +39,7 @@ def test_MutualInformation2X1D_2000n4k09covGaussian_GpuCpu():
     Xb = cuarray.FloatCuArray()
     Xa.fromNumpy1D(X[:n])
     Xb.fromNumpy1D(X[n:])
-    gpuMutualInformation = netcalc.gpuMutualInformation(
+    mutualInformationGpu = netcalc.mutualInformationGpu(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -47,7 +47,7 @@ def test_MutualInformation2X1D_2000n4k09covGaussian_GpuCpu():
         xd=2,
         d=1,
     )
-    cpuMutualInformation = netcalc.cpuMutualInformation(
+    mutualInformationCpu = netcalc.mutualInformationCpu(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -55,7 +55,7 @@ def test_MutualInformation2X1D_2000n4k09covGaussian_GpuCpu():
         xd=2,
         d=1,
     )
-    assert gpuMutualInformation == cpuMutualInformation == 0.8485465049743652
+    assert mutualInformationGpu == mutualInformationCpu == 0.8485465049743652
 
 
 def test_MutualInformation2X2D_1000n4k_GpuCpu():
@@ -84,7 +84,7 @@ def test_MutualInformation2X2D_1000n4k_GpuCpu():
             1, i,
         )
         x += float(np.pi / n)
-    gpuMutualInformation = netcalc.gpuMutualInformation(
+    mutualInformationGpu = netcalc.mutualInformationGpu(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -92,7 +92,7 @@ def test_MutualInformation2X2D_1000n4k_GpuCpu():
         xd=2,
         d=2,
     )
-    cpuMutualInformation = netcalc.cpuMutualInformation(
+    mutualInformationCpu = netcalc.mutualInformationCpu(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -100,7 +100,7 @@ def test_MutualInformation2X2D_1000n4k_GpuCpu():
         xd=2,
         d=2,
     )
-    assert gpuMutualInformation == cpuMutualInformation
+    assert mutualInformationGpu == mutualInformationCpu
 
 
 def test_MutualInformation2X2D_2000n4k_GpuCpu():
@@ -129,7 +129,7 @@ def test_MutualInformation2X2D_2000n4k_GpuCpu():
             1, i,
         )
         x += float(np.pi / n)
-    gpuMutualInformation = netcalc.gpuMutualInformation(
+    mutualInformationGpu = netcalc.mutualInformationGpu(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -137,7 +137,7 @@ def test_MutualInformation2X2D_2000n4k_GpuCpu():
         xd=2,
         d=2,
     )
-    cpuMutualInformation = netcalc.cpuMutualInformation(
+    mutualInformationCpu = netcalc.mutualInformationCpu(
         Xa=Xa,
         Xb=Xb,
         k=k,
@@ -145,4 +145,4 @@ def test_MutualInformation2X2D_2000n4k_GpuCpu():
         xd=2,
         d=2,
     )
-    assert gpuMutualInformation == cpuMutualInformation
+    assert mutualInformationGpu == mutualInformationCpu

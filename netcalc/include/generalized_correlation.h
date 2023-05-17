@@ -17,7 +17,7 @@ int generalizedCorrelation(
         int platform
 );
 
-float gpuGeneralizedCorrelation(
+float generalizedCorrelationGpu(
         CuArray<float> *Xa,
         CuArray<float> *Xb,
         int k,
@@ -26,7 +26,7 @@ float gpuGeneralizedCorrelation(
         int d
 );
 
-float cpuGeneralizedCorrelation(
+float generalizedCorrelationCpu(
         CuArray<float> *Xa,
         CuArray<float> *Xb,
         int k,

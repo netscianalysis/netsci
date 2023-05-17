@@ -19,7 +19,7 @@ int mutualInformation(
         int platform
 );
 
-float gpuMutualInformation(
+float mutualInformationGpu(
         CuArray<float> *Xa,
         CuArray<float> *Xb,
         int k,
@@ -29,7 +29,7 @@ float gpuMutualInformation(
 );
 
 
-float cpuMutualInformation(
+float mutualInformationCpu(
         CuArray<float> *Xa,
         CuArray<float> *Xb,
         int k,

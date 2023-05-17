@@ -38,14 +38,14 @@ int generalizedCorrelation(
         );
         if (platform == 0)
             R->set(
-                    gpuGeneralizedCorrelation(
+                    generalizedCorrelationGpu(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i
             );
         else if (platform == 1)
             R->set(
-                    cpuGeneralizedCorrelation(
+                    generalizedCorrelationCpu(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i
