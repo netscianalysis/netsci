@@ -3,6 +3,17 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include <curand_kernel.h>
+
+__global__ void initCurandKernel(
+        curandState *state,
+        int n
+) {
+    unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
+    curand_init(1234, i, 0, &state[i]);
+}
+
+
 
 __device__ void warpReduce(
         volatile int *s_a,

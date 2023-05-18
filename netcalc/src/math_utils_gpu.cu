@@ -1,7 +1,10 @@
 //
 // Created by astokely on 5/16/23.
 //
+#include <curand_kernel.h>
 #include "math_utils.h"
+
+
 
 __device__ void mathUtilsWarpReduce(
         volatile float *s_a,
