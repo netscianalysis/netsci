@@ -7,7 +7,5 @@ dependencies:
   - conda-forge::numpy
   - conda-forge::doxygen
   - conda-forge::boost
-  - conda-forge::jupyter-notebook
   - conda-forge::swig
   - conda-forge::pytest
-  - conda-forge::plotly
