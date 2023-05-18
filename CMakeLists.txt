@@ -6,7 +6,7 @@ set(CMAKE_BUILD_TYPE Release)
 #Absolute path to conda environment
 set(CONDA_DIR "" CACHE PATH "Path to conda environment")
 
-set(CMAKE_CUDA_ARCHITECTURES 52)
+set(CUDA_ARCHITECTURE "52" CACHE STRING "CUDA architecture to compile for. Set this equal to a valid CUDA architecture less than or equal to 10X the compute capability of your GPU.")
 
 #CMake build type defaults to Release
 set(CMAKE_BUILD_TYPE Release)
