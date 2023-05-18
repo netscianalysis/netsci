@@ -1,4 +1,4 @@
-name: netcalc
+name: netsci
 channels:
   - conda-forge
 dependencies:
