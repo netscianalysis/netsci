@@ -1,31 +1,28 @@
 //
 // Created by astokely on 5/10/23.
 //
-#include <iostream>
-#include <vector>
 #include "hedetniemi.h"
-#include <limits>
 
-int hedetniemiShortestPaths(
+void netcalc::hedetniemiShortestPaths(
         CuArray<float> *A,
         CuArray<float> *H,
         CuArray<int> *paths,
+        float tolerance,
         int platform
 ) {
-    int maxPathLength = 0;
     H->init(A->m(),
             A->n());
     if (platform == 0) {
-        maxPathLength = hedetniemiShortestPathsGpu(A,
-                                                   H,
-                                                   paths
+        netcalc::hedetniemiShortestPathsGpu(A,
+                                            H,
+                                            paths,
+                                            tolerance
         );
 
     }
-    return maxPathLength;
 }
 
-void correlationToAdjacency(
+void netcalc::correlationToAdjacency(
         CuArray<float> *A,
         CuArray<float> *C,
         int n,
@@ -34,9 +31,13 @@ void correlationToAdjacency(
     A->init(n,
             n);
     if (platform == 0) {
-        correlationToAdjacencyGpu(A,
-                                  C,
-                                  n);
+        netcalc::correlationToAdjacencyGpu(A,
+                                           C,
+                                           n);
     }
+}
 
+int netcalc::longestShortestPathNodeCount(CuArray<int> *paths) {
+    int numNodes = paths->m();
+    return paths->n() / numNodes;
 }

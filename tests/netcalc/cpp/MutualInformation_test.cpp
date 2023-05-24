@@ -29,7 +29,7 @@ TEST(
         (*Xa)[i] = X[i];
         (*Xb)[i] = X[i + n];
     }
-    float mutualInformationCpu_ = mutualInformationCpu(
+    float mutualInformationCpu_ = netcalc::mutualInformationCpu(
             Xa,
             Xb,
             k,
@@ -37,7 +37,7 @@ TEST(
             2,
             1
     );
-    float mutualInformationGpu_ = mutualInformationGpu(
+    float mutualInformationGpu_ = netcalc::mutualInformationGpu(
             Xa,
             Xb,
             k,
@@ -74,7 +74,7 @@ TEST(
         (*Xa)[i] = X[i];
         (*Xb)[i] = X[i + n];
     }
-    float cpuMutualInformation_ = mutualInformationCpu(
+    float cpuMutualInformation_ = netcalc::mutualInformationCpu(
             Xa,
             Xb,
             k,
@@ -82,7 +82,7 @@ TEST(
             2,
             1
     );
-    float gpuMutualInformation_ = mutualInformationGpu(
+    float gpuMutualInformation_ = netcalc::mutualInformationGpu(
             Xa,
             Xb,
             k,
@@ -124,7 +124,7 @@ TEST(
         (*Xb)[i] = domain[i];
         (*Xb)[i + n] = 2 * domain[i];
     }
-    float cpuMutualInformation_ = mutualInformationCpu(
+    float cpuMutualInformation_ = netcalc::mutualInformationCpu(
             Xa,
             Xb,
             k,
@@ -132,7 +132,7 @@ TEST(
             2,
             2
     );
-    float gpuMutualInformation_ = mutualInformationGpu(
+    float gpuMutualInformation_ = netcalc::mutualInformationGpu(
             Xa,
             Xb,
             k,
@@ -172,7 +172,7 @@ TEST(
         (*Xb)[i] = domain[i];
         (*Xb)[i + n] = 2 * domain[i];
     }
-    float cpuMutualInformation_ = mutualInformationCpu(
+    float cpuMutualInformation_ = netcalc::mutualInformationCpu(
             Xa,
             Xb,
             k,
@@ -180,7 +180,7 @@ TEST(
             2,
             2
     );
-    float gpuMutualInformation_ = mutualInformationGpu(
+    float gpuMutualInformation_ = netcalc::mutualInformationGpu(
             Xa,
             Xb,
             k,
@@ -224,7 +224,7 @@ TEST(
         (*Xb)[i + n] = 2 * domain[i];
         (*Xb)[i + 2 * n] = (float)std::log(domain[i]*2.0);
     }
-    float cpuMutualInformation_ = mutualInformationCpu(
+    float cpuMutualInformation_ = netcalc::mutualInformationCpu(
             Xa,
             Xb,
             k,
@@ -232,7 +232,7 @@ TEST(
             2,
             3
     );
-    float gpuMutualInformation_ = mutualInformationGpu(
+    float gpuMutualInformation_ = netcalc::mutualInformationGpu(
             Xa,
             Xb,
             k,
@@ -277,7 +277,7 @@ TEST(
         (*Xb)[i + n] = 2 * domain[i];
         (*Xb)[i + 2 * n] = (float) std::log(domain[i] * 2.0);
     }
-    float cpuMutualInformation_ = mutualInformationCpu(
+    float cpuMutualInformation_ = netcalc::mutualInformationCpu(
             Xa,
             Xb,
             k,
@@ -285,7 +285,7 @@ TEST(
             2,
             3
     );
-    float gpuMutualInformation_ = mutualInformationGpu(
+    float gpuMutualInformation_ = netcalc::mutualInformationGpu(
             Xa,
             Xb,
             k,
@@ -351,7 +351,7 @@ TEST(
             1, 0, 1
     );
     ASSERT_EQ(
-            mutualInformation(
+            netcalc::mutualInformation(
                     X, R, ab, k, n, 2, 1, 1
             ), 1);
     delete X;
@@ -408,7 +408,7 @@ TEST(
             1, 0, 1
     );
     ASSERT_EQ(
-            mutualInformation(
+            netcalc::mutualInformation(
                     X, R, ab, k, n, 2, 1, 0
             ), 0);
     delete X;

@@ -5,7 +5,7 @@
 #include "mutual_information.h"
 #include <cmath>
 
-float generalizedCorrelationGpu(
+float netcalc::generalizedCorrelationGpu(
         CuArray<float> *Xa,
         CuArray<float> *Xb,
         int k,
@@ -14,7 +14,7 @@ float generalizedCorrelationGpu(
         int d
 ) {
     float mutualInformation =
-            mutualInformationGpu(
+            netcalc::mutualInformationGpu(
                     Xa,
                     Xb,
                     k,

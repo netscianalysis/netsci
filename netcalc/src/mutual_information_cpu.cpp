@@ -3,7 +3,7 @@
 #include "mutual_information.h"
 #include "psi.h"
 
-float mutualInformationCpu(
+float netcalc::mutualInformationCpu(
         CuArray<float> *Xa,
         CuArray<float> *Xb,
         int k,

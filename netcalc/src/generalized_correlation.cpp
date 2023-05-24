@@ -5,7 +5,7 @@
 #include "mutual_information.h"
 #include "generalized_correlation.h"
 
-int generalizedCorrelation(
+int netcalc::generalizedCorrelation(
         CuArray<float> *X,
         CuArray<float> *R,
         CuArray<int> *ab,
@@ -38,14 +38,14 @@ int generalizedCorrelation(
         );
         if (platform == 0)
             R->set(
-                    generalizedCorrelationGpu(
+                    netcalc::generalizedCorrelationGpu(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i
             );
         else if (platform == 1)
             R->set(
-                    generalizedCorrelationCpu(
+                    netcalc::generalizedCorrelationCpu(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i

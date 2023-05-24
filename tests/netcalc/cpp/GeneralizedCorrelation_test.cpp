@@ -42,7 +42,8 @@ TEST(
         (*Xb)[i] =
                 std::cos(domain[i]);
     }
-    float generalizedCorrelationCpu_ = generalizedCorrelationCpu(
+    float generalizedCorrelationCpu_ =
+            netcalc::generalizedCorrelationCpu(
             Xa,
             Xb,
             k,
@@ -50,7 +51,8 @@ TEST(
             2,
             1
     );
-    float generalizedCorrelationGpu_ = generalizedCorrelationGpu(
+    float generalizedCorrelationGpu_ =
+            netcalc::generalizedCorrelationGpu(
             Xa,
             Xb,
             k,
@@ -91,7 +93,8 @@ TEST(
         (*Xa)[i] = std::sin(domain[i]);
         (*Xb)[i] = std::cos(domain[i]);
     }
-    float cpuGeneralizedCorrelation_ = generalizedCorrelationCpu(
+    float cpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationCpu(
             Xa,
             Xb,
             k,
@@ -99,7 +102,8 @@ TEST(
             2,
             1
     );
-    float gpuGeneralizedCorrelation_ = generalizedCorrelationGpu(
+    float gpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationGpu(
             Xa,
             Xb,
             k,
@@ -148,7 +152,8 @@ TEST(
                 std::cos(domain[i]);
         (*Xb)[i + n] = 2 * domain[i];
     }
-    float cpuGeneralizedCorrelation_ = generalizedCorrelationCpu(
+    float cpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationCpu(
             Xa,
             Xb,
             k,
@@ -156,7 +161,8 @@ TEST(
             2,
             2
     );
-    float gpuGeneralizedCorrelation_ = generalizedCorrelationGpu(
+    float gpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationGpu(
             Xa,
             Xb,
             k,
@@ -199,7 +205,8 @@ TEST(
         (*Xb)[i] = domain[i];
         (*Xb)[i + n] = 2 * domain[i];
     }
-    float cpuGeneralizedCorrelation_ = generalizedCorrelationCpu(
+    float cpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationCpu(
             Xa,
             Xb,
             k,
@@ -207,7 +214,8 @@ TEST(
             2,
             2
     );
-    float gpuGeneralizedCorrelation_ = generalizedCorrelationGpu(
+    float gpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationGpu(
             Xa,
             Xb,
             k,
@@ -251,7 +259,8 @@ TEST(
         (*Xb)[i + n] = 2 * domain[i];
         (*Xb)[i + 2 * n] = (float) std::log(domain[i] * 2.0);
     }
-    float cpuGeneralizedCorrelation_ = generalizedCorrelationCpu(
+    float cpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationCpu(
             Xa,
             Xb,
             k,
@@ -259,7 +268,8 @@ TEST(
             2,
             3
     );
-    float gpuGeneralizedCorrelation_ = generalizedCorrelationGpu(
+    float gpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationGpu(
             Xa,
             Xb,
             k,
@@ -303,7 +313,8 @@ TEST(
         (*Xb)[i + n] = 2 * domain[i];
         (*Xb)[i + 2 * n] = (float) std::log(domain[i] * 2.0);
     }
-    float cpuGeneralizedCorrelation_ = generalizedCorrelationCpu(
+    float cpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationCpu(
             Xa,
             Xb,
             k,
@@ -311,7 +322,8 @@ TEST(
             2,
             3
     );
-    float gpuGeneralizedCorrelation_ = generalizedCorrelationGpu(
+    float gpuGeneralizedCorrelation_ =
+            netcalc::generalizedCorrelationGpu(
             Xa,
             Xb,
             k,
@@ -376,7 +388,7 @@ TEST(
             1, 0, 1
     );
     ASSERT_EQ(
-            generalizedCorrelation(
+            netcalc::generalizedCorrelation(
                     X, R, ab, k, n, 2, 1, 1
             ), 1);
     delete X;
@@ -433,7 +445,7 @@ TEST(
             1, 0, 1
     );
     ASSERT_EQ(
-            generalizedCorrelation(
+            netcalc::generalizedCorrelation(
                     X, R, ab, k, n, 2, 1, 0
             ), 0);
     delete X;

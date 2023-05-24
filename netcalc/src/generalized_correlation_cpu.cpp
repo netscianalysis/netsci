@@ -5,7 +5,7 @@
 #include "mutual_information.h"
 #include <cmath>
 
-float generalizedCorrelationCpu(
+float netcalc::generalizedCorrelationCpu(
         CuArray<float> *Xa,
         CuArray<float> *Xb,
         int k,
@@ -13,7 +13,7 @@ float generalizedCorrelationCpu(
         int xd,
         int d
 ) {
-    float mutualInformation = mutualInformationCpu(
+    float mutualInformation = netcalc::mutualInformationCpu(
             Xa, Xb, k, n, xd, d
     );
     if (mutualInformation <= 0.0) {

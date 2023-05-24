@@ -1004,7 +1004,7 @@ std::map<int, void *> mutualInformation2X3DKernels() {
     };
 }
 
-float mutualInformationGpu(
+float netcalc::mutualInformationGpu(
         CuArray<float> *Xa,
         CuArray<float> *Xb,
         int k,

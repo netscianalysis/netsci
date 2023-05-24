@@ -4,7 +4,7 @@
 #include <iostream>
 #include "mutual_information.h"
 
-int mutualInformation(
+int netcalc::mutualInformation(
         CuArray<float> *X,
         CuArray<float> *I,
         CuArray<int> *ab,
@@ -37,14 +37,14 @@ int mutualInformation(
         );
         if (platform == 0)
             I->set(
-                    mutualInformationGpu(
+                    netcalc::mutualInformationGpu(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i
             );
         else if (platform == 1)
             I->set(
-                    mutualInformationCpu(
+                    netcalc::mutualInformationCpu(
                             Xa, Xb, k, n, xd, d
                     ),
                     0, i
