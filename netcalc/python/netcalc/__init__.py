@@ -5,7 +5,6 @@ from .netcalc import generalizedCorrelation
 from .netcalc import generalizedCorrelationGpu
 from .netcalc import generalizedCorrelationCpu
 from .netcalc import hedetniemiShortestPaths
-from .netcalc import hedetniemiShortestPathLengths
 from .netcalc import correlationToAdjacency
 from .netcalc import mean
 from .netcalc import meanGpu

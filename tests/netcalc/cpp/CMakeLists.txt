@@ -1,6 +1,7 @@
 
 set(NETCALC_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-file(COPY ${TEST_DATA_DIR} DESTINATION ${NETCALC_TEST_DIR})
+file(COPY ${TEST_DATA_DIR} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+message(${TEST_DATA_DIR})
 #Mutual Information tests
 add_executable(
         MutualInformation_test

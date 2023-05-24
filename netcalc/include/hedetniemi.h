@@ -7,32 +7,17 @@
 
 #include "cuarray.h"
 
-void hedetniemiShortestPaths(
+int hedetniemiShortestPaths(
         CuArray<float> *A,
         CuArray<float> *H,
         CuArray<int> *paths,
-        int maxPathLength,
         int platform
 );
 
-void hedetniemiShortestPathLengths(
+int hedetniemiShortestPathsGpu(
         CuArray<float> *A,
         CuArray<float> *H,
-        int maxPathLength,
-        int platform
-);
-
-void hedetniemiShortestPathsGpu(
-        CuArray<float> *A,
-        CuArray<float> *H,
-        CuArray<int> *paths,
-        int maxPathLength
-);
-
-void hedetniemiShortestPathLengthsGpu(
-        CuArray<float> *A,
-        CuArray<float> *H,
-        int maxPathLength
+        CuArray<int> *paths
 );
 
 void correlationToAdjacency(
