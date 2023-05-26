@@ -164,7 +164,7 @@ def print_numpy_array(
     """
     # Get the number of rows and columns in the numpy array.
     # Iterate over all rows.
-    if len(numpy_array) == 2:
+    if len(numpy_array.shape) == 2:
         m, n = numpy_array.shape
         for i in range(m):
             # Initialize the row representation string.
@@ -177,7 +177,7 @@ def print_numpy_array(
                 row_repr += f'{val:.5f} '
             # Print the row representation string.
             print(row_repr)
-    elif len(numpy_array) == 1:
+    elif len(numpy_array.shape) == 1:
         n = numpy_array.shape[0]
         # Initialize the value representation string.
         val_repr = ''
