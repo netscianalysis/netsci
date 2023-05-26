@@ -46,9 +46,9 @@ Follow these steps to install and set up the NetSci project:
     source activate netsci
     ```
 10. Create the build directory:
-   ```shell
-  mkdir build
-   ```
+    ```shell
+    mkdir build
+    ```
 11. Move into the build directory:
     ```shell
     cd build
