@@ -178,7 +178,7 @@ def print_numpy_array(
             # Print the row representation string.
             print(row_repr)
     elif len(numpy_array) == 1:
-        n = numpy_array.shape
+        n = numpy_array.shape[0]
         # Initialize the value representation string.
         val_repr = ''
         for i in range(n):
