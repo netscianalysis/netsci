@@ -344,3 +344,7 @@ void Atom::load(const std::string &jsonFile) {
 
 }
 
+float Atom::mass() const {
+    return this->_mass;
+}
+

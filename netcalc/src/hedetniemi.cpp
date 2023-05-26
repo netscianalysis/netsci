@@ -41,3 +41,32 @@ int netcalc::longestShortestPathNodeCount(CuArray<int> *paths) {
     int numNodes = paths->m();
     return paths->n() / numNodes;
 }
+
+void netcalc::pathFromPathsCuArray(
+        int **NUMPY_ARRAY,
+        int **NUMPY_ARRAY_DIM1,
+        CuArray<int> *paths,
+        int i,
+        int j
+) {
+    auto longestPath = netcalc::longestShortestPathNodeCount(paths);
+    *(NUMPY_ARRAY_DIM1) = new int[1];
+    (*NUMPY_ARRAY_DIM1)[0] = 0;
+    for (int k = 0; k < longestPath; k++) {
+        auto node = paths->get(i,
+                               j * longestPath + k);
+        if (node != -1) {
+            (*NUMPY_ARRAY_DIM1)[0] += 1;
+        } else {
+            break;
+        }
+    }
+    *NUMPY_ARRAY = new int[(*NUMPY_ARRAY_DIM1)[0]];
+    std::copy(
+            paths->host() + i * paths->n()
+            + j * longestPath,
+            paths->host() + i * paths->n()
+            + j * longestPath + (*NUMPY_ARRAY_DIM1)[0],
+            *NUMPY_ARRAY
+    );
+}

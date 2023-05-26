@@ -265,6 +265,7 @@ void CuArray<T>::toNumpy(
     *(NUMPY_ARRAY_DIM2[0]) = this->n_;
     *NUMPY_ARRAY = new T[this->size_];
     std::copy(this->host_, this->host_ + this->size_, *NUMPY_ARRAY);
+
 }
 
 template<typename T>

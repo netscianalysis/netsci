@@ -11,6 +11,7 @@ from .netcalc import meanGpu
 from .netcalc import standardDeviation
 from .netcalc import standardDeviationGpu
 from .netcalc import longestShortestPathNodeCount
+from .netcalc import pathFromPathsCuArray
 
 
 
