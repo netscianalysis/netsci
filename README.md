@@ -382,7 +382,7 @@ sorted_a_row0 = a.sort(0)
 # Print "a_row0".
 print_CuArray(a_row0)
 # Print "sorted_a_row0".
-print_CuArray(sorted_a_row0)`
+print_CuArray(sorted_a_row0)
 ```
 
 An out-of-place descending argsort of the first row of a is performed using the argsort method, and the resulting 
