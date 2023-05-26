@@ -421,18 +421,41 @@ import os
 from netchem import Graph
 ```
 
+Before initializing the Graph object, it is important to set the current working directory to 
+the NetSci tutorial directory. The file paths for the DCD trajectory file and the single frame 
+PDB topology file are defined.
 ``` python
+"""
+Make sure the current working directory is NetSci's tutorial
+directory. 
+"""
+#Dcd trajectory file
 trajectory_file = f'{os.getcwd()}/pyro.dcd'
+
+#Single frame PDB topology file
 topology_file = f'{os.getcwd()}/pyro.pdb'
 ```
-
+NetChem has the capability to parse and process chunks of trajectories. The variables first_frame and last_frame 
+specify the range of frames to be parsed from the trajectory.
 ``` python
-first_frame = 1
-last_frame = 1000
+"""
+NetChem supports parsing/processing chunks of 
+trajectories.
+"""
+#First frame parsed in the trajectory
+first_frame = 0
+
+#Last frame parsed in the trajectory
+last_frame = 999 
 ```
 
+A new Graph object is created, and the init method is called to initialize it with the 
+provided trajectory file, topology file, and frame range.
 ``` python
+#Create a new Graph object.
 graph = Graph()
+
+#Initialize the new graph object.
 graph.init(
     trajectoryFile=trajectory_file,
     topologyFile=topology_file,
@@ -441,43 +464,84 @@ graph.init(
 )
 ```
 
+The numNodes method is used to retrieve the number of nodes in the graph.
 ``` python
+#The number of nodes in the graph.
 num_nodes = graph.numNodes()
 print(num_nodes)
 ```
 
+The numFrames method is used to retrieve the number of frames from the trajectory that were used to 
+construct the graph.
 ``` python
+"""
+The number of frames from the trajectory used to construct the 
+graph
+"""
 num_frames = graph.numFrames()
 print(num_frames)
 ```
-
+The nodeCoordinates method is used to retrieve the coordinates of each node in the form of a float CuArray. 
+The dimensions of the CuArray are Mx(N*d), where M is the number of nodes, N is the number of frames, and d 
+is the dimension of the trajectory data. Typically, d will be three (x, y, z coordinates). 
 ``` python
+"""
+The coordinates of each node are stored as a Mx(N*d) float CuArray, 
+where M is the number of nodes, N is the number of frames, and d is the 
+dimension of the trajectory data. The majority of the time, d will be three.
+"""
 node_coordinates = graph.nodeCoordinates()
 print(node_coordinates)
 ```
 
+The nodes method is used to retrieve a vector of Node objects that make up the graph.
+The nodes are sorted by node index, with the first node having an index of 0 and the
+last node having an index of N-1, where N is the number of nodes.
 ``` python
+"""
+The nodes() method returns a vector of Node objects that make up the graph. The nodes
+are sorted by node index, where the first node has an index of 0,
+and the last node has an index of N-1, where N is the number of nodes.
+"""
 nodes = graph.nodes()
 print(nodes)
 ```
 
+The atoms method returns the Atoms class object associated with the graph. The Atoms class is a container of
+Atom objects, which represent every atom present in the trajectory.
 ``` python
+"""
+The atoms() returns the Atoms class object associated with the graph. The Atoms class is a 
+container of Atom objects, which represent every Atom present in the trajectory.
+"""
 atoms = graph.atoms()
 print(atoms)
 ```
 
+The Graph class in NetChem has a special __iter__ method defined, which allows for iterating
+over its Node objects. By defining the __iter__ method, the Graph class allows direct iteration 
+over its nodes. This enables you to easily access and work with each node in the graph without 
+the need for explicit indexing or accessing nodes through other methods. 
 ``` python
+"""
+Iterate through all nodes in the graph.
+"""
 for node in graph:
     print(node.__class__)
 ```
 
+Similarly, the Atoms class has a special __iter__ method defined, which allows for iterating 
+over its Atom objects. This enables convenient traversal and access to individual atoms present 
+in the trajectory.This enables convenient traversal and access to individual atoms present in the trajectory.
+By implementing the __iter__ method, the Atoms class enhances its usability by providing a built-in mechanism 
+for iteration. This allows users to easily perform operations or retrieve information on each Atom object 
+within the Atoms container.
 ``` python
+#Iterate through all atoms in the trajectory that the graph is constructed from.
 for atom in graph.atoms():
     print(atom.__class__)
 ```
 
-``` python
-```
 
 <h1 align="center">
 Analyzing a Pyrophosphatase Molecular Dynamics Simulation with NetSci
