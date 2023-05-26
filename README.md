@@ -64,9 +64,9 @@ Follow these steps to install and set up the NetSci project:
    -DCUDA_ARCHITECTURE=<cuda architecture * 10> #To build for CUDA architecture 6.1, use -DCUDA_ARCHITECTURE=61
    ```
 13. Build NetSci:
-   ```shell
-   cmake --build . -j
-   ```
+    ```shell
+    cmake --build . -j
+    ```
 14. Build the NetSci Python interface:
     ```shell
     make python
