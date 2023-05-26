@@ -163,19 +163,31 @@ def print_numpy_array(
     @param numpy_array: The numpy array to print.
     """
     # Get the number of rows and columns in the numpy array.
-    m, n = numpy_array.shape
     # Iterate over all rows.
-    for i in range(m):
-        # Initialize the row representation string.
-        row_repr = ''
-        # Iterate over all columns.
-        for j in range(n):
-            # Get the value at the current row and column.
-            val = numpy_array[i, j]
-            # Append the value to the row representation string.
-            row_repr += f'{val:.5f} '
-        # Print the row representation string.
-        print(row_repr)
+    if len(numpy_array) == 2:
+        m, n = numpy_array.shape
+        for i in range(m):
+            # Initialize the row representation string.
+            row_repr = ''
+            # Iterate over all columns.
+            for j in range(n):
+                # Get the value at the current row and column.
+                val = numpy_array[i, j]
+                # Append the value to the row representation string.
+                row_repr += f'{val:.5f} '
+            # Print the row representation string.
+            print(row_repr)
+    elif len(numpy_array) == 1:
+        n = numpy_array.shape
+        # Initialize the value representation string.
+        val_repr = ''
+        for i in range(n):
+            # Get the value at the current index. 
+            val = numpy_array[i]
+            # Append the value to the val representation string.
+            val_repr += f'{val:.5f} '
+        # Print the val representation string.
+        print(val_repr)
 ```
 
 To create a new FloatCuArray, one can simply call its constructor and then initialize it with the desired 
