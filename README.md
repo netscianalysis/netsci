@@ -72,25 +72,25 @@ Follow these steps to install and set up the NetSci project:
     make python
     ```
 15. Run the C++ and CUDA unit tests:
-   ```shell
-   ctest
-   ``` 
+    ```shell
+    ctest
+    ``` 
 16. Navigate to the CuArray python test directory:
-   ```shell
-   cd ../tests/cuarray/python
-   ``` 
+    ```shell
+    cd ../tests/cuarray/python
+    ``` 
 17. Run the CuArray python tests:
-   ```shell
-   pytest
-   ```
+    ```shell
+    pytest
+    ```
 18. Navigate to the NetCalc python test directory:
-   ```shell
-   cd ../tests/netcalc/python
-   ``` 
+    ```shell
+    cd ../tests/netcalc/python
+    ``` 
 17. Run the NetCalc python tests:
-   ```shell
-   pytest
-   ```
+    ```shell
+    pytest
+    ```
 
 <h1 align="center">
 <b>Tutorial</b>
