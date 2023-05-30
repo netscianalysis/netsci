@@ -29,7 +29,10 @@ public:
      * \param n The number of columns.
      * \return The CuArrayError indicating the success or failure of the operation.
      */
-    CuArrayError init(int m, int n);
+    CuArrayError init(
+            int m,
+            int n
+    );
 
     /**
      * \brief Initialize the CuArray with the specified host data and dimensions.
@@ -42,7 +45,11 @@ public:
      * \param n The number of columns.
      * \return The CuArrayError indicating the success or failure of the operation.
      */
-    CuArrayError init(T* host, int m, int n);
+    CuArrayError init(
+            T *host,
+            int m,
+            int n
+    );
 
     /**
      * \brief Shallow copy data from another CuArray.
@@ -60,7 +67,13 @@ public:
      * \param n The number of columns in this CuArray.
      * \return The CuArrayError indicating the success or failure of the operation.
      */
-    CuArrayError fromCuArrayShallowCopy(CuArray<T>* cuArray, int start, int end, int m, int n);
+    CuArrayError fromCuArrayShallowCopy(
+            CuArray<T> *cuArray,
+            int start,
+            int end,
+            int m,
+            int n
+    );
 
     /**
      * \brief Deep copy data from another CuArray.
@@ -77,7 +90,13 @@ public:
      * \param n The number of columns in this CuArray.
      * \return The CuArrayError indicating the success or failure of the operation.
      */
-    CuArrayError fromCuArrayDeepCopy(CuArray<T>* cuArray, int start, int end, int m, int n);
+    CuArrayError fromCuArrayDeepCopy(
+            CuArray<T> *cuArray,
+            int start,
+            int end,
+            int m,
+            int n
+    );
 
     /**
      * \brief Destructor for CuArray.
@@ -129,7 +148,7 @@ public:
      *
      * \return A reference to the host data.
      */
-    T*& host();
+    T *&host();
 
     /**
      * \brief Get a reference to the device data.
@@ -138,7 +157,7 @@ public:
      *
      * \return A reference to the device data.
      */
-    T*& device();
+    T *&device();
 
     /**
      * \brief Allocate memory for the host data.
@@ -222,7 +241,11 @@ public:
      * \param NUMPY_ARRAY_DIM2    Pointer to the dimension 2 of the NumPy array.
      * \return The CuArrayError indicating the success or failure of the operation.
      */
-    CuArrayError fromNumpy(T* NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2);
+    CuArrayError fromNumpy(
+            T *NUMPY_ARRAY,
+            int NUMPY_ARRAY_DIM1,
+            int NUMPY_ARRAY_DIM2
+    );
 
     /**
      * \brief Copy data from a NumPy array to the CuArray.
@@ -233,7 +256,10 @@ public:
      * \param NUMPY_ARRAY_DIM1    Pointer to the dimension 1 of the NumPy array.
      * \return The CuArrayError indicating the success or failure of the operation.
      */
-    CuArrayError fromNumpy(T* NUMPY_ARRAY, int NUMPY_ARRAY_DIM1);
+    CuArrayError fromNumpy(
+            T *NUMPY_ARRAY,
+            int NUMPY_ARRAY_DIM1
+    );
 
     /**
      * \brief Copy data from the CuArray to a NumPy array.
@@ -244,7 +270,11 @@ public:
      * \param NUMPY_ARRAY_DIM1    Pointer to the dimension 1 of the NumPy array.
      * \param NUMPY_ARRAY_DIM2    Pointer to the dimension 2 of the NumPy array.
      */
-    void toNumpy(T** NUMPY_ARRAY, int** NUMPY_ARRAY_DIM1, int** NUMPY_ARRAY_DIM2);
+    void toNumpy(
+            T **NUMPY_ARRAY,
+            int **NUMPY_ARRAY_DIM1,
+            int **NUMPY_ARRAY_DIM2
+    );
 
     /**
      * \brief Copy data from the CuArray to a NumPy array.
@@ -254,7 +284,10 @@ public:
      * \param NUMPY_ARRAY    Pointer to the output NumPy array.
      * \param NUMPY_ARRAY_DIM1    Pointer to the dimension 1 of the NumPy array.
      */
-    void toNumpy(T** NUMPY_ARRAY, int** NUMPY_ARRAY_DIM1);
+    void toNumpy(
+            T **NUMPY_ARRAY,
+            int **NUMPY_ARRAY_DIM1
+    );
 
     /**
      * \brief Get the value at the specified position in the CuArray.
@@ -265,7 +298,10 @@ public:
      * \param j The column index.
      * \return The value at the specified position.
      */
-    T get(int i, int j) const;
+    T get(
+            int i,
+            int j
+    ) const;
 
     /**
      * \brief Set the value at the specified position in the CuArray.
@@ -277,7 +313,11 @@ public:
      * \param j The column index.
      * \return The CuArrayError indicating the success or failure of the operation.
      */
-    CuArrayError set(T value, int i, int j);
+    CuArrayError set(
+            T value,
+            int i,
+            int j
+    );
 
     /**
      * \brief Load the CuArray from a file.
@@ -287,7 +327,7 @@ public:
      * \param fname The name of the file to load.
      * \return The CuArrayError indicating the success or failure of the operation.
      */
-    CuArrayError load(const std::string& fname);
+    CuArrayError load(const std::string &fname);
 
     /**
      * \brief Save the CuArray to a file.
@@ -296,7 +336,7 @@ public:
      *
      * \param fname The name of the file to save.
      */
-    void save(const std::string& fname);
+    void save(const std::string &fname);
 
     /**
      * \brief Sort the CuArray based on the specified column.
@@ -306,7 +346,7 @@ public:
      * \param i The column index to sort.
      * \return A pointer to a new CuArray containing the sorted data.
      */
-    CuArray<T>* sort(int i);
+    CuArray<T> *sort(int i);
 
     /**
      * \brief Get a reference to the element at the specified index in the CuArray.
@@ -316,7 +356,7 @@ public:
      * \param i The index of the element.
      * \return A reference to the element at the specified index.
      */
-    T& operator[](int i) const;
+    T &operator[](int i) const;
 
     /**
      * \brief Get the owner of the CuArray.
@@ -335,11 +375,11 @@ public:
      * \param i The column index to argsort.
      * \return A pointer to a new CuArray containing the sorted indices.
      */
-    CuArray<int>* argsort(int i);
+    CuArray<int> *argsort(int i);
 
 private:
-    T* host_;
-    T* device_;
+    T *host_;
+    T *device_;
     int n_{};
     int m_{};
     int size_{};
@@ -347,6 +387,23 @@ private:
     int allocatedDevice_{};
     int allocatedHost_{};
     int owner_{};
+};
+
+template<typename T>
+class CuArrayRow {
+public:
+    CuArrayRow(
+            CuArray<T> *cuArray,
+            int i
+    );
+
+    T &operator[](int i) const;
+
+    int n() const;
+
+private:
+    T *data_;
+    int n_{};
 };
 
 #endif // MUTUAL_INFORMATION_SHARED_MEMORY_CUARRAY_H

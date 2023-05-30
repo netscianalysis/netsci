@@ -274,7 +274,7 @@ void CuArray<T>::toNumpy(
         int **NUMPY_ARRAY_DIM1
 ) {
     *NUMPY_ARRAY_DIM1 = new int;
-    *(NUMPY_ARRAY_DIM1)[0] = this->n_;
+    *(NUMPY_ARRAY_DIM1)[0] = this->size_;
     *NUMPY_ARRAY = new T[this->size_];
     std::copy(this->host_, this->host_ + this->size_, *NUMPY_ARRAY);
 }
@@ -359,6 +359,25 @@ CuArray<int> *CuArray<T>::argsort(int i) {
     return cuArray;
 }
 
+template<typename T>
+CuArrayRow<T>::CuArrayRow(
+        CuArray<T> *cuArray,
+        int i
+) {
+    this->data_ = (cuArray->host() + i * cuArray->n());
+    this->n_ = cuArray->n();
+}
+
+template<typename T>
+T &CuArrayRow<T>::operator[](int i) const {
+    return this->data_[i];
+}
+
+template<typename T>
+int CuArrayRow<T>::n() const {
+    return this->n_;
+}
+
 
 template
 class CuArray<int>;
@@ -368,4 +387,13 @@ class CuArray<float>;
 
 template
 class CuArray<double>;
+
+template
+class CuArrayRow<int>;
+
+template
+class CuArrayRow<float>;
+
+template
+class CuArrayRow<double>;
 

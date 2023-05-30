@@ -1,0 +1,530 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting
+\usepackage{listings}
+% new custom key called spacestyle
+
+
+\usepackage[usenames, dvipsnames]{color}
+
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegray},
+    keywordstyle=\color{codegreen},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    columns=flexible,
+    breakatwhitespace=true,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=true,
+    upquote=true
+}
+
+\lstset{style=mystyle}
+
+\title{NetSci Documentation}
+\date{}
+\begin{document}
+
+    \maketitle
+
+
+    \section{Installation}
+
+    \begin{lstlisting}
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    \end{lstlisting}
+
+    \begin{lstlisting}
+chmod +x Miniconda3-latest-Linux-x86_64.sh
+    \end{lstlisting}
+
+    \begin{lstlisting}
+source ~/.bashrc
+    \end{lstlisting}
+
+    \begin{lstlisting}
+conda install -c conda-forge git
+    \end{lstlisting}
+
+    \begin{lstlisting}
+git clone https://github.com/amstokely/netsci.git
+    \end{lstlisting}
+
+    \begin{lstlisting}
+cd netsci
+    \end{lstlisting}
+
+    \begin{lstlisting}
+NETSCI_ROOT=$(pwd)
+    \end{lstlisting}
+
+    \begin{lstlisting}
+conda env create -f netsci.yml
+    \end{lstlisting}
+
+    \begin{lstlisting}
+source activate netsci
+    \end{lstlisting}
+
+    \begin{lstlisting}
+mkdir ${NETSCI_ROOT}/build
+    \end{lstlisting}
+
+    \begin{lstlisting}
+cd ${NETSCI_ROOT}/build
+    \end{lstlisting}
+
+    \begin{lstlisting}
+nvcc ${NETSCI_ROOT}/build_scripts/cuda_architecture.cu -o cuda_architecture
+    \end{lstlisting}
+
+    \begin{lstlisting}
+CUDA_ARCHITECTURE=$(./cuda_architecture)
+    \end{lstlisting}
+
+    \begin{lstlisting}
+cmake .. -DCONDA_DIR=$CONDA_PREFIX -DCUDA_ARCHITECTURE=${CUDA_ARCHITECTURE}
+    \end{lstlisting}
+
+    \begin{lstlisting}
+cmake --build . -j
+    \end{lstlisting}
+
+    \begin{lstlisting}
+make python
+    \end{lstlisting}
+
+    \begin{lstlisting}
+ctest
+    \end{lstlisting}
+
+    \begin{lstlisting}
+cd ${NETSCI_ROOT}/tests/cuarray/python
+    \end{lstlisting}
+
+    \begin{lstlisting}
+pytest
+    \end{lstlisting}
+
+    \begin{lstlisting}
+cd ${NETSCI_ROOT}/tests/netcalc/python
+    \end{lstlisting}
+
+    \begin{lstlisting}
+pytest
+    \end{lstlisting}
+
+
+    \section{CuArray Tutorial}
+    \begin{lstlisting}[language=Python]
+import os
+
+import numpy as np
+
+import cuarray
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a = cuarray.FloatCuArray()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a.init(8, 5)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+m, n = cu_a.m(), cu_a.n()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(m):
+    for j in range(n):
+        print(f'{cu_a[i][j]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(m):
+    for j in range(n):
+        cu_a[i][j] = np.random.random()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(len(cu_a)):
+    for j in range(len(cu_a[0])):
+        print(f'{cu_a[i][j]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_row0_sorted = cu_a.sort(0)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(len(cu_a_row0_sorted[0])):
+    print(f'{cu_a_row0_sorted[0][i]:.4f}', end=' ')
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_row0_sorted_indices = cu_a.argsort(0)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(len(cu_a_row0_sorted_indices[0])):
+    sorted_index = cu_a_row0_sorted_indices[0][i]
+    print(f'{sorted_index}    {cu_a[0][sorted_index]:.4f}', end='\n')
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_sorted = cuarray.FloatCuArray()
+cu_a_sorted.init(cu_a.m(), cu_a.n())
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(len(cu_a)):
+    cu_a_sorted[i] = cu_a.sort(i)[0]
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(len(cu_a)):
+    for j in range(len(cu_a[0])):
+        print(f'{cu_a_sorted[i][j]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+
+    \begin{lstlisting}[language=Python]
+cu_a_sorted_indices = cuarray.IntCuArray()
+cu_a_sorted_indices.init(cu_a.m(), cu_a.n())
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(len(cu_a)):
+    cu_a_sorted_indices[i] = cu_a.argsort(i)[0]
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(len(cu_a)):
+    for j in range(len(cu_a[0])):
+        sorted_index = cu_a_sorted_indices[i][j]
+        print(f'{cu_a_sorted[i][j]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_fname = f'{os.getcwd()}/cu_a.npy'
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a.save(cu_a_fname)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_from_load = cuarray.FloatCuArray()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_from_load.load(cu_a_fname)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+np_a = cu_a.toNumpy2D()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(m):
+    for j in range(n):
+        print(f'{cu_a[i][j]:.4f}', end=' ')
+    print(end='    ')
+    for j in range(n):
+        print(f'{np_a[i][j]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+np_a_linear = cu_a.toNumpy1D()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(m):
+    for j in range(n):
+        print(f'{cu_a[i][j]:.4f}', end=' ')
+    print(end='    ')
+    for j in range(n):
+        linear_index = i*n + j
+        print(f'{np_a_linear[linear_index]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_np = cuarray.FloatCuArray()
+cu_a_np.fromNumpy2D(np_a)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(m):
+    for j in range(n):
+        print(f'{cu_a[i][j]:.4f}', end=' ')
+    print(end='    ')
+    for j in range(n):
+        print(f'{cu_a_np[i][j]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_np_linear = cuarray.FloatCuArray()
+cu_a_np_linear.fromNumpy1D(np_a_linear)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(m):
+    for j in range(n):
+        linear_index = i*n + j
+        print(f'{cu_a_np_linear[0][linear_index]:.4f}', end=' ')
+    print(end='    ')
+    for j in range(n):
+        linear_index = i*n + j
+        print(f'{np_a_linear[linear_index]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_copy = cuarray.FloatCuArray()
+cu_a_copy.fromCuArray(
+    cuArray=cu_a,
+    start=0,
+    end=len(cu_a)-1,
+    m=cu_a.m(),
+    n=cu_a.n(),
+)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(len(cu_a)):
+    for j in range(len(cu_a[0])):
+        print(f'{cu_a_copy[i][j]:.4f}', end=' ')
+    print(end='    ')
+    for j in range(len(cu_a[0])):
+        print(f'{cu_a[i][j]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+cu_a_from_linear = cuarray.FloatCuArray()
+cu_a_from_linear.fromCuArray(
+    cuArray=cu_a_np_linear,
+    start=0,
+    end=0,
+    m=cu_a.m(),
+    n=cu_a.n(),
+)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for i in range(len(cu_a)):
+    for j in range(len(cu_a[0])):
+        print(f'{cu_a_from_linear[i][j]:.4f}', end=' ')
+    print(end='    ')
+    for j in range(len(cu_a[0])):
+        print(f'{cu_a[i][j]:.4f}', end=' ')
+    print()
+    \end{lstlisting}
+
+
+    \section{NetChem Tutorial}
+    \begin{lstlisting}[language=Python]
+import os
+import tarfile
+
+import netchem
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+# NETSCI_ROOT=<path to netsci root directory>
+tutorial_directory = f'{NETSCI_ROOT}/tutorial'
+os.chdir(tutorial_directory)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+tutorial_tarball = tarfile.open(f'{os.getcwd()}/tutorial.tar.gz')
+tutorial_tarball.extractall()
+tutorial_tarball.close()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+first_frame = 0
+last_frame = 999
+trajectory_file = f'{tutorial_directory}/pyro.dcd'
+topology_file = f'{tutorial_directory}/pyro.pdb'
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+graph = netchem.Graph()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+graph.init(
+    trajectoryFile=trajectory_file,
+    topologyFile=topology_file,
+    firstFrame=first_frame,
+    lastFrame=last_frame,
+)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+num_nodes = graph.numNodes()
+print(num_nodes)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+num_frames = graph.numFrames()
+print(num_frames)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+num_atoms = atoms.numAtoms()
+print(num_atoms)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for atom in atoms:
+    print(atom.index())
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+atom0 = atoms.at(0)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+atom0_index = atom0.index()
+atom0_serial = atom0.serial()
+atom0_name = atom0.name()
+atom0_element = atom0.element()
+atom0_residue_id = atom0.residueId()
+atom0_residue_name = atom0.residueName()
+atom0_chain_id = atom0.chainId()
+atom0_segment_id = atom0.segmentId()
+atom0_mass = atom0.mass()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+atom0_properties_str = f'Index: {atom0_index}\n'
+atom0_properties_str += f'Serial: {atom0_serial}\n'
+atom0_properties_str += f'Name: {atom0_name}\n'
+atom0_properties_str += f'Element: {atom0_element}\n'
+atom0_properties_str += f'Residue ID: {atom0_residue_id}\n'
+atom0_properties_str += f'Residue Name: {atom0_residue_name}\n'
+atom0_properties_str += f'Chain ID: {atom0_chain_id}\n'
+atom0_properties_str += f'Segment ID: {atom0_segment_id}\n'
+atom0_properties_str += f'Mass: {atom0_mass:.4f}'
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+print(atom0_properties_str)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+nodes = graph.nodes()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for node in nodes:
+    print(node.index())
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for node in graph:
+    print(node.index())
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+node0_tag = node0.tag()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+node0_num_atoms = node0.numAtoms()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+node0_index = node0.index()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+node0_total_mass = node0.totalMass()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+node0_atoms = node0.atoms()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+node0_properties_str = f'Index: {node0_index}\n'
+node0_properties_str = f'Number of Atoms: {node0_num_atoms}\n'
+node0_properties_str += f'Total Mass: {node0_total_mass:.4f}\n'
+node0_properties_str += f'Tag: {node0_tag}\n'
+node0_properties_str += f'Node 0 Atoms:\n'
+for atom in node0_atoms:
+    node0_properties_str += f'    Index: {atom.index()}\n'
+    node0_properties_str += f'    Residue Name: {atom.residueName()}\n'
+    node0_properties_str += f'    Residue ID: {atom.residueId()}\n'
+    node0_properties_str += f'    Chain ID: {atom.chainId()}\n'
+    node0_properties_str += f'    Segment ID: {atom.segmentId()}\n'
+    node0_properties_str += f'    Mass: {atom.mass():.4f}\n\n'
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+print(node0_properties_str)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+node_coordinates = graph.nodeCoordinates()
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+node0_coordinates = cuarray.FloatCuArray()
+node0_coordinates.fromCuArray(
+    cuArray=node_coordinates,
+    start=0,
+    end=0,
+    m=3,
+    n=num_frames,
+)
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+for frame in range(num_frames):
+    node0_x = node0_coordinates[0][frame]
+    node0_y = node0_coordinates[1][frame]
+    node0_z = node0_coordinates[2][frame]
+    print(
+        f'x: {node0_x:.4f}    '
+        f'y: {node0_y:.4f}    '
+        f'z: {node0_z:.4f}    '
+        f'frame: {frame}'
+    )
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=Python]
+graph_json = f'{tutorial_directory}/graph.json'
+graph_node_coordinates_npy = f'{tutorial_directory}/graph_node_coordinates.npy'
+    \end{lstlisting}
+    \begin{lstlisting}[language=Python]
+graph.save(graph_json)
+graph.nodeCoordinates().save(graph_node_coordinates_npy)
+    \end{lstlisting}
+\end{document}
