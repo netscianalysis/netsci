@@ -49,7 +49,6 @@ set(
         ${CMAKE_SOURCE_DIR}/cuarray/include
         "${CUDA_INCLUDE_DIRS}"
 )
-message(${Python3_NumPy_INCLUDE_DIRS})
 include_directories("${INCLUDE_DIRS}")
 
 #Libraries cnpy is linked against
@@ -72,6 +71,12 @@ set(
         "${CUARRAY_LINK_LIBRARIES}"
         cuarray
         )
+#Libraries the tcl cuarray swig module is linked against
+set(
+        CUARRAY_TCL_LINK_LIBRARIES
+        "${CUARRAY_LINK_LIBRARIES}"
+        cuarray
+)
 #Libraries the cuarray tests are linked against
 set (
         CUARRAY_TEST_LINK_LIBRARIES

@@ -401,6 +401,8 @@ public:
 
     int n() const;
 
+    T *data() const;
+
 private:
     T *data_;
     int n_{};

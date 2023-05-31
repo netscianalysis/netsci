@@ -378,6 +378,11 @@ int CuArrayRow<T>::n() const {
     return this->n_;
 }
 
+template<typename T>
+T* CuArrayRow<T>::data() const {
+    return this->data_;
+}
+
 
 template
 class CuArray<int>;
