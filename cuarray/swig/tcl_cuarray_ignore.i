@@ -1,0 +1,2 @@
+%ignore fromCuArrayShallowCopy;
+%ignore fromNumpy;

@@ -113,7 +113,19 @@ class GraphIterator{
         std::endl;
         repr_ss << "Chain ID: " << $self->chainId() << std::endl;
         repr_ss << "Segment ID: " << $self->segmentId() << std::endl;
-        repr_ss << "Mass: " << $self->mass() << std::endl;
+        repr_ss << "Mass: " << $self->mass();
         return repr_ss.str();
     }
+};
+
+%extend Node{
+        std::string __repr__() {
+            std::stringstream repr_ss;
+            repr_ss << "Index: " << $self->index() << std::endl;
+            repr_ss << "Tag: " << $self->tag() << std::endl;
+            repr_ss << "Total Mass: " << $self->totalMass() <<
+            std::endl;
+            repr_ss << "Number of Atoms: " << $self->numAtoms();
+            return repr_ss.str();
+        }
 };
