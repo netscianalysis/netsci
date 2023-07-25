@@ -49,17 +49,6 @@ add_test(
         WORKING_DIRECTORY ${NETCALC_TEST_DIR}
 )
 
-add_test(
-        NAME MutualInformation_UsedGpuPlatform
-        COMMAND MutualInformation_test --gtest_filter=*MutualInformation_UseGpuPlatform*
-        WORKING_DIRECTORY ${NETCALC_TEST_DIR}
-)
-add_test(
-        NAME MutualInformation_UsedCpuPlatform
-        COMMAND MutualInformation_test --gtest_filter=*MutualInformation_UseCpuPlatform*
-        WORKING_DIRECTORY ${NETCALC_TEST_DIR}
-)
-
 
 #Generalized Correlation tests
 add_executable(
@@ -106,17 +95,5 @@ add_test(
 add_test(
         NAME GeneralizedCorrelation2X3D_2000n4k_GpuCpu
         COMMAND GeneralizedCorrelation_test --gtest_filter=*GeneralizedCorrelation_2X3D_2000n4k_GpuCpu*
-        WORKING_DIRECTORY ${NETCALC_TEST_DIR}
-)
-
-add_test(
-        NAME GeneralizedCorrelation_UsedGpuPlatform
-        COMMAND GeneralizedCorrelation_test --gtest_filter=*GeneralizedCorrelation_UseGpuPlatform*
-        WORKING_DIRECTORY ${NETCALC_TEST_DIR}
-)
-
-add_test(
-        NAME GeneralizedCorrelation_UsedCpuPlatform
-        COMMAND GeneralizedCorrelation_test --gtest_filter=*GeneralizedCorrelation_UseCpuPlatform*
         WORKING_DIRECTORY ${NETCALC_TEST_DIR}
 )

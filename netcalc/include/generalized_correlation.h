@@ -14,11 +14,11 @@ namespace netcalc {
      * \param n       Number of samples.
      * \param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
      * \param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
-     * \param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
+     * \param platform Platform (CPU or GPU) used for computation.
+     *                 Use "gpu" for GPU, and "cpu" for CPU.
      *
-     * \return 0 if successful, 1 otherwise.
      */
-    int generalizedCorrelation(
+    void generalizedCorrelation(
             CuArray<float>* X,
             CuArray<float>* R,
             CuArray<int>* ab,
@@ -26,7 +26,7 @@ namespace netcalc {
             int n,
             int xd,
             int d,
-            int platform
+            const std::string &platform
     );
 
     /*!
