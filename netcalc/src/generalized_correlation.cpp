@@ -5,7 +5,7 @@
 #include "mutual_information.h"
 #include "generalized_correlation.h"
 
-void netcalc::generalizedCorrelation(
+int netcalc::generalizedCorrelation(
         CuArray<float> *X,
         CuArray<float> *R,
         CuArray<int> *ab,
@@ -13,62 +13,49 @@ void netcalc::generalizedCorrelation(
         int n,
         int xd,
         int d,
-        const std::string &platform
+        int platform
 ) {
     R->init(
-            1,
-            ab->m()
+            1, ab->m()
     );
-    float (*generalizedCorrelationFunction)(
-            CuArray<float> *,
-            CuArray<float> *,
-            int,
-            int,
-            int,
-            int
-    );
-    if (platform == "gpu") {
-        generalizedCorrelationFunction = netcalc::generalizedCorrelationGpu;
-    } else if (platform == "cpu") {
-        generalizedCorrelationFunction = netcalc::generalizedCorrelationCpu;
-    } else {
-        throw std::runtime_error("Invalid platform");
-    }
+
     for (int i = 0; i < ab->m(); i++) {
-        int a = ab->get(i,
-                        0);
-        int b = ab->get(i,
-                        1);
+        int a = ab->get(i, 0);
+        int b = ab->get(i, 1);
         auto Xa = new CuArray<float>;
         auto Xb = new CuArray<float>;
         Xa->fromCuArrayShallowCopy(
                 X,
                 a,
                 a,
-                1,
-                X->n()
+                1, X->n()
         );
         Xb->fromCuArrayShallowCopy(
                 X,
                 b,
                 b,
-                1,
-                X->n()
+                1, X->n()
         );
-        R->set(
-                generalizedCorrelationFunction(
-                        Xa,
-                        Xb,
-                        k,
-                        n,
-                        xd,
-                        d
-                ),
-                0,
-                i
-        );
+        if (platform == 0)
+            R->set(
+                    netcalc::generalizedCorrelationGpu(
+                            Xa, Xb, k, n, xd, d
+                    ),
+                    0, i
+            );
+        else if (platform == 1)
+            R->set(
+                    netcalc::generalizedCorrelationCpu(
+                            Xa, Xb, k, n, xd, d
+                    ),
+                    0, i
+            );
+        else {
+            throw std::runtime_error("Invalid platform");
+        }
         delete Xa;
         delete Xb;
     }
+    return platform;
 }
 

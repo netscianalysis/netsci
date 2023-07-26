@@ -302,6 +302,120 @@ TEST(
     delete Xb;
 }
 
+TEST(
+        MutualInformation,
+       MutualInformation_UsedCpuPlatform
+) {
+    int n = 1000;
+    int k = 4;
+    auto *X = new CuArray<float>;
+    auto *R = new CuArray<float>;
+    auto *ab = new CuArray<int>;
+
+    X->init(
+            2, n
+    );
+    float incr = M_PI / (float) n;
+    std::vector<float> domain(n);
+    domain[0] = 0.001;
+    for (
+            int i = 1;
+            i < n;
+            i++) {
+        domain[i] = domain[i - 1] +
+                    incr;
+    }
+    for (
+            int i = 0;
+            i < n;
+            i++) {
+        X->set(
+                std::sin(domain[i]),
+                0,
+                i
+        );
+        X->set(
+                std::cos(domain[i]),
+                1,
+                i
+        );
+
+    }
+    ab->init(
+            1, 2
+    );
+    ab->set(
+            0, 0, 0
+    );
+    ab->set(
+            1, 0, 1
+    );
+    ASSERT_EQ(
+            netcalc::mutualInformation(
+                    X, R, ab, k, n, 2, 1, netcalc::CPU_PLATFORM
+            ), 1);
+    delete X;
+    delete R;
+    delete ab;
+}
+
+TEST(
+        MutualInformation,
+       MutualInformation_UsedGpuPlatform
+) {
+    int n = 1000;
+    int k = 4;
+    auto *X = new CuArray<float>;
+    auto *R = new CuArray<float>;
+    auto *ab = new CuArray<int>;
+
+    X->init(
+            2, n
+    );
+    float incr = M_PI / (float) n;
+    std::vector<float> domain(n);
+    domain[0] = 0.001;
+    for (
+            int i = 1;
+            i < n;
+            i++) {
+        domain[i] = domain[i - 1] +
+                    incr;
+    }
+    for (
+            int i = 0;
+            i < n;
+            i++) {
+        X->set(
+                std::sin(domain[i]),
+                0,
+                i
+        );
+        X->set(
+                std::cos(domain[i]),
+                1,
+                i
+        );
+
+    }
+    ab->init(
+            1, 2
+    );
+    ab->set(
+            0, 0, 0
+    );
+    ab->set(
+            1, 0, 1
+    );
+    ASSERT_EQ(
+            netcalc::mutualInformation(
+                    X, R, ab, k, n, 2, 1, netcalc::GPU_PLATFORM
+            ), 0);
+    delete X;
+    delete R;
+    delete ab;
+}
+
 int main(
         int argc,
         char **argv

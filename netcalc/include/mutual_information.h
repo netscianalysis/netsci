@@ -6,6 +6,7 @@
 #define MUTUAL_INFORMATION_SHARED_MEMORY_MUTUAL_INFORMATION_H
 
 #include "cuarray.h"
+#include "platform.h"
 
 namespace netcalc {
     /*!
@@ -18,11 +19,11 @@ namespace netcalc {
      * \param n       Number of samples.
      * \param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
      * \param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
-     * \param platform Platform (CPU or GPU) used for computation.
-     *                 Use "gpu" for GPU, and "cpu" for CPU.
+     * \param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
      *
+     * \return 0 if successful, 1 otherwise.
      */
-    void mutualInformation(
+    int mutualInformation(
             CuArray<float>* X,
             CuArray<float>* I,
             CuArray<int>* ab,
@@ -30,7 +31,7 @@ namespace netcalc {
             int n,
             int xd,
             int d,
-            const std::string &platform
+            int platform
     );
 
     /*!

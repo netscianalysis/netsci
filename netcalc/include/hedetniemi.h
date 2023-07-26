@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "cuarray.h"
+#include "platform.h"
 
 namespace netcalc {
     /*!
@@ -25,15 +26,14 @@ namespace netcalc {
      *                  determine if a node belongs to the shortest path being calculated. If this value is too large,
      *                  the shortest path returned may be incorrect, and if it is too small, the algorithm may never terminate.
      *                  In all testing, 1e-5 has been a good value.
-     * \param platform  Platform used to perform the calculation.
-     *                  Use "gpu" for GPU and "cpu" for CPU.
+     * \param platform  Platform used to perform the calculation. Use 0 for GPU and 1 for CPU.
      */
     void hedetniemiShortestPaths(
             CuArray<float>* A,
             CuArray<float>* H,
             CuArray<int>* paths,
             float tolerance,
-            const std::string &platform
+            int platform
     );
 
     /*!
@@ -69,14 +69,13 @@ namespace netcalc {
      * \param A The adjacency matrix.
      * \param C The correlation matrix.
      * \param n The number of nodes in the graph.
-     * \param platform Platform used to perform the calculation.
-     *                 Use "gpu" for GPU and "cpu" for CPU.
+     * \param platform Platform used to perform the calculation. Use 0 for GPU and 1 for CPU.
      */
     void correlationToAdjacency(
             CuArray<float>* A,
             CuArray<float>* C,
             int n,
-            const std::string &platform
+            int platform
     );
 
     /*!

@@ -6,6 +6,7 @@
 #define NETSCI_MATH_UTILS_H
 
 #include "cuarray.h"
+#include "platform.h"
 
 /**
  * \brief Computes the mean of the rows in a matrix.
@@ -17,15 +18,14 @@
  * \param u         Pointer to the output array where the mean will be stored, of type CuArray<float>.
  * \param m         Number of rows in the matrix.
  * \param n         Number of columns in the matrix.
- * \param platform  Platform used for computation.
- *                  Use "gpu" for GPU and "cpu" for CPU.
+ * \param platform  Platform used for computation. Use 0 for GPU and 1 for CPU.
  */
 void mean(
         CuArray<float>* a,
         CuArray<float>* u,
         int m,
         int n,
-        const std::string &platform
+        int platform
 );
 
 /**
@@ -58,8 +58,7 @@ void meanGpu(
  * \param sigma     Pointer to the output array where the standard deviation will be stored, of type CuArray<float>.
  * \param m         Number of rows in the matrix.
  * \param n         Number of columns in the matrix.
- * \param platform  Platform used for computation.
- *                  Use "gpu" for GPU and "cpu" for CPU.
+ * \param platform  Platform used for computation. Use 0 for GPU and 1 for CPU.
  */
 void standardDeviation(
         CuArray<float>* a,
@@ -67,7 +66,7 @@ void standardDeviation(
         CuArray<float>* sigma,
         int m,
         int n,
-        const std::string &platform
+        int platform
 );
 
 /**

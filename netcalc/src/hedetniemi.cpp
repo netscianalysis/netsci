@@ -1,7 +1,6 @@
 //
 // Created by astokely on 5/10/23.
 //
-#include <stdexcept>
 #include "hedetniemi.h"
 
 void netcalc::hedetniemiShortestPaths(
@@ -9,50 +8,33 @@ void netcalc::hedetniemiShortestPaths(
         CuArray<float> *H,
         CuArray<int> *paths,
         float tolerance,
-        const std::string &platform
+        int platform
 ) {
     H->init(A->m(),
             A->n());
-    void (*hedetniemiShortestPathsFunction)(
-            CuArray<float> *,
-            CuArray<float> *,
-            CuArray<int> *,
-            float
-    );
-    if (platform == "gpu") {
-        hedetniemiShortestPathsFunction = netcalc::hedetniemiShortestPathsGpu;
-    } else {
-        throw std::runtime_error("Invalid platform");
+    if (platform == 0) {
+        netcalc::hedetniemiShortestPathsGpu(A,
+                                            H,
+                                            paths,
+                                            tolerance
+        );
+
     }
-    hedetniemiShortestPathsFunction(A,
-                                    H,
-                                    paths,
-                                    tolerance
-    );
 }
 
 void netcalc::correlationToAdjacency(
         CuArray<float> *A,
         CuArray<float> *C,
         int n,
-        const std::string &platform
+        int platform
 ) {
     A->init(n,
             n);
-    void (*correlationToAdjacencyFunction)(
-            CuArray<float> *,
-            CuArray<float> *,
-            int
-    );
-    if (platform == "gpu") {
-        correlationToAdjacencyFunction = netcalc::correlationToAdjacencyGpu;
-    } else {
-        throw std::runtime_error("Invalid platform");
+    if (platform == 0) {
+        netcalc::correlationToAdjacencyGpu(A,
+                                           C,
+                                           n);
     }
-    correlationToAdjacencyFunction(A,
-                                   C,
-                                   n
-    );
 }
 
 int netcalc::longestShortestPathNodeCount(CuArray<int> *paths) {
