@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "cuarray.h"
+#include "platform.h"
 
 namespace netcalc {
     /*!

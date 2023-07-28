@@ -2,6 +2,7 @@
 #define NETSCI_GENERALIZED_CORRELATION_H
 
 #include "cuarray.h"
+#include "platform.h"
 
 namespace netcalc {
     /*!

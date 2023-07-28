@@ -389,7 +389,7 @@ TEST(
     );
     ASSERT_EQ(
             netcalc::generalizedCorrelation(
-                    X, R, ab, k, n, 2, 1, 1
+                    X, R, ab, k, n, 2, 1, netcalc::CPU_PLATFORM
             ), 1);
     delete X;
     delete R;
@@ -446,7 +446,7 @@ TEST(
     );
     ASSERT_EQ(
             netcalc::generalizedCorrelation(
-                    X, R, ab, k, n, 2, 1, 0
+                    X, R, ab, k, n, 2, 1, netcalc::GPU_PLATFORM
             ), 0);
     delete X;
     delete R;

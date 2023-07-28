@@ -6,6 +6,7 @@
 #define NETSCI_MATH_UTILS_H
 
 #include "cuarray.h"
+#include "platform.h"
 
 /**
  * \brief Computes the mean of the rows in a matrix.
