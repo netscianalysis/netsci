@@ -26,7 +26,7 @@ add_library(netchem SHARED
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dcd/dcd.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/atom.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/node.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/graph.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/network.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/atoms.cpp
         )
 add_dependencies(netchem cuarray)

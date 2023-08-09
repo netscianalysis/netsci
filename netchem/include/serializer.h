@@ -26,7 +26,7 @@
 #include "json/include/nlohmann/json.hpp"
 #include "atom.h"
 #include "node.h"
-#include "graph.h"
+#include "network.h"
 
 namespace nlohmann {
 
