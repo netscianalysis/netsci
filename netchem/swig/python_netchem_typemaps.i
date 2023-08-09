@@ -50,14 +50,14 @@ class AtomsIterator{
 };
 
 %inline %{
-class StopGraphIterator{};
-class GraphIterator{
+class StopNetworkIterator{};
+class NetworkIterator{
         public:
-        GraphIterator(
+        NetworkIterator(
                 std::vector<Node*>::iterator _cur,
         int numNodes_
         ) : cur(_cur), numNodes(numNodes_) {}
-        GraphIterator* __iter__()
+        NetworkIterator* __iter__()
         {
             return this;
         }
@@ -68,16 +68,16 @@ class GraphIterator{
 %}
 %include "exception.i"
 
-%exception GraphIterator::__next__{
+%exception NetworkIterator::__next__{
         try {
             $action // calls %extend function next() below
         }
-        catch (StopGraphIterator) {
+        catch (StopNetworkIterator) {
             PyErr_SetString(PyExc_StopIteration, "End of iterator");
             return NULL;
         }
 }
-%extend GraphIterator{
+%extend NetworkIterator{
         Node * __next__() {
             if (!$self->stopAtNextIteration) {
                 if ((*($self->cur))->index() == $self->numNodes - 1) {
@@ -85,13 +85,13 @@ class GraphIterator{
                 }
                 return *($self->cur++);
             }
-            throw StopGraphIterator();
+            throw StopNetworkIterator();
         }
 }
 
-%extend Graph{
-        GraphIterator __iter__() {
-            return GraphIterator($self->nodes().begin(), $self->nodes().size());
+%extend Network{
+        NetworkIterator __iter__() {
+            return NetworkIterator($self->nodes().begin(), $self->nodes().size());
         }
 };
 

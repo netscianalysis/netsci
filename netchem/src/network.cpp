@@ -9,14 +9,14 @@
 #include "dcd/dcd.h"
 #include "serializer.h"
 
-Graph::Graph() {
+Network::Network() {
     this->numNodes_ = 0;
     this->numFrames_ = 0;
     this->nodeCoordinates_ = new CuArray<float>();
     this->atoms_ = new Atoms;
 };
 
-Graph::~Graph() {
+Network::~Network() {
     for (auto node: this->nodes_) {
         delete node;
     }
@@ -26,7 +26,7 @@ Graph::~Graph() {
     delete atoms_;
 }
 
-void Graph::init(
+void Network::init(
         const std::string &trajectoryFile,
         const std::string &topologyFile,
         int firstFrame,
@@ -68,31 +68,31 @@ void Graph::init(
     );
 }
 
-int Graph::numNodes() const {
+int Network::numNodes() const {
     return this->numNodes_;
 }
 
-CuArray<float> *Graph::nodeCoordinates() {
+CuArray<float> *Network::nodeCoordinates() {
     return this->nodeCoordinates_;
 }
 
-std::vector<Node *> &Graph::nodes() {
+std::vector<Node *> &Network::nodes() {
     return this->nodes_;
 }
 
-int Graph::numFrames() const {
+int Network::numFrames() const {
     return this->numFrames_;
 }
 
-Node *Graph::nodeFromAtomIndex(int atomIndex) {
+Node *Network::nodeFromAtomIndex(int atomIndex) {
     return this->nodeAtomIndexVector_.at(atomIndex);
 }
 
-Atoms *Graph::atoms() const {
+Atoms *Network::atoms() const {
     return this->atoms_;
 }
 
-void Graph::parseDcd(const std::string &fname, int firstFrame, int lastFrame) {
+void Network::parseDcd(const std::string &fname, int firstFrame, int lastFrame) {
     int numAtoms;
     int totalNumFrames = 0;
     dcdhandle *dcd = open_dcd_read(
@@ -226,7 +226,7 @@ void Graph::parseDcd(const std::string &fname, int firstFrame, int lastFrame) {
     delete[] atomIndicesArray;
 }
 
-void Graph::parsePdb(
+void Network::parsePdb(
         const std::string &fname
 ) {
     std::string line;
@@ -249,7 +249,7 @@ void Graph::parsePdb(
     }
 }
 
-void Graph::save(const std::string &jsonFile) {
+void Network::save(const std::string &jsonFile) {
     nlohmann::json j;
     j["numNodes_"] = this->numNodes_;
     j["numFrames_"] = this->numFrames_;
@@ -260,7 +260,7 @@ void Graph::save(const std::string &jsonFile) {
     o << std::setw(4) << j << std::endl;
 }
 
-void Graph::load(const std::string &jsonFile) {
+void Network::load(const std::string &jsonFile) {
     nlohmann::json j;
     std::ifstream i(jsonFile);
     i >> j;
@@ -272,7 +272,7 @@ void Graph::load(const std::string &jsonFile) {
     this->atoms_ = j.at("atoms_").get<Atoms *>();
 }
 
-void Graph::nodeCoordinates(
+void Network::nodeCoordinates(
         const std::string& nodeCoordinatesFile
 ) {
     delete this->nodeCoordinates_;

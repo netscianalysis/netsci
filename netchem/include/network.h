@@ -9,24 +9,24 @@
 #include "node.h"
 
 
-class Graph {
+class Network {
 public:
     /**
-     * \brief Default constructor for Graph.
+     * \brief Default constructor for Network.
      *
-     * Constructs an empty Graph object.
+     * Constructs an empty Network object.
      */
-    Graph();
+    Network();
 
     /**
-     * \brief Destructor for Graph.
+     * \brief Destructor for Network.
      */
-    ~Graph();
+    ~Network();
 
     /**
-     * \brief Initialize the Graph with trajectory and topology files.
+     * \brief Initialize the Network with trajectory and topology files.
      *
-     * Initializes the Graph by loading trajectory and topology files.
+     * Initializes the Network by loading trajectory and topology files.
      *
      * \param trajectoryFile Path to the trajectory file.
      * \param topologyFile Path to the topology file.
@@ -41,9 +41,9 @@ public:
     );
 
     /**
-     * \brief Get the number of nodes in the Graph.
+     * \brief Get the number of nodes in the Network.
      *
-     * Returns the number of nodes in the Graph.
+     * Returns the number of nodes in the Network.
      *
      * \return The number of nodes.
      */
@@ -59,18 +59,18 @@ public:
     CuArray<float>* nodeCoordinates();
 
     /**
-     * \brief Get a reference to the vector of nodes in the Graph.
+     * \brief Get a reference to the vector of nodes in the Network.
      *
-     * Returns a reference to the vector of nodes in the Graph.
+     * Returns a reference to the vector of nodes in the Network.
      *
      * \return A reference to the vector of nodes.
      */
     std::vector<Node*>& nodes();
 
     /**
-     * \brief Get the number of frames in the Graph.
+     * \brief Get the number of frames in the Network.
      *
-     * Returns the number of frames in the Graph.
+     * Returns the number of frames in the Network.
      *
      * \return The number of frames.
      */
@@ -88,27 +88,27 @@ public:
     Node* nodeFromAtomIndex(int atomIndex);
 
     /**
-     * \brief Get the Atoms object associated with the Graph.
+     * \brief Get the Atoms object associated with the Network.
      *
-     * Returns a pointer to the Atoms object associated with the Graph.
+     * Returns a pointer to the Atoms object associated with the Network.
      *
      * \return A pointer to the Atoms object.
      */
     Atoms* atoms() const;
 
     /**
-     * \brief Parse a PDB file to populate the Graph.
+     * \brief Parse a PDB file to populate the Network.
      *
-     * Parses the specified PDB file to populate the Graph with Atom and Node objects.
+     * Parses the specified PDB file to populate the Network with Atom and Node objects.
      *
      * \param fname Path to the PDB file.
      */
     void parsePdb(const std::string& fname);
 
     /**
-     * \brief Parse a DCD file to populate the Graph.
+     * \brief Parse a DCD file to populate the Network.
      *
-     * Parses the specified DCD file to populate the Graph with node coordinates.
+     * Parses the specified DCD file to populate the Network with node coordinates.
      *
      * \param nodeCoordinates Path to the node coordinates file.
      * \param firstFrame Index of the first frame to consider.
@@ -117,18 +117,18 @@ public:
     void parseDcd(const std::string& nodeCoordinates, int firstFrame, int lastFrame);
 
     /**
-     * \brief Save the Graph as a JSON file.
+     * \brief Save the Network as a JSON file.
      *
-     * Saves the Graph as a JSON file.
+     * Saves the Network as a JSON file.
      *
      * \param jsonFile Path to the JSON file.
      */
     void save(const std::string& jsonFile);
 
     /**
-     * \brief Load a Graph from a JSON file.
+     * \brief Load a Network from a JSON file.
      *
-     * Loads a Graph from the specified JSON file.
+     * Loads a Network from the specified JSON file.
      *
      * \param jsonFile Path to the JSON file.
      */
@@ -144,7 +144,7 @@ public:
     void nodeCoordinates(const std::string& nodeCoordinatesFile);
 
 private:
-    friend nlohmann::adl_serializer<Graph*>;
+    friend nlohmann::adl_serializer<Network*>;
     std::vector<Node*> nodeAtomIndexVector_; // Vector of nodes.
     // The position of each node corresponds to the index of an Atom
     // in the Node.
