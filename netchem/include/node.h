@@ -125,7 +125,7 @@ public:
 private:
     friend nlohmann::adl_serializer<Node*>;
 
-    friend class Graph;
+    friend class Network;
 
     unsigned int _numAtoms; // Number of Atoms in the Node.
     std::vector<int> atomIndices_; // Indices of the Atoms in the Node.

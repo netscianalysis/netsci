@@ -2,6 +2,12 @@ import pytest
 import numpy as np
 import cuarray
 import netcalc
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def change_test_dir(request, monkeypatch):
+    monkeypatch.chdir(request.fspath.dirname)
 
 
 def test_MutualInformation2X1D_1000n4k09covGaussian_GpuCpu():

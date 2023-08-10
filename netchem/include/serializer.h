@@ -26,7 +26,7 @@
 #include "json/include/nlohmann/json.hpp"
 #include "atom.h"
 #include "node.h"
-#include "graph.h"
+#include "network.h"
 
 namespace nlohmann {
 
@@ -88,7 +88,7 @@ namespace nlohmann {
         );
     };
     template<>
-    struct adl_serializer<Graph *> {
+    struct adl_serializer<Network *> {
 
 
 #pragma clang diagnostic push
@@ -96,10 +96,10 @@ namespace nlohmann {
 
         static void to_json(
                 json &j,
-                Graph *graph
+                Network *graph
         );
 
-        static Graph *from_json(
+        static Network *from_json(
                 const json &j
         );
     };
