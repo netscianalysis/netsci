@@ -12,7 +12,7 @@ setup(
     install_requires=[],
     platforms=['Linux',
                'Unix', ],
-    python_requires="<=3.9",
+    python_requires=">=3.9",
     py_modules=[path + "/netcalc/netcalc"],
     packages=find_packages() + [''],
     zip_safe=False,
