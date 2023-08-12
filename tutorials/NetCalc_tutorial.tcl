@@ -61,5 +61,4 @@ proc sort_example {} {
 }
 
 
-sort_example
 
