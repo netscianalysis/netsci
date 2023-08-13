@@ -32,12 +32,14 @@ public:
      * \param topologyFile Path to the topology file.
      * \param firstFrame Index of the first frame to consider.
      * \param lastFrame Index of the last frame to consider.
+     * \param stride Stride between frames.
      */
     void init(
-            const std::string& trajectoryFile,
-            const std::string& topologyFile,
+            const std::string &trajectoryFile,
+            const std::string &topologyFile,
             int firstFrame,
-            int lastFrame
+            int lastFrame,
+            int stride=1
     );
 
     /**
@@ -110,11 +112,17 @@ public:
      *
      * Parses the specified DCD file to populate the Network with node coordinates.
      *
-     * \param nodeCoordinates Path to the node coordinates file.
+     * \param fname Path to the node coordinates file.
      * \param firstFrame Index of the first frame to consider.
      * \param lastFrame Index of the last frame to consider.
+     * \param stride Stride between frames.
      */
-    void parseDcd(const std::string& nodeCoordinates, int firstFrame, int lastFrame);
+    void parseDcd(
+            const std::string &nodeCoordinates,
+            int firstFrame,
+            int lastFrame,
+            int stride
+    );
 
     /**
      * \brief Save the Network as a JSON file.
