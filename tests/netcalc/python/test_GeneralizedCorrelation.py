@@ -1,6 +1,12 @@
 import numpy as np
 import cuarray
-import netcalc 
+import netcalc
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def change_test_dir(request, monkeypatch):
+    monkeypatch.chdir(request.fspath.dirname)
 
 
 def test_GeneralizedCorrelation_2X1D_1000n4k_GpuCpu():
@@ -249,7 +255,7 @@ def test_GeneralizedCorrelation_UsedCpuPlatform():
         n=n,
         xd=2,
         d=1,
-        platform=1,
+        platform=netcalc.CPU_PLATFORM,
     ) == 1
 
 
@@ -282,5 +288,5 @@ def test_GeneralizedCorrelation_UsedGpuPlatform():
         n=n,
         xd=2,
         d=1,
-        platform=0,
+        platform=netcalc.GPU_PLATFORM,
     ) == 0

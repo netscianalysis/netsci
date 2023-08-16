@@ -124,9 +124,9 @@ nlohmann::adl_serializer
 }
 
 void nlohmann::adl_serializer
-        <Graph *>::to_json(
+        <Network *>::to_json(
         json &j,
-        Graph *graph
+        Network *graph
 ) {
     /*
      *  std::vector<Node*> nodeAtomIndexVector_;
@@ -144,17 +144,17 @@ void nlohmann::adl_serializer
     };
 }
 
-Graph *
+Network *
 nlohmann::adl_serializer
-        <Graph *>::from_json(
+        <Network *>::from_json(
         const json &j
 ) {
-    Graph graph;
+    Network graph;
     graph.numFrames_ = j.at("numFrames_").get<int>();
     graph.numNodes_ = j.at("numNodes_").get<int>();
     graph.nodes_ = j.at("nodes_").get<std::vector<Node *>>();
     graph.nodeAtomIndexVector_ = j.at("nodeAtomIndexVector_").get<std::vector<Node *>>();
-    return new Graph(graph);
+    return new Network(graph);
 }
 
 

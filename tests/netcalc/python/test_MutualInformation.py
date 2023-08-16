@@ -1,7 +1,13 @@
 import pytest
 import numpy as np
 import cuarray
-import netcalc 
+import netcalc
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def change_test_dir(request, monkeypatch):
+    monkeypatch.chdir(request.fspath.dirname)
 
 
 def test_MutualInformation2X1D_1000n4k09covGaussian_GpuCpu():
@@ -146,3 +152,69 @@ def test_MutualInformation2X2D_2000n4k_GpuCpu():
         d=2,
     )
     assert mutualInformationGpu == mutualInformationCpu
+
+
+def test_MutualInformation_UsedCpuPlatform():
+    n = 1000
+    k = 4
+    X = cuarray.FloatCuArray()
+    X.init(2, n)
+    I = cuarray.FloatCuArray()
+    ab = cuarray.IntCuArray()
+    ab.init(1, 2)
+    ab.set(0, 0, 0)
+    ab.set(1, 0, 1)
+    x = 0.001
+    for i in range(n):
+        X.set(
+            float(np.sin(x)),
+            0, i,
+        )
+        X.set(
+            float(np.cos(x)),
+            1, i,
+        )
+        x += float(np.pi / n)
+    assert netcalc.mutualInformation(
+        X=X,
+        I=I,
+        ab=ab,
+        k=k,
+        n=n,
+        xd=2,
+        d=1,
+        platform=netcalc.CPU_PLATFORM,
+    ) == 1
+
+
+def test_MutualInformation_UsedGpuPlatform():
+    n = 1000
+    k = 4
+    X = cuarray.FloatCuArray()
+    X.init(2, n)
+    I = cuarray.FloatCuArray()
+    ab = cuarray.IntCuArray()
+    ab.init(1, 2)
+    ab.set(0, 0, 0)
+    ab.set(1, 0, 1)
+    x = 0.001
+    for i in range(n):
+        X.set(
+            float(np.sin(x)),
+            0, i,
+        )
+        X.set(
+            float(np.cos(x)),
+            1, i,
+        )
+        x += float(np.pi / n)
+    assert netcalc.mutualInformation(
+        X=X,
+        I=I,
+        ab=ab,
+        k=k,
+        n=n,
+        xd=2,
+        d=1,
+        platform=netcalc.GPU_PLATFORM,
+    ) == 0

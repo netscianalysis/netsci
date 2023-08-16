@@ -6,6 +6,7 @@
 #define MUTUAL_INFORMATION_SHARED_MEMORY_MUTUAL_INFORMATION_H
 
 #include "cuarray.h"
+#include "platform.h"
 
 namespace netcalc {
     /*!
