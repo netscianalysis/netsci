@@ -95,18 +95,6 @@ namespace netcalc {
     );
 
     /*!
-     * \brief Returns the number of nodes in the longest shortest path.
-     *
-     * \param paths Nx(N*k) matrix of shortest paths, where N is the number of nodes in the graph and k is
-     *              the number of nodes in the longest shortest path.
-     *
-     * \return The number of nodes in the longest shortest path.
-     */
-    int longestShortestPathNodeCount(
-            CuArray<int>* paths
-    );
-
-    /*!
      * \brief Returns the shortest path between node i and node j.
      *
      * \param paths     Nx(N*k) matrix of shortest paths, where N is the number of nodes in the graph and k is

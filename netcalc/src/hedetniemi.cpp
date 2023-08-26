@@ -37,10 +37,6 @@ void netcalc::correlationToAdjacency(
     }
 }
 
-int netcalc::longestShortestPathNodeCount(CuArray<int> *paths) {
-    int numNodes = paths->m();
-    return paths->n() / numNodes;
-}
 
 void netcalc::pathFromPathsCuArray(
         int **NUMPY_ARRAY,
@@ -49,7 +45,7 @@ void netcalc::pathFromPathsCuArray(
         int i,
         int j
 ) {
-    auto longestPath = netcalc::longestShortestPathNodeCount(paths);
+    auto longestPath = 5;
     *(NUMPY_ARRAY_DIM1) = new int[1];
     (*NUMPY_ARRAY_DIM1)[0] = 0;
     for (int k = 0; k < longestPath; k++) {
@@ -58,6 +54,10 @@ void netcalc::pathFromPathsCuArray(
         if (node != -1) {
             (*NUMPY_ARRAY_DIM1)[0] += 1;
         } else {
+            (*NUMPY_ARRAY_DIM1)[0] += 1;
+            paths->set(
+                    j, i, j*longestPath + k
+                    );
             break;
         }
     }
