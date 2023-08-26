@@ -2,7 +2,6 @@
 // Created by astokely on 5/10/23.
 //
 #include <numeric>
-#include <iostream>
 #include "hedetniemi.h"
 
 __global__ void foundAllShortestPathsKernel(
@@ -61,6 +60,7 @@ hedetniemiShortestPathsKernel(
         int *paths,
         int *nodeIdx,
         int n,
+        int maxPathLength,
         float tolerance
 ) {
     unsigned i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -69,9 +69,10 @@ hedetniemiShortestPathsKernel(
         int node = -1;
         int idx = nodeIdx[i * n + j];
         if (idx == 0) {
-            paths[i * n * 5 + j * 5 + idx] = i;
-            for (int _ = 1; _ < 5; _++) {
-                paths[i * n * 5 + j * 5 + _] = -1;
+            paths[i * n * maxPathLength + j * maxPathLength + idx] = i;
+            for (int _ = 1; _ < maxPathLength; _++) {
+                paths[i * n * maxPathLength + j * maxPathLength + _] =
+                        -1;
             }
             nodeIdx[i * n + j] += 1;
             idx += 1;
@@ -89,7 +90,8 @@ hedetniemiShortestPathsKernel(
             foundShortestPath[i * n + j] = 1;
         }
         else {
-            paths[i * n * 5 + j * 5 + idx] = node;
+            paths[i * n * maxPathLength + j * maxPathLength + idx] =
+                    node;
             nodeIdx[i * n + j] += 1;
         }
         H[i * n + j] = cij;
@@ -100,6 +102,7 @@ void netcalc::hedetniemiShortestPathsGpu(
         CuArray<float> *A,
         CuArray<float> *H,
         CuArray<int> *paths,
+        int maxPathLength,
         float tolerance
 ) {
     auto foundShortestPath = new CuArray<int>();
@@ -141,7 +144,7 @@ void netcalc::hedetniemiShortestPathsGpu(
     int foundShortestPathSize = numNodes * numNodes;
     paths->init(
             numNodes,
-            numNodes * 5
+            numNodes * maxPathLength
     );
     paths->allocateDevice();
     paths->toDevice();
@@ -154,6 +157,7 @@ void netcalc::hedetniemiShortestPathsGpu(
             &paths->device(),
             &nodeIdx->device(),
             &numNodes,
+            &maxPathLength,
             &tolerance,
     };
     void *foundAllShortestPathsKernelArgs[] = {

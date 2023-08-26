@@ -8,6 +8,7 @@ void netcalc::hedetniemiShortestPaths(
         CuArray<float> *H,
         CuArray<int> *paths,
         float tolerance,
+        int maxPathLength,
         int platform
 ) {
     H->init(A->m(),
@@ -16,6 +17,7 @@ void netcalc::hedetniemiShortestPaths(
         netcalc::hedetniemiShortestPathsGpu(A,
                                             H,
                                             paths,
+                                            maxPathLength,
                                             tolerance
         );
 
@@ -42,21 +44,21 @@ void netcalc::pathFromPathsCuArray(
         int **NUMPY_ARRAY,
         int **NUMPY_ARRAY_DIM1,
         CuArray<int> *paths,
+        int maxPathLength,
         int i,
         int j
 ) {
-    auto longestPath = 5;
     *(NUMPY_ARRAY_DIM1) = new int[1];
     (*NUMPY_ARRAY_DIM1)[0] = 0;
-    for (int k = 0; k < longestPath; k++) {
+    for (int k = 0; k < maxPathLength; k++) {
         auto node = paths->get(i,
-                               j * longestPath + k);
+                               j * maxPathLength + k);
         if (node != -1) {
             (*NUMPY_ARRAY_DIM1)[0] += 1;
         } else {
             (*NUMPY_ARRAY_DIM1)[0] += 1;
             paths->set(
-                    j, i, j*longestPath + k
+                    j, i, j*maxPathLength + k
                     );
             break;
         }
@@ -64,9 +66,9 @@ void netcalc::pathFromPathsCuArray(
     *NUMPY_ARRAY = new int[(*NUMPY_ARRAY_DIM1)[0]];
     std::copy(
             paths->host() + i * paths->n()
-            + j * longestPath,
+            + j * maxPathLength,
             paths->host() + i * paths->n()
-            + j * longestPath + (*NUMPY_ARRAY_DIM1)[0],
+            + j * maxPathLength + (*NUMPY_ARRAY_DIM1)[0],
             *NUMPY_ARRAY
     );
 }

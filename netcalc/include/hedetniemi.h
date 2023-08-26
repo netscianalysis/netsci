@@ -33,6 +33,7 @@ namespace netcalc {
             CuArray<float>* H,
             CuArray<int>* paths,
             float tolerance,
+            int maxPathLength,
             int platform
     );
 
@@ -57,6 +58,7 @@ namespace netcalc {
             CuArray<float>* A,
             CuArray<float>* H,
             CuArray<int>* paths,
+            int maxPathLength,
             float tolerance
     );
 
@@ -106,6 +108,7 @@ namespace netcalc {
             int** NUMPY_ARRAY,
             int** NUMPY_ARRAY_DIM1,
             CuArray<int>* paths,
+            int maxPathLength,
             int i,
             int j
     );
