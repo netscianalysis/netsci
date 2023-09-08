@@ -25,7 +25,17 @@ add_executable(
         ${NETCHEM_TEST_DIR}/NetworkStride3_test.cpp)
 add_dependencies(NetworkStride3_test netchem)
 set_target_properties(
-        NetworkStride3_test
+       NetworkStride3_test
+       PROPERTIES
+         LINK_LIBRARIES "${NETCHEM_TEST_LINK_LIBRARIES}"
+)
+
+add_executable(
+        NetworkStrideCoordinateEquality_test
+        ${NETCHEM_TEST_DIR}/NetworkStrideCoordinateEquality_test.cpp)
+add_dependencies(NetworkStrideCoordinateEquality_test netchem)
+set_target_properties(
+        NetworkStrideCoordinateEquality_test
         PROPERTIES
         LINK_LIBRARIES "${NETCHEM_TEST_LINK_LIBRARIES}"
 )
@@ -44,4 +54,15 @@ add_test(
         NAME NetworkStride3_numFrames
         COMMAND NetworkStride3_test --gtest_filter=*NetworkStride3_numFrames*
         WORKING_DIRECTORY ${NETCHEM_TEST_DIR}
+)
+add_test(
+        NAME NetworkStrideCoordinateEqualityStride1Stride2
+        COMMAND NetworkStrideCoordinateEquality_test --gtest_filter=*NetworkStrideCoordinateEqualityStride1Stride2*
+        WORKING_DIRECTORY ${NETCHEM_TEST_DIR}
+)
+add_test(
+        NAME NetworkStrideCoordinateEqualityStride1Stride3
+        COMMAND NetworkStrideCoordinateEquality_test --gtest_filter=*NetworkStrideCoordinateEqualityStride1Stride3*
+        WORKING_DIRECTORY ${NETCHEM_TEST_DIR}
+
 )

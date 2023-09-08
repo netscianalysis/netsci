@@ -2,7 +2,6 @@
 // Created by andy on 4/5/23.
 //
 #include <gtest/gtest.h>
-#include <cmath>
 #include "network.h"
 
 class NetworkTest : public ::testing::Test {
