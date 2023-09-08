@@ -33,11 +33,15 @@ void Network::init(
         int lastFrame,
         int stride
 ) {
-    this->numFrames_ = ((
-                                lastFrame
-                                - firstFrame
-                        )
-                        + 1) / stride;
+
+    int numFramesBeforeStride = ((
+                                         lastFrame
+                                         - firstFrame
+                                 )
+                                 + 1);
+    this->numFrames_ = (numFramesBeforeStride / stride) + (
+            numFramesBeforeStride % stride == 0 ? 0 : 1
+    );
     this->atoms_ = new Atoms();
     this->parsePdb(topologyFile);
     std::map<std::string, Node *> nodeTagNodeMap;

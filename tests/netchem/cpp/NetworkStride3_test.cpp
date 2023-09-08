@@ -18,8 +18,6 @@ protected:
         );
     }
 
-    Network networkStride1;
-    Network networkStride2;
     Network networkStride3;
 
 };
@@ -29,7 +27,7 @@ TEST_F(
         NetworkStride3_numFrames
 ) {
     EXPECT_EQ(
-            3,
+            4,
             networkStride3.numFrames()
     );
 }

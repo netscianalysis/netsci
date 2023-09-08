@@ -44,8 +44,10 @@ TEST_F(
     for (int i = 0; i < 290; i++) {
         for (int j = 0; j < 15; j++) {
             EXPECT_EQ(
-                    networkStride1.nodeCoordinates()->get(i, 2*j),
-                    networkStride2.nodeCoordinates()->get(i, j)
+                    networkStride1.nodeCoordinates()->get(i,
+                                                          2 * j),
+                    networkStride2.nodeCoordinates()->get(i,
+                                                          j)
             );
         }
     }
@@ -56,12 +58,78 @@ TEST_F(
         NetworkStrideCoordinateEqualityStride1Stride3
 ) {
     for (int i = 0; i < 290; i++) {
-        for (int j = 0; j < 9; j++) {
-            EXPECT_EQ(
-                    networkStride1.nodeCoordinates()->get(i, 3*j),
-                    networkStride3.nodeCoordinates()->get(i, j)
-            );
-        }
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      0),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      0)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      10),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      4)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      20),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      8)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      3),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      1)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      13),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      5)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      23),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      9)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      6),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      2)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      16),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      6)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      26),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      10)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      9),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      3)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      19),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      7)
+        );
+        EXPECT_EQ(
+                networkStride1.nodeCoordinates()->get(i,
+                                                      29),
+                networkStride3.nodeCoordinates()->get(i,
+                                                      11)
+        );
     }
 }
 
