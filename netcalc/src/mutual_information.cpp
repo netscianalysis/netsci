@@ -26,6 +26,7 @@ int netcalc::mutualInformation(
     ab->save(
             checkpointFileName + "_ab.npy"
     );
+    I->init(
             1,
             ab->m()
     );
