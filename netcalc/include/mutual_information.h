@@ -35,6 +35,39 @@ namespace netcalc {
     );
 
     /*!
+     * \brief Computes the mutual information between all pairs of random variables listed in 'ab'.
+     *
+     * \param X       Mx(d*N) matrix of M d-dimensional random variables with N samples.
+     * \param I       Vector that stores the mutual information between pairs of random variables listed in 'ab'.
+     * \param ab      Vector of pairs of random variables for which mutual information is computed.
+     * \param k       K value used in mutual information calculation.
+     * \param n       Number of samples.
+     * \param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
+     * \param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
+     * \param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
+     * \param checkpointFrequency Saves the intermediate results
+     * after every 'checkpointFrequency' number of iterations.
+     * \param checkpointFileName The filename to save the
+     * intermediate results. The filename is suffixed with the last
+     * ab node pair index the mutual information was calculated for.
+     *
+     * \return 0 if successful, 1 otherwise.
+     */
+
+    int mutualInformation(
+            CuArray<float>* X,
+            CuArray<float>* I,
+            CuArray<int>* ab,
+            int k,
+            int n,
+            int xd,
+            int d,
+            int platform,
+            int checkpointFrequency,
+            std::string checkpointFileName
+    );
+
+    /*!
      * \brief Computes the mutual information between two random variables Xa and Xb on the GPU.
      *
      * \param Xa  CuArray representing the first random variable.

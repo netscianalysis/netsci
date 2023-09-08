@@ -2,6 +2,7 @@ from .netcalc import mutualInformation
 from .netcalc import mutualInformationGpu
 from .netcalc import mutualInformationCpu
 from .netcalc import generalizedCorrelation
+from .netcalc import generalizedCorrelationWithCheckpointing
 from .netcalc import generalizedCorrelationGpu
 from .netcalc import generalizedCorrelationCpu
 from .netcalc import hedetniemiShortestPaths
@@ -14,7 +15,5 @@ from .netcalc import longestShortestPathNodeCount
 from .netcalc import pathFromPathsCuArray
 from .netcalc import GPU_PLATFORM
 from .netcalc import CPU_PLATFORM
-
-
 
 
