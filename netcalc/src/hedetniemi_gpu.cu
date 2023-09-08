@@ -2,35 +2,10 @@
 // Created by astokely on 5/10/23.
 //
 #include <numeric>
+#include <limits>
+#include <iostream>
 #include "hedetniemi.h"
 
-__global__ void foundAllShortestPathsKernel(
-        const int *foundShortestPath,
-        int *foundAllShortestPaths,
-        int n
-) {
-    unsigned int tid = blockIdx.x * blockDim.x + threadIdx.x;
-    unsigned int index = tid;
-    __shared__ int s_foundAllShortestPaths[1024];
-    s_foundAllShortestPaths[tid] = 0;
-    __syncthreads();
-    while (index < n) {
-        s_foundAllShortestPaths[tid] += foundShortestPath[index];
-        index += blockDim.x;
-    }
-    __syncthreads();
-    for (unsigned int s = blockDim.x / 2; s > 0; s >>= 1) {
-        if (tid < s) {
-            s_foundAllShortestPaths[tid] += s_foundAllShortestPaths[
-                    tid + s];
-        }
-        __syncthreads();
-    }
-    __syncthreads();
-    if (tid == 0) {
-        foundAllShortestPaths[0] = s_foundAllShortestPaths[0];
-    }
-}
 
 __global__
 
@@ -52,74 +27,86 @@ void correlationToAdjacencyKernel(
     }
 }
 
-__global__ void
-hedetniemiShortestPathsKernel(
+__global__ void hedetniemiAllShortestPathLengthsKernel(
         const float *A,
         float *H,
-        int *foundShortestPath,
-        int *paths,
-        int *nodeIdx,
-        int n,
-        int maxPathLength,
-        float tolerance
+        int n
 ) {
     unsigned i = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned j = blockIdx.y * blockDim.y + threadIdx.y;
     if (i < n && j < n) {
-        int node = -1;
-        int idx = nodeIdx[i * n + j];
-        if (idx == 0) {
-            paths[i * n * maxPathLength + j * maxPathLength + idx] = i;
-            for (int _ = 1; _ < maxPathLength; _++) {
-                paths[i * n * maxPathLength + j * maxPathLength + _] =
-                        -1;
-            }
-            nodeIdx[i * n + j] += 1;
-            idx += 1;
-        }
-
         float cij = INFINITY;
         for (int k = 0; k < n; k++) {
             auto AikHkjSum = A[j * n + k] + H[k * n + i];
             if (AikHkjSum < cij) {
                 cij = AikHkjSum;
-                node = k;
             }
-        }
-        if (std::fabs(cij - H[i * n + j]) < tolerance) {
-            foundShortestPath[i * n + j] = 1;
-        }
-        else {
-            paths[i * n * maxPathLength + j * maxPathLength + idx] =
-                    node;
-            nodeIdx[i * n + j] += 1;
         }
         H[i * n + j] = cij;
     }
 }
 
-void netcalc::hedetniemiShortestPathsGpu(
+__global__ void
+hedetniemiAllShortestPathsPart1Kernel(
+        const float *A,
+        float *H,
+        float *Hi,
+        int n,
+        int maxPathLength,
+        int p
+) {
+    unsigned i = blockIdx.x * blockDim.x + threadIdx.x;
+    unsigned j = blockIdx.y * blockDim.y + threadIdx.y;
+    if (i < n && j < n) {
+        float cij = INFINITY;
+        for (int k = 0; k < n; k++) {
+            auto AikHkjSum = A[j * n + k] + H[k * n + i];
+            if (AikHkjSum < cij + .0001) {
+                cij = AikHkjSum;
+            }
+        }
+        Hi[p * n * n + i * n + j] = H[i * n + j];
+        H[i * n + j] = cij;
+    }
+}
+
+__global__ void hedetniemiAllShortestPathsKernelPart2(
+        const float *H,
+        const float *Hi,
+        const float *A,
+        int *paths,
+        int n,
+        int maxPathLength
+) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int j = blockIdx.y * blockDim.y + threadIdx.y;
+
+    if (i < n && j < n) {
+        float length = H[i * n + j];
+        int kj = j;
+        for (int p = 0; p < maxPathLength; p++) {
+            for (int k = 0; k < n; k++) {
+                float a = A[k * n + kj];
+                float h = Hi[n * n * (maxPathLength - 2 - p) + i * n +
+                             k];
+                if (k != kj) {
+                    if (std::fabs(a + h - length) < .0001) {
+                        paths[i * n * maxPathLength + p * n + j] = k;
+                        length = h;
+                        kj = k;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void netcalc::hedetniemiAllShortestPathLengthsGpu(
         CuArray<float> *A,
         CuArray<float> *H,
-        CuArray<int> *paths,
-        int maxPathLength,
-        float tolerance
+        int maxPathLength
 ) {
-    auto foundShortestPath = new CuArray<int>();
-    foundShortestPath->init(A->m(),
-                            A->n());
-    foundShortestPath->allocateDevice();
-    foundShortestPath->toDevice();
-    auto nodeIdx = new CuArray<int>();
-    nodeIdx->init(A->m(),
-                  A->n());
-    nodeIdx->allocateDevice();
-    nodeIdx->toDevice();
-    auto foundAllShortestPaths = new CuArray<int>();
-    foundAllShortestPaths->init(1,
-                                1);
-    foundAllShortestPaths->allocateDevice();
-    foundAllShortestPaths->toDevice();
     H->fromCuArrayDeepCopy(
             A,
             0,
@@ -128,10 +115,8 @@ void netcalc::hedetniemiShortestPathsGpu(
             A->n()
     );
     int numNodes = A->n();
-    if (!A->allocateDevice()) {
-        A->allocateDevice();
-        A->toDevice();
-    }
+    A->allocateDevice();
+    A->toDevice();
     H->allocateDevice();
     H->toDevice();
     int threadsPerBlock = 16;
@@ -141,49 +126,96 @@ void netcalc::hedetniemiShortestPathsGpu(
                threadsPerBlock);
     dim3 grid(blocksPerGrid,
               blocksPerGrid);
-    int foundShortestPathSize = numNodes * numNodes;
-    paths->init(
-            numNodes,
-            numNodes * maxPathLength
-    );
-    paths->allocateDevice();
-    paths->toDevice();
-    paths->allocateDevice();
-    paths->toDevice();
-    void *hedetniemiShortestPathsKernelArgs[] = {
+    void *hedetniemiAllShortestPathLengthsKernelArgs[] = {
             &A->device(),
             &H->device(),
-            &foundShortestPath->device(),
-            &paths->device(),
-            &nodeIdx->device(),
-            &numNodes,
-            &maxPathLength,
-            &tolerance,
+            &numNodes
     };
-    void *foundAllShortestPathsKernelArgs[] = {
-            &foundShortestPath->device(),
-            &foundAllShortestPaths->device(),
-            &foundShortestPathSize,
-    };
-    while (foundAllShortestPaths->get(0,
-                                      0) < numNodes * numNodes) {
-        cudaLaunchKernel((void *) hedetniemiShortestPathsKernel,
+    for (int p = 0; p < maxPathLength; p++) {
+        cudaLaunchKernel((void *) hedetniemiAllShortestPathLengthsKernel,
                          grid,
                          block,
-                         hedetniemiShortestPathsKernelArgs
+                         hedetniemiAllShortestPathLengthsKernelArgs
         );
-        cudaLaunchKernel((void *) foundAllShortestPathsKernel,
-                         1,
-                         1024,
-                         foundAllShortestPathsKernelArgs
-        );
-        foundAllShortestPaths->toHost();
     }
     H->toHost();
+}
+
+void netcalc::hedetniemiAllShortestPathsGpu(
+        CuArray<float> *A,
+        CuArray<float> *H,
+        CuArray<int> *paths,
+        int maxPathLength
+) {
+    H->fromCuArrayDeepCopy(
+            A,
+            0,
+            A->m() - 1,
+            A->m(),
+            A->n()
+    );
+    auto Hi = new CuArray<float>;
+    Hi->init(
+            A->m() * maxPathLength,
+            A->n()
+    );
+    Hi->allocateDevice();
+    Hi->toDevice();
+    int numNodes = A->n();
+    A->allocateDevice();
+    A->toDevice();
+    H->allocateDevice();
+    H->toDevice();
+    int threadsPerBlock = 16;
+    int blocksPerGrid =
+            (numNodes + threadsPerBlock - 1) / threadsPerBlock;
+    dim3 block(threadsPerBlock,
+               threadsPerBlock);
+    dim3 grid(blocksPerGrid,
+              blocksPerGrid);
+    paths->init(
+            numNodes * maxPathLength,
+            numNodes
+    );
+    for (int _ = 0; _ < paths->size(); _++) {
+        paths->host()[_] = -1;
+    }
+    paths->allocateDevice();
+    paths->toDevice();
+    for (int p = 0; p < maxPathLength; p++) {
+        void *hedetniemiAllShortestPathsPart1KernelArgs[] = {
+                &A->device(),
+                &H->device(),
+                &Hi->device(),
+                &numNodes,
+                &maxPathLength,
+                &p
+        };
+        cudaLaunchKernel((void *) hedetniemiAllShortestPathsPart1Kernel,
+                         grid,
+                         block,
+                         hedetniemiAllShortestPathsPart1KernelArgs
+        );
+    }
+    void *hedetniemiAllShortestPathsPart2KernelArgs[] = {
+            &H->device(),
+            &Hi->device(),
+            &A->device(),
+            &paths->device(),
+            &numNodes,
+            &maxPathLength
+    };
+    cudaLaunchKernel((void *) hedetniemiAllShortestPathsKernelPart2,
+                     grid,
+                     block,
+                     hedetniemiAllShortestPathsPart2KernelArgs
+    );
+    H->toHost();
     paths->toHost();
-    delete foundShortestPath;
-    delete foundAllShortestPaths;
-    delete nodeIdx;
+    A->deallocateDevice();
+    H->deallocateDevice();
+    paths->deallocateDevice();
+    delete Hi;
 }
 
 void netcalc::correlationToAdjacencyGpu(
