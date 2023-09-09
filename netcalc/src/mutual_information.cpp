@@ -2,6 +2,7 @@
 // Created by andy on 4/11/23.
 //
 #include <iostream>
+#include <regex>
 #include "mutual_information.h"
 
 int netcalc::mutualInformation(
@@ -168,4 +169,33 @@ int netcalc::mutualInformation(
         delete Xb;
     }
     return platform;
+}
+
+void netcalc::generateRestartAbFromCheckpointFile(
+        CuArray<int> *ab,
+        CuArray<int> *restartAb,
+        const std::string &checkpointFileName
+) {
+    size_t lastSlashPos = checkpointFileName.find_last_of('/');
+    int lastAbIndex;
+    if (lastSlashPos != std::string::npos) {
+        // Extract the file name from the path
+        std::string fileName = checkpointFileName.substr(
+                lastSlashPos + 1);
+        size_t lastUnderscorePos = fileName.find_last_of('_');
+        std::string lastAbIndexStr = fileName.substr(lastUnderscorePos + 1);
+        lastAbIndex = std::stoi(lastAbIndexStr);
+    }
+    else {
+        size_t lastUnderscorePos = checkpointFileName.find_last_of('_');
+        std::string lastAbIndexStr = checkpointFileName.substr(lastUnderscorePos + 1);
+        lastAbIndex = std::stoi(lastAbIndexStr);
+    }
+    restartAb->fromCuArrayDeepCopy(
+            ab,
+            lastAbIndex + 1,
+            ab->m() - 1,
+            ab->m() - lastAbIndex - 1,
+            2
+    );
 }

@@ -109,6 +109,12 @@ set(
         gtest
 )
 
+set(
+        NETCALC_SCRATCH_LINK_LIBRARIES
+        "${NETCALC_LINK_LIBRARIES}"
+        netcalc
+)
+
 #Libraries netchem is linked against
 set(
         NETCHEM_LINK_LIBRARIES

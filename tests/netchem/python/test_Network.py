@@ -1,64 +1,64 @@
+import os
+
 import pytest
 from pathlib import Path
 
 import netchem
-
-DCD_FILE = str(Path("../cpp/data/test.dcd").absolute())
-PDB_FILE = str(Path("../cpp/data/test.pdb").absolute())
-FIRST_FRAME = 0
-LAST_FRAME = 9
-
-
-@pytest.fixture(autouse=True)
-def change_test_dir(request, monkeypatch):
-    monkeypatch.chdir(request.fspath.dirname)
+import cuarray
 
 
 @pytest.fixture(scope="module")
-def Stride1Network():
+def global_network_parameters():
+    trajectoryFile = None
+    topologyFile = None
+    for f in netchem.data_files(key="test").glob("*"):
+        if f.name == 'test.dcd':
+            trajectoryFile = str(f)
+        elif f.name == 'test.pdb':
+            topologyFile = str(f)
+    return dict(
+        trajectoryFile=trajectoryFile,
+        topologyFile=topologyFile,
+        firstFrame=0,
+        lastFrame=9,
+    )
+
+
+@pytest.fixture(scope="module")
+def Stride1Network(global_network_parameters):
     network = netchem.Network()
     network.init(
-        trajectoryFile=DCD_FILE,
-        topologyFile=PDB_FILE,
-        firstFrame=FIRST_FRAME,
-        lastFrame=LAST_FRAME,
+        **global_network_parameters,
         stride=1,
     )
     return network
 
+
 @pytest.fixture(scope="module")
-def Stride2Network():
+def Stride2Network(global_network_parameters):
     network = netchem.Network()
     network.init(
-        trajectoryFile=DCD_FILE,
-        topologyFile=PDB_FILE,
-        firstFrame=FIRST_FRAME,
-        lastFrame=LAST_FRAME,
+        **global_network_parameters,
         stride=2,
     )
     return network
 
+
 @pytest.fixture(scope="module")
-def Stride3Network():
+def Stride3Network(global_network_parameters):
     network = netchem.Network()
     network.init(
-        trajectoryFile=DCD_FILE,
-        topologyFile=PDB_FILE,
-        firstFrame=FIRST_FRAME,
-        lastFrame=LAST_FRAME,
+        **global_network_parameters,
         stride=3,
     )
     return network
 
 
 @pytest.fixture(scope="module")
-def Network():
+def Network(global_network_parameters):
     network = netchem.Network()
     network.init(
-        trajectoryFile=DCD_FILE,
-        topologyFile=PDB_FILE,
-        firstFrame=FIRST_FRAME,
-        lastFrame=LAST_FRAME,
+        **global_network_parameters,
     )
     return network
 
@@ -77,7 +77,7 @@ def test_Stride2CoordinateEquality(Stride2Network, Network):
         for j in range(15):
             assert (
                     Stride2Network.nodeCoordinates()[i][j]
-                    == Network.nodeCoordinates()[i][2*j]
+                    == Network.nodeCoordinates()[i][2 * j]
             )
 
 
@@ -98,17 +98,14 @@ def test_Stride3CoordinateEquality(Stride3Network, Network):
         for j in range(1, 4):
             assert (
                     Stride3Network.nodeCoordinates()[i][j]
-                    == Network.nodeCoordinates()[i][3*j]
+                    == Network.nodeCoordinates()[i][3 * j]
             )
             assert (
-                    Stride3Network.nodeCoordinates()[i][j+4]
-                    == Network.nodeCoordinates()[i][3*j+10]
+                    Stride3Network.nodeCoordinates()[i][j + 4]
+                    == Network.nodeCoordinates()[i][3 * j + 10]
             )
             assert (
-                    Stride3Network.nodeCoordinates()[i][j+8]
-                    == Network.nodeCoordinates()[i][3*j+20]
+                    Stride3Network.nodeCoordinates()[i][j + 8]
+                    == Network.nodeCoordinates()[i][3 * j + 20]
             )
-
-
-
 

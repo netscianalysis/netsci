@@ -13,12 +13,17 @@ setup(
         platforms=['Linux',
                    'Unix', ],
         python_requires="<=3.9",
-        py_modules=[path + "/netchem/netchem"],
+        py_modules=[
+                path + "/netchem/netchem",
+                path + "/netchem/data",
+        ],
         packages=find_packages() + [''],
         zip_safe=False,
         package_data={
                 '': [
-                        path + '/netchem/_python_netchem.so'
-                ]
+                        path + '/netchem/_python_netchem.so',
+                        path + '/netchem/data/test.tar.gz',
+                        path + '/netchem/data/pyro.tar.gz',
+                ],
         },
 )
