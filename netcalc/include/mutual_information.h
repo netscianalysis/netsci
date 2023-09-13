@@ -68,6 +68,38 @@ namespace netcalc {
     );
 
     /*!
+     * \brief Restarts a mutual information calculation from a checkpoint file.
+     *
+     * \param X       Mx(d*N) matrix of M d-dimensional random variables with N samples.
+     * \param I       Vector that stores the mutual information between pairs of random variables listed in 'ab'.
+     * \param ab      Vector of pairs of random variables for which mutual information is computed.
+     * \param k       K value used in mutual information calculation.
+     * \param n       Number of samples.
+     * \param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
+     * \param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
+     * \param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
+     * \param checkpointFileName The filename to save the
+     * intermediate results. The filename is suffixed with the last
+     * ab node pair index the mutual information was calculated for.
+     *
+     * \return 0 if successful, 1 otherwise.
+     */
+
+    int mutualInformation(
+            CuArray<float> *X,
+            CuArray<float> *I,
+            int k,
+            int n,
+            int xd,
+            int d,
+            int platform,
+            int checkpointFrequency,
+            std::string checkpointFileName,
+            const std::string &restartIFileName,
+            const std::string &restartAbFileName
+    );
+
+    /*!
      * \brief Computes the mutual information between two random variables Xa and Xb on the GPU.
      *
      * \param Xa  CuArray representing the first random variable.
@@ -112,7 +144,7 @@ namespace netcalc {
 
     /*!
      * \brief Creates an ab array of nodes that still need to have
-     * their mutual information/generalized correlation calculated,
+    * their mutual information/generalized correlation calculated,
      * using a mutualInformation
      * or generalizedCorrelation checkpoint file.
      * @param ab Original ab array.
@@ -120,7 +152,7 @@ namespace netcalc {
      * their mutual information/generalized correlation calculated.
      * @param checkpointFileName The name of the checkpoint file.
      */
-    void generateRestartAbFromCheckpointFile(
+    int generateRestartAbFromCheckpointFile(
             CuArray<int> *ab,
             CuArray<int> *restartAb,
             const std::string& checkpointFileName

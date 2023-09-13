@@ -103,6 +103,112 @@ int netcalc::mutualInformation(
 int netcalc::mutualInformation(
         CuArray<float> *X,
         CuArray<float> *I,
+        int k,
+        int n,
+        int xd,
+        int d,
+        int platform,
+        int checkpointFrequency,
+        std::string checkpointFileName,
+        const std::string &restartIFileName,
+        const std::string &restartAbFileName
+) {
+    if (checkpointFileName.size() > 4 && checkpointFileName.substr
+            (checkpointFileName
+                     .size() - 4,
+             4) == ".npy")
+        checkpointFileName = checkpointFileName.substr(0,
+                                                       checkpointFileName.size() -
+                                                       4);
+    auto ab = new CuArray<int>;
+    ab->load(
+            restartAbFileName
+    );
+    I->load(
+            restartIFileName
+    );
+    auto restartAb = new CuArray<int>;
+    int restartIndex = netcalc::generateRestartAbFromCheckpointFile(
+            ab,
+            restartAb,
+            restartIFileName
+    );
+
+    for (int i = 0; i < restartAb->m(); i++) {
+        int a = restartAb->get(i,
+                        0);
+        int b = restartAb->get(i,
+                               1);
+        auto Xa = new CuArray<float>;
+        auto Xb = new CuArray<float>;
+        Xa->fromCuArrayShallowCopy(
+                X,
+                a,
+                a,
+                1,
+                X->n()
+        );
+        Xb->fromCuArrayShallowCopy(
+                X,
+                b,
+                b,
+                1,
+                X->n()
+        );
+        if (platform == 0)
+            I->set(
+                    netcalc::mutualInformationGpu(
+                            Xa,
+                            Xb,
+                            k,
+                            n,
+                            xd,
+                            d
+                    ),
+                    0,
+                    restartIndex
+            );
+        else if (platform == 1)
+            I->set(
+                    netcalc::mutualInformationCpu(
+                            Xa,
+                            Xb,
+                            k,
+                            n,
+                            xd,
+                            d
+                    ),
+                    0,
+                    restartIndex
+            );
+        else {
+            throw std::runtime_error("Invalid platform");
+        }
+        if (restartIndex % checkpointFrequency == 0) {
+            std::remove(
+                    (checkpointFileName + "_" +
+                     std::to_string(restartIndex - checkpointFrequency)
+                     + ""
+                       ".npy").c_str()
+            );
+            I->save(
+                    checkpointFileName + "_" + std::to_string(restartIndex) + ""
+                                                                   ".npy"
+            );
+        }
+        restartIndex++;
+        delete Xa;
+        delete Xb;
+    }
+    delete ab;
+    delete restartAb;
+    return platform;
+}
+
+
+int netcalc::mutualInformation(
+        CuArray<float> *X,
+        CuArray<float> *I,
         CuArray<int> *ab,
         int k,
         int n,
@@ -171,7 +277,7 @@ int netcalc::mutualInformation(
     return platform;
 }
 
-void netcalc::generateRestartAbFromCheckpointFile(
+int netcalc::generateRestartAbFromCheckpointFile(
         CuArray<int> *ab,
         CuArray<int> *restartAb,
         const std::string &checkpointFileName
@@ -198,4 +304,5 @@ void netcalc::generateRestartAbFromCheckpointFile(
             ab->m() - lastAbIndex - 1,
             2
     );
+    return lastAbIndex;
 }
