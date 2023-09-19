@@ -8,6 +8,9 @@ set(CONDA_DIR "" CACHE PATH "Path to conda environment")
 
 set(CUDA_ARCHITECTURE "52" CACHE STRING "CUDA architecture to compile for. Set this equal to a valid CUDA architecture less than or equal to 10X the compute capability of your GPU.")
 
+set(BUILD_PYTHON_BINDINGS ON CACHE BOOL "Build python bindings for cuarray, netcalc, and netchem")
+set(BUILD_TCL_BINDINGS OFF CACHE BOOL "Build tcl bindings for cuarray")
+
 #CMake build type defaults to Release
 set(CMAKE_BUILD_TYPE Release)
 
@@ -35,6 +38,9 @@ find_package(SWIG REQUIRED)
 #Path to "UseSWIG.cmake" file
 include(${SWIG_USE_FILE})
 
+#Make sure ZLIB is installed
+find_package(ZLIB REQUIRED)
+
 #Global include directories used by all build targets
 set(
         INCLUDE_DIRS
@@ -54,7 +60,7 @@ include_directories("${INCLUDE_DIRS}")
 #Libraries cnpy is linked against
 set(
         CNPY_LINK_LIBRARIES
-        ${CONDA_DIR}/lib/libz.so
+        ${ZLIB_LIBRARIES}
 )
 
 #Libraries cuarray is linked against
@@ -70,7 +76,7 @@ set(
         CUARRAY_PYTHON_LINK_LIBRARIES
         "${CUARRAY_LINK_LIBRARIES}"
         cuarray
-        )
+)
 #Libraries the tcl cuarray swig module is linked against
 set(
         CUARRAY_TCL_LINK_LIBRARIES
@@ -78,7 +84,7 @@ set(
         cuarray
 )
 #Libraries the cuarray tests are linked against
-set (
+set(
         CUARRAY_TEST_LINK_LIBRARIES
         "${CUARRAY_LINK_LIBRARIES}"
         cuarray
@@ -99,11 +105,17 @@ set(
         netcalc
 )
 #Libraries the netcalc tests are linked against
-set (
+set(
         NETCALC_TEST_LINK_LIBRARIES
         "${NETCALC_LINK_LIBRARIES}"
         netcalc
         gtest
+)
+
+set(
+        NETCALC_SCRATCH_LINK_LIBRARIES
+        "${NETCALC_LINK_LIBRARIES}"
+        netcalc
 )
 
 #Libraries netchem is linked against
@@ -122,11 +134,17 @@ set(
 )
 
 #Libraries the netchem tests are linked against
-set (
+set(
         NETCHEM_TEST_LINK_LIBRARIES
         "${NETCHEM_LINK_LIBRARIES}"
         netchem
         gtest
+)
+
+set(
+        NETCHEM_SCRATCH_LINK_LIBRARIES
+        "${NETCHEM_LINK_LIBRARIES}"
+        netchem
 )
 
 #Add cnpy src directory to the build
@@ -142,7 +160,9 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/netchem)
 enable_testing()
 #add tests directory to the build
 add_subdirectory(${CMAKE_SOURCE_DIR}/tests)
-add_custom_target(
-        python
-	DEPENDS PythonCuArrayInstall PythonNetCalcInstall PythonNetChemInstall
-)
+if (${BUILD_PYTHON_BINDINGS})
+    add_custom_target(
+            python
+            DEPENDS PythonCuArrayInstall PythonNetCalcInstall PythonNetChemInstall
+    )
+endif ()

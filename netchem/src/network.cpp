@@ -30,13 +30,18 @@ void Network::init(
         const std::string &trajectoryFile,
         const std::string &topologyFile,
         int firstFrame,
-        int lastFrame
+        int lastFrame,
+        int stride
 ) {
-    this->numFrames_ = (
-                               lastFrame
-                               - firstFrame
-                       )
-                       + 1;
+
+    int numFramesBeforeStride = ((
+                                         lastFrame
+                                         - firstFrame
+                                 )
+                                 + 1);
+    this->numFrames_ = (numFramesBeforeStride / stride) + (
+            numFramesBeforeStride % stride == 0 ? 0 : 1
+    );
     this->atoms_ = new Atoms();
     this->parsePdb(topologyFile);
     std::map<std::string, Node *> nodeTagNodeMap;
@@ -45,7 +50,8 @@ void Network::init(
     for (auto atom: this->atoms_->atoms()) {
         auto emplace_pair = nodeTagNodeMap.emplace(
                 atom->tag(),
-                new Node(this->numFrames_, nodeTagNodeMap.size())
+                new Node(this->numFrames_,
+                         nodeTagNodeMap.size())
         );
         emplace_pair.first->second->_tag = atom->tag();
         emplace_pair.first->second->atoms_.push_back(atom);
@@ -64,8 +70,8 @@ void Network::init(
     parseDcd(
             trajectoryFile,
             firstFrame,
-            lastFrame
-    );
+            lastFrame,
+            stride);
 }
 
 int Network::numNodes() const {
@@ -92,7 +98,12 @@ Atoms *Network::atoms() const {
     return this->atoms_;
 }
 
-void Network::parseDcd(const std::string &fname, int firstFrame, int lastFrame) {
+void Network::parseDcd(
+        const std::string &fname,
+        int firstFrame,
+        int lastFrame,
+        int stride
+) {
     int numAtoms;
     int totalNumFrames = 0;
     dcdhandle *dcd = open_dcd_read(
@@ -136,13 +147,21 @@ void Network::parseDcd(const std::string &fname, int firstFrame, int lastFrame) 
                 frame + 2 * numFrames
         ) + z[atomIndex] * atoms->at(atomIndex)->mass();
         nodeCoordinates->set(
-                nodeX, nodeIndex, frame
+                nodeX,
+                nodeIndex,
+                frame
         );
         nodeCoordinates->set(
-                nodeY, nodeIndex, frame + numFrames
+                nodeY,
+                nodeIndex,
+                frame + numFrames
         );
-        nodeCoordinates->set(nodeZ, nodeIndex, frame + 2 * numFrames);
-        if (frame == numFrames - 1 && nodeAtomIndexVector.at(atomIndex)->atoms_.back()->index() == atomIndex) {
+        nodeCoordinates->set(nodeZ,
+                             nodeIndex,
+                             frame + 2 * numFrames);
+        if (frame == numFrames - 1 &&
+            nodeAtomIndexVector.at(atomIndex)->atoms_.back()->index() ==
+            atomIndex) {
             for (auto frameIndex: boost::irange(numFrames)) {
                 nodeX = nodeCoordinates->get(
                         nodeIndex,
@@ -195,9 +214,9 @@ void Network::parseDcd(const std::string &fname, int firstFrame, int lastFrame) 
                             capture1 = dcd->y,
                             capture2 = dcd->z,
                             capture3 = (
-                                    dcd->setsread
-                                    - 1
-                                    - firstFrame
+                                    (dcd->setsread
+                                     - 1
+                                     - firstFrame) / stride
                             ),
                             capture4 = this->numFrames_,
                             capture5 = this->nodeAtomIndexVector_,
@@ -220,6 +239,15 @@ void Network::parseDcd(const std::string &fname, int firstFrame, int lastFrame) 
                         );
                     }
             );
+            if (stride > 1) {
+                for (int s = 0; s < stride - 1; s++) {
+                    read_next_timestep(
+                            dcd,
+                            numAtoms,
+                            &ts
+                    );
+                }
+            }
         }
     }
     close_file_read(dcd);
@@ -273,7 +301,7 @@ void Network::load(const std::string &jsonFile) {
 }
 
 void Network::nodeCoordinates(
-        const std::string& nodeCoordinatesFile
+        const std::string &nodeCoordinatesFile
 ) {
     delete this->nodeCoordinates_;
     this->nodeCoordinates_ = new CuArray<float>(

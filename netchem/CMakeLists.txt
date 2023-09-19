@@ -7,7 +7,7 @@ set(CLEAN_FILES_AND_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/python/netchem/*.so*
         ${CMAKE_CURRENT_SOURCE_DIR}/python/netchem/netchem.py
         ${CMAKE_CURRENT_SOURCE_DIR}/python/netchem/*.cxx*
-        )
+)
 set_directory_properties(
         PROPERTIES
         ADDITIONAL_CLEAN_FILES "${CLEAN_FILES_AND_DIRS}"
@@ -28,7 +28,7 @@ add_library(netchem SHARED
         ${CMAKE_CURRENT_SOURCE_DIR}/src/node.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/network.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/atoms.cpp
-        )
+)
 add_dependencies(netchem cuarray)
 set_target_properties(
         netchem
@@ -36,23 +36,35 @@ set_target_properties(
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib
         LINK_LIBRARIES "${NETCHEM_LINK_LIBRARIES}"
 )
-swig_add_library(python_netchem
-        LANGUAGE python
-        OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/python/netchem
-        SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/swig/python_netchem.i
-        )
-set_target_properties(
-        python_netchem
-        PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/netchem
-        LINK_LIBRARIES "${NETCHEM_PYTHON_LINK_LIBRARIES}"
-)
+if (${BUILD_PYTHON_BINDINGS})
+    swig_add_library(python_netchem
+            LANGUAGE python
+            OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/python/netchem
+            SOURCES
+            ${CMAKE_CURRENT_SOURCE_DIR}/swig/python_netchem.i
+    )
+    set_target_properties(
+            python_netchem
+            PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/netchem
+            LINK_LIBRARIES "${NETCHEM_PYTHON_LINK_LIBRARIES}"
+    )
 
-set(PIP_UNINSTALL_NETCHEM_ARGS "uninstall" "netchem" "-y")
-set(PYTHON_NETCHEM_INSTALL_ARGS "setup.py" "install")
-add_custom_target(PythonNetChemInstall
-        COMMAND pip ${PIP_UNINSTALL_NETCHEM_ARGS}
-        COMMAND ${Python3_EXECUTABLE} ${PYTHON_NETCHEM_INSTALL_ARGS}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/netchem/python
-        )
+    set(PIP_UNINSTALL_NETCHEM_ARGS "uninstall" "netchem" "-y")
+    set(PYTHON_NETCHEM_INSTALL_ARGS "setup.py" "install")
+    add_custom_target(PythonNetChemInstall
+            COMMAND pip ${PIP_UNINSTALL_NETCHEM_ARGS}
+            COMMAND ${Python3_EXECUTABLE} ${PYTHON_NETCHEM_INSTALL_ARGS}
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/netchem/python
+    )
+endif (${BUILD_PYTHON_BINDINGS})
+add_executable(
+        stride_scratch
+        ${CMAKE_CURRENT_SOURCE_DIR}/scratch/stride_scratch.cpp
+)
+add_dependencies(stride_scratch netchem)
+set_target_properties(
+        stride_scratch
+        PROPERTIES
+        LINK_LIBRARIES "${NETCHEM_SCRATCH_LINK_LIBRARIES}"
+)

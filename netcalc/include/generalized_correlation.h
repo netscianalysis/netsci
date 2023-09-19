@@ -27,6 +27,19 @@ namespace netcalc {
             int n,
             int xd,
             int d,
+            int platform,
+            int checkpointFrequency,
+            std::string checkpointFileName
+    );
+
+    int generalizedCorrelation(
+            CuArray<float>* X,
+            CuArray<float>* R,
+            CuArray<int>* ab,
+            int k,
+            int n,
+            int xd,
+            int d,
             int platform
     );
 
