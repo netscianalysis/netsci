@@ -112,11 +112,6 @@ libraries to maintain simplicity and reliability.
 
 ### C++
 
-| <pre><code><b>CuArray()</b></code></pre>                                          |
-|-----------------------------------------------------------------------------------|
-| <pre><code><b>CuArray::init(<br/>    int m, <br/>    int n<br/>)</b></code></pre> |
-|                                                                                   |
-
 ### Python
 
 ### Tcl
@@ -144,4 +139,11 @@ libraries to maintain simplicity and reliability.
 ## NetCalc
 
 ### Python
+```python
+import numpy as np
+
+import netcalc
+
+
+```
 
