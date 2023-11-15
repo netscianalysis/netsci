@@ -38,6 +38,9 @@ find_package(SWIG REQUIRED)
 #Path to "UseSWIG.cmake" file
 include(${SWIG_USE_FILE})
 
+#Make sure ZLIB is installed
+find_package(ZLIB REQUIRED)
+
 #Global include directories used by all build targets
 set(
         INCLUDE_DIRS
@@ -57,7 +60,7 @@ include_directories("${INCLUDE_DIRS}")
 #Libraries cnpy is linked against
 set(
         CNPY_LINK_LIBRARIES
-        ${CONDA_DIR}/lib/libz.so
+        ${ZLIB_LIBRARIES}
 )
 
 #Libraries cuarray is linked against
@@ -107,6 +110,12 @@ set(
         "${NETCALC_LINK_LIBRARIES}"
         netcalc
         gtest
+)
+
+set(
+        NETCALC_SCRATCH_LINK_LIBRARIES
+        "${NETCALC_LINK_LIBRARIES}"
+        netcalc
 )
 
 #Libraries netchem is linked against

@@ -109,6 +109,22 @@ namespace netcalc {
             int xd,
             int d
     );
+
+    /*!
+     * \brief Creates an ab array of nodes that still need to have
+     * their mutual information/generalized correlation calculated,
+     * using a mutualInformation
+     * or generalizedCorrelation checkpoint file.
+     * @param ab Original ab array.
+     * @param restartAb The ab array of nodes that still need to have
+     * their mutual information/generalized correlation calculated.
+     * @param checkpointFileName The name of the checkpoint file.
+     */
+    void generateRestartAbFromCheckpointFile(
+            CuArray<int> *ab,
+            CuArray<int> *restartAb,
+            const std::string& checkpointFileName
+    );
 }
 
 #endif // MUTUAL_INFORMATION_SHARED_MEMORY_MUTUAL_INFORMATION_H

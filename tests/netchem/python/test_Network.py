@@ -9,9 +9,16 @@ import cuarray
 
 @pytest.fixture(scope="module")
 def global_network_parameters():
+    trajectoryFile = None
+    topologyFile = None
+    for f in netchem.data_files(key="test").glob("*"):
+        if f.name == 'test.dcd':
+            trajectoryFile = str(f)
+        elif f.name == 'test.pdb':
+            topologyFile = str(f)
     return dict(
-        trajectoryFile=os.path.join(os.path.dirname(__file__), '../cpp/data', 'test.dcd'),
-        topologyFile=os.path.join(os.path.dirname(__file__), '../cpp/data', 'test.pdb'),
+        trajectoryFile=trajectoryFile,
+        topologyFile=topologyFile,
         firstFrame=0,
         lastFrame=9,
     )
@@ -101,3 +108,4 @@ def test_Stride3CoordinateEquality(Stride3Network, Network):
                     Stride3Network.nodeCoordinates()[i][j + 8]
                     == Network.nodeCoordinates()[i][3 * j + 20]
             )
+

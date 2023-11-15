@@ -72,3 +72,14 @@ add_executable(
         ${CMAKE_CURRENT_SOURCE_DIR}/scratch/hedetniemi_scratch.cpp
 )
 add_dependencies(hedetniemi_scratch netcalc)
+
+add_executable(
+       checkpointing_scratch
+        ${CMAKE_CURRENT_SOURCE_DIR}/scratch/checkpointing_scratch.cpp
+)
+add_dependencies(checkpointing_scratch netcalc)
+set_target_properties(
+        checkpointing_scratch
+        PROPERTIES
+        LINK_LIBRARIES "${NETCALC_SCRATCH_LINK_LIBRARIES}"
+)

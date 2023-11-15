@@ -15,5 +15,6 @@ from .netcalc import longestShortestPathNodeCount
 from .netcalc import pathFromPathsCuArray
 from .netcalc import GPU_PLATFORM
 from .netcalc import CPU_PLATFORM
+from .netcalc import generateRestartAbFromCheckpointFile
 
 
