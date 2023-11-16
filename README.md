@@ -203,7 +203,7 @@ libraries to maintain simplicity and reliability.
   * [`deallocateDevice(self) -> int`](#deallocatedeviceself---int)
   * [`fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int`](#fromnumpyself-numpyarray-dim1-int-dim2-int---int)
   * [`toNumpy(self) -> (numpy_array, dim1: int, dim2: int)`](#tonumpyself---numpyarray-dim1-int-dim2-int)
-  * [`get(self, i: int, j: int) -> ElementType`](#__getitem__self-i-int-j-int---elementtype)
+  * [`get(self, i: int, j: int) -> ElementType`](#getself-i-int-j-int---elementtype)
   * [`set(self, value: ElementType, i: int, j: int) -> int`](#setself-value-elementtype-i-int-j-int---int)
   * [`load(self, filename: str) -> int`](#loadself-filename-str---int)
   * [`save(self, filename: str)`](#saveself-filename-str)
@@ -291,8 +291,7 @@ management, data manipulation, and utility operations.
     - `int m`: Number of rows in this `CuArray`.
     - `int n`: Number of columns in this `CuArray`.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
-- **Related
-  **: [`fromCuArrayShallowCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int` ](#fromcuarrayshallowcopyself-cuarray-start-int-end-int-m-int-n-int---int)
+- **Related**: [`fromCuArrayShallowCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int` ](#fromcuarrayshallowcopyself-cuarray-start-int-end-int-m-int-n-int---int)
 
 ---
 
@@ -309,8 +308,7 @@ management, data manipulation, and utility operations.
     - `int m`: Number of rows in this `CuArray`.
     - `int n`: Number of columns in this `CuArray`.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
-- **Related
-  **: [`fromCuArrayDeepCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int` ](#fromcuarraydeepcopyself-cuarray-start-int-end-int-m-int-n-int---int)
+- **Related**: [`fromCuArrayDeepCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int` ](#fromcuarraydeepcopyself-cuarray-start-int-end-int-m-int-n-int---int)
 
 ---
 
@@ -857,8 +855,7 @@ management, data manipulation, and utility operations.
     - `dim1` (`int`): Dimension 1 of the NumPy array.
     - `dim2` (`int`): Dimension 2 of the NumPy array.
 - **Returns**: `int`: `CuArrayError` indicating success (`0’) or specific error code.
-- **Related
-  **: [`CuArrayError fromNumpy(T *NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2)` ](#cuarrayerror-fromnumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+- **Related**:[`CuArrayError fromNumpy(T *NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2)` ](#cuarrayerror-fromnumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
 
 ---
 
@@ -869,8 +866,7 @@ management, data manipulation, and utility operations.
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Copy data from the `CuArray` to a NumPy array.
 - **Returns**: Tuple containing the NumPy array and its dimensions.
-- **Related
-  **: [`void toNumpy(T **NUMPY_ARRAY, int **NUMPY_ARRAY_DIM1, int **NUMPY_ARRAY_DIM2)` ](#void-tonumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+- **Related:**[`void toNumpy(T **NUMPY_ARRAY, int **NUMPY_ARRAY_DIM1, int **NUMPY_ARRAY_DIM2)` ](#void-tonumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
 
 ---
 
