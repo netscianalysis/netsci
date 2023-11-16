@@ -203,12 +203,12 @@ libraries to maintain simplicity and reliability.
   * [`deallocateDevice(self) -> int`](#deallocatedeviceself---int)
   * [`fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int`](#fromnumpyself-numpyarray-dim1-int-dim2-int---int)
   * [`toNumpy(self) -> (numpy_array, dim1: int, dim2: int)`](#tonumpyself---numpyarray-dim1-int-dim2-int)
-  * [`get(self, i: int, j: int) -> ElementType`](#getself-i-int-j-int---elementtype)
+  * [`get(self, i: int, j: int) -> ElementType`](#__get__self-i-int-j-int---elementtype)
   * [`set(self, value: ElementType, i: int, j: int) -> int`](#setself-value-elementtype-i-int-j-int---int)
   * [`load(self, filename: str) -> int`](#loadself-filename-str---int)
   * [`save(self, filename: str)`](#saveself-filename-str)
   * [`sort(self, column_index: int) -> CuArray`](#sortself-columnindex-int---cuarray)
-  * [`__getitem__(self, index: int) -> ElementType`](#getitemself-index-int---elementtype)
+  * [`__getitem__(self, index: int) -> ElementType`](#__get__itemself-index-int---elementtype)
   * [`owner(self) -> int`](#ownerself---int)
   * [`argsort(self, column_index: int) -> CuArray`](#argsortself-columnindex-int---cuarray)
 
@@ -508,7 +508,7 @@ management, data manipulation, and utility operations.
     - `int i`: Row index.
     - `int j`: Column index.
 - **Returns**: Value at the specified position.
-- **Related**: [`get(self, i: int, j: int) -> ElementType` ](#getself-i-int-j-int---elementtype)
+- **Related**: [`get(self, i: int, j: int) -> ElementType` ](#__get__self-i-int-j-int---elementtype)
 
 ---
 
@@ -574,7 +574,7 @@ management, data manipulation, and utility operations.
 - **Parameters**:
     - `int i`: Index of the element.
 - **Returns**: Reference to the element at the specified index.
-- **Related**: [`__getitem__(self, index: int) -> ElementType` ](#getitemself-index-int---elementtype)
+- **Related**: [`__getitem__(self, index: int) -> ElementType` ](#__get__itemself-index-int---elementtype)
 
 ---
 
