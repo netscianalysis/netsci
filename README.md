@@ -208,7 +208,7 @@ libraries to maintain simplicity and reliability.
   * [`load(self, filename: str) -> int`](#loadself-filename-str---int)
   * [`save(self, filename: str)`](#saveself-filename-str)
   * [`sort(self, column_index: int) -> CuArray`](#sortself-columnindex-int---cuarray)
-  * [`__getitem__(self, index: int) -> ElementType`](#__getitem__itemself-index-int---elementtype)
+  * [`__getitem__(self, index: int) -> ElementType`](#__getitem__self-index-int---elementtype)
   * [`owner(self) -> int`](#ownerself---int)
   * [`argsort(self, column_index: int) -> CuArray`](#argsortself-columnindex-int---cuarray)
 
@@ -574,7 +574,7 @@ management, data manipulation, and utility operations.
 - **Parameters**:
     - `int i`: Index of the element.
 - **Returns**: Reference to the element at the specified index.
-- **Related**: [`__getitem__(self, index: int) -> ElementType` ](#__getitem__itemself-index-int---elementtype)
+- **Related**: [`__getitem__(self, index: int) -> ElementType` ](#__getitem__self-index-int---elementtype)
 
 ---
 
