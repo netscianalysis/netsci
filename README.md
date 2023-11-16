@@ -181,7 +181,7 @@ libraries to maintain simplicity and reliability.
 
   <details><summary>Python</summary>
 
-  * [`__init__()`](#init)
+  * [`__init__()`](#__init__)
   * [`__del__()`](#__del__)
   * [`init(self, m: int, n: int) -> int`](#initself-m-int-n-int---int)
   * [`init(self, host, m: int, n: int) -> int`](#initself-host-m-int-n-int---int)
