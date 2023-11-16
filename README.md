@@ -1,73 +1,32 @@
-# NetSci: A Toolkit for High Performance Scientific Network Analysis Computation
+<center><h1>NetSci<br><small>A Toolkit for High Performance Scientific Network Analysis Computation</small></h1></center>
 
-Netsci is a toolkit tailored for advanced network analysis in
-the computational sciences' domain. Leveraging GPU acceleration, it
-provides a robust solution for handling large datasets in dynamic
-network analysis.
+NetSci is a specialized toolkit designed for advanced network analysis in computational sciences. Utilizing the
+capabilities of modern GPUs, it offers a powerful and efficient solution for processing computationally demanding
+network analysis metrics, delivering exceptional performance.
+<!-- TOC -->
 
-## Accelerating Network Analysis in Computational Sciences
+* [Installation](#installation)
+* [API Documentation](#api-documentation)
+    * [CuArray](#cuarray)
+        * [C++](#c)
+        * [Python](#python)
+        * [Tcl](#tcl)
+    * [NetChem](#netchem)
+        * [C++](#c-1)
+        * [Python](#python-1)
+    * [NetCalc](#netcalc)
+        * [C++](#c-2)
+        * [Python](#python-2)
+* [Usage](#usage)
+    * [NetCalc](#netcalc-1)
+        * [Python](#python-3)
+* [Tutorials](#tutorials)
+    * [NetCalc](#netcalc-2)
+        * [Python](#python-4)
 
----
+<!-- TOC -->
 
-In the fast-paced world of computational sciences, efficient data
-analysis is crucial. Every day, vast amounts of data are generated,
-demanding robust methods for analysis. Netsci, our GPU-accelerated
-computational tool, steps in to meet this challenge, especially in the
-realm of network analysis.
-
-### The Importance of Network Analysis
-
----
-
-Network analysis is an essential tool across various fields such as computational chemistry, bioinformatics, genomics, and machine learning. It
-provides insights into the relationships and interactions between nodes in network representations of complex systems. A
-key aspect of network analysis is the assessment of internode correlations, which help in understanding the degree of
-connection or influence between nodes.
-
-Traditional methods, like Pearson correlation, are widely used in this context. However, they have their limitations.
-Primarily, Pearson correlation may not effectively detect nonlinear relationships, a common occurrence in complex
-networks. As a result, there's a growing need to explore and develop more robust
-techniques in network analysis to accommodate these challenges.
-
-### A New Approach with Mutual Information (MI)
-
----
-
-Netsci focuses on an alternative approach: Mutual Information (MI).
-Originating from information theory, MI is a powerful metric for
-quantifying relationships between variables, surpassing the limits of
-Pearson correlation. It measures the average divergence between the
-joint information content of two variables and their individual
-information contents. Unlike Pearson correlation, MI has no upper bound
-and is more versatile for different types of data distributions.
-
-### Advancements in Estimating MI
-
----
-
-Estimating MI accurately is challenging without knowing the data's
-underlying distribution. Netsci addresses this through a k-nearest
-neighbor approach, proven effective even in data-rich scenarios like
-molecular dynamics (MD) simulations. This method is data-efficient,
-adaptive, and minimally biased, making it ideal for various
-applications.
-
-### Netsci in Action
-
----
-
-Netsci shines in its application to real-world computational challenges.
-We demonstrate its capabilities in molecular dynamics network analysis,
-specifically in correlation analyses where traditional methods like
-Pearson correlation are insufficient. By comparing its performance with
-CPU implementations, Netsci proves to be significantly faster and more
-scalable, limited only by system memory constraints.
-
-<hr style="border:2px solid rgb(128,128,128)">
-
-## Installation
-
----
+# Installation
 
 NetSci is designed with a focus on ease of installation and long-term stability, ensuring compatibility with Linux
 systems featuring CUDA-capable GPUs (compute capability 3.5 and above). It leverages well-supported core C++ and Python
@@ -147,62 +106,42 @@ libraries to maintain simplicity and reliability.
     pytest
     ```
 
-<hr style="border:2px solid rgb(128,128,128)">
+# API Documentation
 
-## Python API Documentation
+## CuArray
 
----
+### C++
 
-### CuArray
+| <pre><code><b>CuArray()</b></code></pre>                                          |
+|-----------------------------------------------------------------------------------|
+| <pre><code><b>CuArray::init(<br/>    int m, <br/>    int n<br/>)</b></code></pre> |
+|                                                                                   |
 
----
- ```python
-   CuArray.CuArray()->None
-  ```
-  - **Description**: Constructs an empty CuArray object.
+### Python
 
-   - **Examples**:
-       ```python
-      from cuarray import FloatCuArray
-      from cuarray import IntCuArray 
-     
-     """
-     Initializes a float32 CuArray object.
-     """
-     float_cuarray = FloatCuArray()
-     """
-      Initializes an int32 CuArray object.
-     """
-       int_cuarray = IntCuArray()
-       ```
-     
-   ---
+### Tcl
 
-```python
-CuArray.init(
-    m: int,
-    n: int,
-)->int
-```
-- **Description**: Initializes the CuArray object with the specified dimensions, 
-where m is the number of rows and n is the number of columns.
-- **Parameters**:
-    - **m**: The number of rows.
-    - **n**: The number of columns.
-- **Returns**: 0 if successful, otherwise an error code.
-- **Examples**:
-    ```python
-    from cuarray import FloatCuArray
-    
-    """
-    Initializes a float32 CuArray object.
-    """
-    float_cuarray = FloatCuArray()
-    """
-    Initializes a float32 CuArray object with 10 rows and 10 columns.
-    """
-    float_cuarray.init(10, 10)
-    ```
+## NetChem
 
+### C++
 
+### Python
+
+## NetCalc
+
+### C++
+
+### Python
+
+# Usage
+
+## NetCalc
+
+### Python
+
+# Tutorials
+
+## NetCalc
+
+### Python
 

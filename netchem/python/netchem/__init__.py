@@ -12,7 +12,7 @@ from .netchem import Network
 from .netchem import Network as Graph
 
 
-def data_files(key: str):
+def data_files(key: str) -> tuple:
     temp_dir = tempfile.mkdtemp()
     data_files_dict = dict(
         test="test.tar.gz",
@@ -28,4 +28,7 @@ def data_files(key: str):
         for tarball_member, temp_file in zip(tarball_members, temp_files):
             shutil.copy(tarball_member, temp_file)
             tarball_member.unlink()
-    return Path(temp_dir)
+    return (
+        Path(temp_dir) / f"{key}.dcd",
+        Path(temp_dir) / f"{key}.pdb"
+    )

@@ -9,13 +9,9 @@ import cuarray
 
 @pytest.fixture(scope="module")
 def global_network_parameters():
-    trajectoryFile = None
-    topologyFile = None
-    for f in netchem.data_files(key="test").glob("*"):
-        if f.name == 'test.dcd':
-            trajectoryFile = str(f)
-        elif f.name == 'test.pdb':
-            topologyFile = str(f)
+    trajectoryFile, topologyFile = tuple(map(
+        lambda f : str(f), netchem.data_files(key="test")
+    ))
     return dict(
         trajectoryFile=trajectoryFile,
         topologyFile=topologyFile,
