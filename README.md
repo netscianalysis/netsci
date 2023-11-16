@@ -506,7 +506,7 @@ management, data manipulation, and utility operations.
     - `int i`: Row index.
     - `int j`: Column index.
 - **Returns**: Value at the specified position.
-- **Related**: [`get(self, i: int, j: int) -> ElementType` ](#__getitem__self-i-int-j-int---elementtype)
+- **Related**: [`get(self, i: int, j: int) -> ElementType` ](#getself-i-int-j-int---elementtype)
 
 ---
 
