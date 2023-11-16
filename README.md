@@ -207,10 +207,10 @@ libraries to maintain simplicity and reliability.
   * [`set(self, value: ElementType, i: int, j: int) -> int`](#setself-value-elementtype-i-int-j-int---int)
   * [`load(self, filename: str) -> int`](#loadself-filename-str---int)
   * [`save(self, filename: str)`](#saveself-filename-str)
-  * [`sort(self, column_index: int) -> CuArray`](#sortself-columnindex-int---cuarray)
+  * [`sort(self, column_index: int) -> CuArray`](#sortself-column_index-int---cuarray)
   * [`__getitem__(self, index: int) -> ElementType`](#__getitem__self-index-int---elementtype)
   * [`owner(self) -> int`](#ownerself---int)
-  * [`argsort(self, column_index: int) -> CuArray`](#argsortself-columnindex-int---cuarray)
+  * [`argsort(self, column_index: int) -> CuArray`](#argsortself-column_index-int---cuarray)
 
   </details>
   </details>
@@ -559,7 +559,7 @@ management, data manipulation, and utility operations.
 - **Parameters**:
     - `int i`: Column index to sort.
 - **Returns**: Pointer to a new `CuArray` containing the sorted data.
-- **Related**: [`sort(self, column_index: int) -> CuArray` ](#sortself-columnindex-int---cuarray)
+- **Related**: [`sort(self, column_index: int) -> CuArray` ](#sortself-column_index-int---cuarray)
 
 ---
 
@@ -598,7 +598,7 @@ management, data manipulation, and utility operations.
 - **Parameters**:
     - `int i`: Column index to argsort.
 - **Returns**: Pointer to a new `CuArray` containing the sorted indices.
-- **Related**: [`argsort(self, column_index: int) -> CuArray` ](#argsortself-columnindex-int---cuarray)
+- **Related**: [`argsort(self, column_index: int) -> CuArray` ](#argsortself-column_index-int---cuarray)
 
 ---
 
