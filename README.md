@@ -4,130 +4,38 @@ NetSci is a specialized toolkit designed for advanced network analysis in comput
 capabilities of modern GPUs, it offers a powerful and efficient solution for processing computationally demanding
 network analysis metrics while delivering state-of-the-art performance.
 
-<details>
-
-<summary>Installation</summary>
+---
 
 * [Installation](#installation)
-    * [Download Miniconda Installation Script](#download-miniconda-installation-script)
-    * [Execute the Installation Script](#execute-the-installation-script)
-    * [Update Environment Settings](#update-environment-settings)
-    * [Install Git with Conda](#install-git-with-conda)
-    * [Clone the NetSci Repository](#clone-the-netsci-repository)
-    * [Navigate to the NetSci Root Directory](#navigate-to-the-netsci-root-directory)
-    * [Set NetSci Root Directory Variable](#set-netsci-root-directory-variable)
-    * [Create NetSci Conda Environment](#create-netsci-conda-environment)
-    * [Activate NetSci Conda Environment](#activate-netsci-conda-environment)
-    * [Prepare the Build Directory](#prepare-the-build-directory)
-    * [Compile CUDA Script for GPU Capability](#compile-cuda-script-for-gpu-capability)
-    * [Set CUDA Architecture Variable](#set-cuda-architecture-variable)
-    * [Configure the Build with CMake](#configure-the-build-with-cmake)
-    * [Build NetSci](#build-netsci)
-    * [Build NetSci Python Interface](#build-netsci--interface)
-    * [Test C++ and CUDA Backend](#test-c-and-cuda-backend)
-    * [Run Python Interface Tests](#run--interface-tests)
-
- </details>
-
-<details>
-
-<summary>API Documentation</summary>
-
-<details>
-
-
-<summary>CuArray</summary>
-
-
-  <details><summary>Classes</summary>
-
-* [CuArray](#cuarray-class)
-
-  <details><summary>Methods</summary>
-
-  <details><summary>C++</summary>
-
-    * [`CuArray()` ___constructor___](#cuarray-constructor)
-    * [`~CuArray()` ___destructor___](#cuarray-destructor)
-    * [`CuArrayError init(int m, int n)`](#cuarrayerror-initint-m-int-n)
-    * [`CuArrayError init(T *host, int m, int n)`](#cuarrayerror-initt-host-int-m-int-n)
-    * [`CuArrayError fromCuArrayShallowCopy(CuArray<T> *cuArray, int start, int end, int m, int n)`](#cuarrayerror-fromcuarrayshallowcopycuarrayt-cuarray-int-start-int-end-int-m-int-n)
-    * [`CuArrayError fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n)`](#cuarrayerror-fromcuarraydeepcopycuarrayt-cuarray-int-start-int-end-int-m-int-n)
-    * [`int n() const`](#int-n-const)
-    * [`int m() const`](#int-m-const)
-    * [`int size() const`](#int-size-const)
-    * [`size_t bytes() const`](#sizet-bytes-const)
-    * [`T *&host()`](#t-host)
-    * [`T *&device()`](#t-device)
-    * [`CuArrayError allocateHost()`](#cuarrayerror-allocatehost)
-    * [`CuArrayError allocateDevice()`](#cuarrayerror-allocatedevice)
-    * [`CuArrayError allocatedHost() const`](#cuarrayerror-allocatedhost-const)
-    * [`CuArrayError allocatedDevice() const`](#cuarrayerror-allocateddevice-const)
-    * [`CuArrayError toDevice()`](#cuarrayerror-todevice)
-    * [`CuArrayError toHost()`](#cuarrayerror-tohost)
-    * [`CuArrayError deallocateHost()`](#cuarrayerror-deallocatehost)
-    * [`CuArrayError deallocateDevice()`](#cuarrayerror-deallocatedevice)
-    * [`CuArrayError fromNumpy(T *NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2)`](#cuarrayerror-fromnumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
-    * [`void toNumpy(T **NUMPY_ARRAY, int **NUMPY_ARRAY_DIM1, int **NUMPY_ARRAY_DIM2)`](#void-tonumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
-    * [`T get(int i, int j) const`](#t-getint-i-int-j-const)
-    * [`CuArrayError set(T value, int i, int j)`](#cuarrayerror-sett-value-int-i-int-j)
-    * [`CuArrayError load(const std::string &fname)`](#cuarrayerror-loadconst-stdstring-fname)
-    * [`void save(const std::string &fname)`](#void-saveconst-stdstring-fname)
-    * [`CuArray<T> *sort(int i)`](#cuarrayt-sortint-i)
-    * [`T &operator[](int i) const`](#t-operatorint-i-const)
-    * [`int owner() const`](#int-owner-const)
-    * [`CuArray<int> *argsort(int i)`](#cuarrayint-argsortint-i)
-
-  </details>
-
-  <details><summary>Python</summary>
-
-    * [`__init__()`](#init)
-    * [`__del__()`](#del)
-    * [`init(self, m: int, n: int) -> int`](#initself-m-int-n-int---int)
-    * [`init(self, host, m: int, n: int) -> int`](#initself-host-m-int-n-int---int)
-    * [`fromCuArrayShallowCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int`](#fromcuarrayshallowcopyself-cuarray-start-int-end-int-m-int-n-int---int)
-    * [`fromCuArrayDeepCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int`](#fromcuarraydeepcopyself-cuarray-start-int-end-int-m-int-n-int---int)
-    * [`m(self) -> int`](#mself---int)
-    * [`n(self) -> int`](#nself---int)
-    * [`size(self) -> int`](#sizeself---int)
-    * [`bytes(self) -> int`](#bytesself---int)
-    * [`host(self)`](#hostself)
-    * [`device(self)`](#deviceself)
-    * [`allocateHost(self) -> int`](#allocatehostself---int)
-    * [`allocateDevice(self) -> int`](#allocatedeviceself---int)
-    * [`allocatedHost(self) -> int`](#allocatedhostself---int)
-    * [`allocatedDevice(self) -> int`](#allocateddeviceself---int)
-    * [`toDevice(self) -> int`](#todeviceself---int)
-    * [`toHost(self) -> int`](#tohostself---int)
-    * [`deallocateHost(self) -> int`](#deallocatehostself---int)
-    * [`deallocateDevice(self) -> int`](#deallocatedeviceself---int)
-    * [`fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int`](#fromnumpyself-numpyarray-dim1-int-dim2-int---int)
-    * [`toNumpy(self) -> (numpy_array, dim1: int, dim2: int)`](#tonumpyself---numpyarray-dim1-int-dim2-int)
-    * [`get(self, i: int, j: int) -> ElementType`](#getself-i-int-j-int---elementtype)
-    * [`set(self, value: ElementType, i: int, j: int) -> int`](#setself-value-elementtype-i-int-j-int---int)
-    * [`load(self, filename: str) -> int`](#loadself-filename-str---int)
-    * [`save(self, filename: str)`](#saveself-filename-str)
-    * [`sort(self, column_index: int) -> CuArray`](#sortself-columnindex-int---cuarray)
-    * [`__getitem__(self, index: int) -> ElementType`](#getitemself-index-int---elementtype)
-    * [`owner(self) -> int`](#ownerself---int)
-    * [`argsort(self, column_index: int) -> CuArray`](#argsortself-columnindex-int---cuarray)
-
-  </details>
-
-  </details>
-
-  </details>
-
-  </details>
-
-</details>
+* [API Documentation](#api-documentation)
 
 # Installation
-
 NetSci is designed with a focus on ease of installation and long-term stability, ensuring compatibility with Linux
 systems featuring CUDA-capable GPUs (compute capability 3.5 and above). It leverages well-supported core C++ and Python
 libraries to maintain simplicity and reliability.
+<details>
+
+<summary>Steps</summary>
+
+  * [Download Miniconda Installation Script](#download-miniconda-installation-script)
+  * [Execute the Installation Script](#execute-the-installation-script)
+  * [Update Environment Settings](#update-environment-settings)
+  * [Install Git with Conda](#install-git-with-conda)
+  * [Clone the NetSci Repository](#clone-the-netsci-repository)
+  * [Navigate to the NetSci Root Directory](#navigate-to-the-netsci-root-directory)
+  * [Set NetSci Root Directory Variable](#set-netsci-root-directory-variable)
+  * [Create NetSci Conda Environment](#create-netsci-conda-environment)
+  * [Activate NetSci Conda Environment](#activate-netsci-conda-environment)
+  * [Prepare the Build Directory](#prepare-the-build-directory)
+  * [Compile CUDA Script for GPU Capability](#compile-cuda-script-for-gpu-capability)
+  * [Set CUDA Architecture Variable](#set-cuda-architecture-variable)
+  * [Configure the Build with CMake](#configure-the-build-with-cmake)
+  * [Build NetSci](#build-netsci)
+  * [Build NetSci Python Interface](#build-netsci--interface)
+  * [Test C++ and CUDA Backend](#test-c-and-cuda-backend)
+  * [Run Python Interface Tests](#run--interface-tests)
+
+
 
 1. #### Download Miniconda Installation Script:
     ```bash
@@ -203,26 +111,109 @@ libraries to maintain simplicity and reliability.
     pytest
     ```
 
+ </details>
+
 # API Documentation
+<details>
 
-## Libraries 
+<summary>Libraries</summary>
 
-* [CuArray](#cuarray)
-
-* [NetChem](#netchem)
-
-* [NetCalc](#netcalc)
-
+- [CuArray](#cuarray)
+- [NetChem](#netchem)
+- [NetCalc](#netcalc)
 
 
 ---
 
 # CuArray
+  <details><summary>Classes</summary>
+
+- [CuArray](#cuarray-class)
+
+</details>
+
+
+
 
 ---
 
 ## CuArray ___class___
+
+- **Languages**: C++, Python, Tcl 
 - **Library**: [CuArray](#cuarray)
+
+- <details><summary>Methods</summary>
+
+  <details><summary>C++</summary>
+
+  * [`CuArray()` ___constructor___](#cuarray-constructor)
+  * [`~CuArray()` ___destructor___](#cuarray-destructor)
+  * [`CuArrayError init(int m, int n)`](#cuarrayerror-initint-m-int-n)
+  * [`CuArrayError init(T *host, int m, int n)`](#cuarrayerror-initt-host-int-m-int-n)
+  * [`CuArrayError fromCuArrayShallowCopy(CuArray<T> *cuArray, int start, int end, int m, int n)`](#cuarrayerror-fromcuarrayshallowcopycuarrayt-cuarray-int-start-int-end-int-m-int-n)
+  * [`CuArrayError fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n)`](#cuarrayerror-fromcuarraydeepcopycuarrayt-cuarray-int-start-int-end-int-m-int-n)
+  * [`int n() const`](#int-n-const)
+  * [`int m() const`](#int-m-const)
+  * [`int size() const`](#int-size-const)
+  * [`size_t bytes() const`](#sizet-bytes-const)
+  * [`T *&host()`](#t-host)
+  * [`T *&device()`](#t-device)
+  * [`CuArrayError allocateHost()`](#cuarrayerror-allocatehost)
+  * [`CuArrayError allocateDevice()`](#cuarrayerror-allocatedevice)
+  * [`CuArrayError allocatedHost() const`](#cuarrayerror-allocatedhost-const)
+  * [`CuArrayError allocatedDevice() const`](#cuarrayerror-allocateddevice-const)
+  * [`CuArrayError toDevice()`](#cuarrayerror-todevice)
+  * [`CuArrayError toHost()`](#cuarrayerror-tohost)
+  * [`CuArrayError deallocateHost()`](#cuarrayerror-deallocatehost)
+  * [`CuArrayError deallocateDevice()`](#cuarrayerror-deallocatedevice)
+  * [`CuArrayError fromNumpy(T *NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2)`](#cuarrayerror-fromnumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+  * [`void toNumpy(T **NUMPY_ARRAY, int **NUMPY_ARRAY_DIM1, int **NUMPY_ARRAY_DIM2)`](#void-tonumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+  * [`T get(int i, int j) const`](#t-getint-i-int-j-const)
+  * [`CuArrayError set(T value, int i, int j)`](#cuarrayerror-sett-value-int-i-int-j)
+  * [`CuArrayError load(const std::string &fname)`](#cuarrayerror-loadconst-stdstring-fname)
+  * [`void save(const std::string &fname)`](#void-saveconst-stdstring-fname)
+  * [`CuArray<T> *sort(int i)`](#cuarrayt-sortint-i)
+  * [`T &operator[](int i) const`](#t-operatorint-i-const)
+  * [`int owner() const`](#int-owner-const)
+  * [`CuArray<int> *argsort(int i)`](#cuarrayint-argsortint-i)
+
+  </details>
+
+  <details><summary>Python</summary>
+
+  * [`__init__()`](#init)
+  * [`__del__()`](#__del__)
+  * [`init(self, m: int, n: int) -> int`](#initself-m-int-n-int---int)
+  * [`init(self, host, m: int, n: int) -> int`](#initself-host-m-int-n-int---int)
+  * [`fromCuArrayShallowCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int`](#fromcuarrayshallowcopyself-cuarray-start-int-end-int-m-int-n-int---int)
+  * [`fromCuArrayDeepCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int`](#fromcuarraydeepcopyself-cuarray-start-int-end-int-m-int-n-int---int)
+  * [`m(self) -> int`](#mself---int)
+  * [`n(self) -> int`](#nself---int)
+  * [`size(self) -> int`](#sizeself---int)
+  * [`bytes(self) -> int`](#bytesself---int)
+  * [`host(self)`](#hostself)
+  * [`device(self)`](#deviceself)
+  * [`allocateHost(self) -> int`](#allocatehostself---int)
+  * [`allocateDevice(self) -> int`](#allocatedeviceself---int)
+  * [`allocatedHost(self) -> int`](#allocatedhostself---int)
+  * [`allocatedDevice(self) -> int`](#allocateddeviceself---int)
+  * [`toDevice(self) -> int`](#todeviceself---int)
+  * [`toHost(self) -> int`](#tohostself---int)
+  * [`deallocateHost(self) -> int`](#deallocatehostself---int)
+  * [`deallocateDevice(self) -> int`](#deallocatedeviceself---int)
+  * [`fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int`](#fromnumpyself-numpyarray-dim1-int-dim2-int---int)
+  * [`toNumpy(self) -> (numpy_array, dim1: int, dim2: int)`](#tonumpyself---numpyarray-dim1-int-dim2-int)
+  * [`get(self, i: int, j: int) -> ElementType`](#getself-i-int-j-int---elementtype)
+  * [`set(self, value: ElementType, i: int, j: int) -> int`](#setself-value-elementtype-i-int-j-int---int)
+  * [`load(self, filename: str) -> int`](#loadself-filename-str---int)
+  * [`save(self, filename: str)`](#saveself-filename-str)
+  * [`sort(self, column_index: int) -> CuArray`](#sortself-columnindex-int---cuarray)
+  * [`__getitem__(self, index: int) -> ElementType`](#getitemself-index-int---elementtype)
+  * [`owner(self) -> int`](#ownerself---int)
+  * [`argsort(self, column_index: int) -> CuArray`](#argsortself-columnindex-int---cuarray)
+
+  </details>
+  </details>
 
 ---
 
@@ -239,22 +230,28 @@ management, data manipulation, and utility operations.
 
 #### `CuArray()` ___constructor___
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Default constructor. Constructs an empty `CuArray` object.
-- **Related**: [`__init__()` ](#init)
+- **Related**: [`__init__()` ](#__init__)
 
 ---
 
 #### `~CuArray()` ___destructor___
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Destructor. Deallocates the memory on both the host and the device.
-- **Related**: [`__del__()` ](#del)
+- **Related**: [`__del__()` ](#__del__)
 
 ---
 
 #### `CuArrayError init(int m, int n)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Initialize the `CuArray` with specified dimensions, allocating memory on both the host and the
   device.
@@ -268,6 +265,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError init(T *host, int m, int n)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Initialize with host data and dimensions, performing a shallow copy.
 - **Parameters**:
@@ -281,6 +280,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError fromCuArrayShallowCopy(CuArray<T> *cuArray, int start, int end, int m, int n)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Shallow copy data from another `CuArray`.
 - **Parameters**:
@@ -297,6 +298,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Deep copy data from another `CuArray`.
 - **Parameters**:
@@ -313,6 +316,8 @@ management, data manipulation, and utility operations.
 
 #### `int n() const`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the number of columns in the `CuArray`.
 - **Returns**: Number of columns as `int`.
@@ -322,6 +327,8 @@ management, data manipulation, and utility operations.
 
 #### `int m() const`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the number of rows in the `CuArray`.
 - **Returns**: Number of rows as `int`.
@@ -331,6 +338,8 @@ management, data manipulation, and utility operations.
 
 #### `int size() const`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the total number of elements in the `CuArray`.
 - **Returns**: Total number of elements as `int`.
@@ -340,6 +349,8 @@ management, data manipulation, and utility operations.
 
 #### `size_t bytes() const`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the total size in bytes of the `CuArray` data.
 - **Returns**: Size in bytes as `size_t`.
@@ -349,6 +360,8 @@ management, data manipulation, and utility operations.
 
 #### `T *&host()`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get a reference to the host data.
 - **Returns**: Reference to the host data as `T*&`.
@@ -358,6 +371,8 @@ management, data manipulation, and utility operations.
 
 #### `T *&device()`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get a reference to the device data.
 - **Returns**: Reference to the device data as `T*&`.
@@ -367,6 +382,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError allocateHost()`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Allocate memory for the host data.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
@@ -376,6 +393,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError allocateDevice()`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Allocate memory for the device data.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
@@ -385,6 +404,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError allocatedHost() const`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Check if memory is allocated for the host data.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
@@ -394,6 +415,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError allocatedDevice() const`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Check if memory is allocated for the device data.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
@@ -403,6 +426,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError toDevice()`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Copy data from the host to the device.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
@@ -412,6 +437,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError toHost()`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Copy data from the device to the host.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
@@ -421,6 +448,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError deallocateHost()`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Deallocate memory for the host data.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
@@ -430,6 +459,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError deallocateDevice()`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Deallocate memory for the device data.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
@@ -439,6 +470,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError fromNumpy(T *NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Copy data from a NumPy array to the `CuArray`.
 - **Parameters**:
@@ -453,6 +486,8 @@ management, data manipulation, and utility operations.
 
 #### `void toNumpy(T **NUMPY_ARRAY, int **NUMPY_ARRAY_DIM1, int **NUMPY_ARRAY_DIM2)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Copy data from the `CuArray` to a NumPy array.
 - **Parameters**:
@@ -465,6 +500,8 @@ management, data manipulation, and utility operations.
 
 #### `T get(int i, int j) const`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the value at the specified position (i, j) in the `CuArray`.
 - **Parameters**:
@@ -477,6 +514,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError set(T value, int i, int j)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Set the value at the specified position (i, j) in the `CuArray`.
 - **Parameters**:
@@ -490,6 +529,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArrayError load(const std::string &fname)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Load the `CuArray` data from the specified file.
 - **Parameters**:
@@ -501,6 +542,8 @@ management, data manipulation, and utility operations.
 
 #### `void save(const std::string &fname)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Save the `CuArray` data to the specified file.
 - **Parameters**:
@@ -511,6 +554,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArray<T> *sort(int i)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Sort the `CuArray` in ascending order based on the values in the specified column.
 - **Parameters**:
@@ -522,6 +567,8 @@ management, data manipulation, and utility operations.
 
 #### `T &operator[](int i) const`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get a reference to the element at the specified index in the `CuArray`.
 - **Parameters**:
@@ -533,6 +580,8 @@ management, data manipulation, and utility operations.
 
 #### `int owner() const`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the owner of the `CuArray`, which indicates whether the `CuArray` is responsible for memory
   deallocation.
@@ -543,6 +592,8 @@ management, data manipulation, and utility operations.
 
 #### `CuArray<int> *argsort(int i)`
 
+- **Language**: C++
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Perform an argsort on the specified column of the `CuArray` and return a new `CuArray` containing the
   sorted indices.
@@ -557,6 +608,8 @@ management, data manipulation, and utility operations.
 
 #### `__init__()`
 
+- **Language**: Python 
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Default constructor. Constructs an empty `CuArray` object.
 - **Class**: [CuArray](#cuarray-class)
@@ -566,6 +619,8 @@ management, data manipulation, and utility operations.
 
 #### `__del__()`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Destructor. Deallocates the memory on both the host and the device.
 - **Class**: [CuArray](#cuarray-class)
@@ -575,6 +630,8 @@ management, data manipulation, and utility operations.
 
 #### `init(self, m: int, n: int) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Initialize the `CuArray` with specified dimensions, allocating memory on both the host and the
   device.
@@ -588,6 +645,8 @@ management, data manipulation, and utility operations.
 
 #### `init(self, host, m: int, n: int) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Initialize with host data and dimensions, performing a shallow copy.
 - **Parameters**:
@@ -601,6 +660,8 @@ management, data manipulation, and utility operations.
 
 #### `fromCuArrayShallowCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Shallow copy data from another `CuArray`.
 - **Parameters**:
@@ -617,6 +678,8 @@ management, data manipulation, and utility operations.
 
 #### `fromCuArrayDeepCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Deep copy data from another `CuArray`.
 - **Parameters**:
@@ -633,6 +696,8 @@ management, data manipulation, and utility operations.
 
 #### `m(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the number of rows in the `CuArray`.
 - **Returns**: Number of rows as `int`.
@@ -642,6 +707,8 @@ management, data manipulation, and utility operations.
 
 #### `n(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the number of columns in the `CuArray`.
 - **Returns**: Number of columns as `int`.
@@ -649,6 +716,8 @@ management, data manipulation, and utility operations.
 
 #### `size(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the total number of elements in the `CuArray`.
 - **Returns**: Total number of elements as `int`.
@@ -658,6 +727,8 @@ management, data manipulation, and utility operations.
 
 #### `bytes(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the total size in bytes of the `CuArray` data.
 - **Returns**: Size in bytes as `int`.
@@ -667,6 +738,8 @@ management, data manipulation, and utility operations.
 
 #### `host(self)`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get a reference to the host data.
 - **Returns**: Reference to the host data.
@@ -676,6 +749,8 @@ management, data manipulation, and utility operations.
 
 #### `device(self)`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get a reference to the device data.
 - **Returns**: Reference to the device data.
@@ -685,6 +760,8 @@ management, data manipulation, and utility operations.
 
 #### `allocateHost(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Allocate memory for the host data.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
@@ -694,6 +771,8 @@ management, data manipulation, and utility operations.
 
 #### `allocateDevice(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Allocate memory for the device data.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
@@ -703,6 +782,8 @@ management, data manipulation, and utility operations.
 
 #### `allocatedHost(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Check if memory is allocated for the host data.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
@@ -712,6 +793,8 @@ management, data manipulation, and utility operations.
 
 #### `allocatedDevice(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Check if memory is allocated for the device data.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
@@ -721,6 +804,8 @@ management, data manipulation, and utility operations.
 
 #### `toDevice(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Copy data from the host to the device.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
@@ -730,6 +815,8 @@ management, data manipulation, and utility operations.
 
 #### `toHost(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Copy data from the device to the host.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
@@ -739,6 +826,8 @@ management, data manipulation, and utility operations.
 
 #### `deallocateHost(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Deallocate memory for the host data.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
@@ -748,6 +837,8 @@ management, data manipulation, and utility operations.
 
 #### `deallocateDevice(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Deallocate memory for the device data.
 - **Returns**: `int`: `CuArrayError` indicating success (`0’) or specific error code.
@@ -757,6 +848,8 @@ management, data manipulation, and utility operations.
 
 #### `fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Copy data from a NumPy array to the `CuArray`.
 - **Parameters**:
@@ -771,6 +864,8 @@ management, data manipulation, and utility operations.
 
 #### `toNumpy(self) -> (numpy_array, dim1: int, dim2: int)`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Copy data from the `CuArray` to a NumPy array.
 - **Returns**: Tuple containing the NumPy array and its dimensions.
@@ -781,6 +876,8 @@ management, data manipulation, and utility operations.
 
 #### `get(self, i: int, j: int) -> ElementType`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the value at the specified position (i, j) in the `CuArray`.
 - **Parameters**:
@@ -793,6 +890,8 @@ management, data manipulation, and utility operations.
 
 #### `set(self, value: ElementType, i: int, j: int) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Set the value at the specified position (i, j) in the `CuArray`.
 - **Parameters**:
@@ -806,6 +905,8 @@ management, data manipulation, and utility operations.
 
 #### `load(self, filename: str) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Load the `CuArray` data from the specified file.
 - **Parameters**:
@@ -817,6 +918,8 @@ management, data manipulation, and utility operations.
 
 #### `save(self, filename: str)`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Save the `CuArray` data to the specified file.
 - **Parameters**:
@@ -827,6 +930,8 @@ management, data manipulation, and utility operations.
 
 #### `sort(self, column_index: int) -> CuArray`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Sort the `CuArray` in ascending order based on the values in the specified column.
 - **Parameters**:
@@ -838,6 +943,8 @@ management, data manipulation, and utility operations.
 
 #### `__getitem__(self, index: int) -> ElementType`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the element at the specified index in the `CuArray`.
 - **Parameters**:
@@ -849,6 +956,8 @@ management, data manipulation, and utility operations.
 
 #### `owner(self) -> int`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Get the owner of the `CuArray`, which indicates whether the `CuArray` is responsible for memory
   deallocation.
@@ -859,6 +968,8 @@ management, data manipulation, and utility operations.
 
 #### `argsort(self, column_index: int) -> CuArray`
 
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
 - **Description**: Perform an argsort on the specified column of the `CuArray` and return a new `CuArray` containing the
   sorted indices.
@@ -876,3 +987,5 @@ management, data manipulation, and utility operations.
 ## NetCalc
 
 ---
+
+</details>
