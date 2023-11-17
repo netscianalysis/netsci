@@ -1450,7 +1450,7 @@ delete cuArray;
 #define NETSCI_ROOT_DIR ""
 
 /* Create a new double CuArray instance. We're using a double vs. float
- * here because the numpy array was a float64 array. If you tried 
+ * here because the numpy array is a float64 array. If you tried 
  * to load this file into a CuArray<float> it would cause a 
  * segmentation fault.*/
 CuArray<double> *cuArray = new CuArray<double>();
