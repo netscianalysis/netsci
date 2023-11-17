@@ -217,7 +217,7 @@ libraries to maintain simplicity and reliability.
     * [`load(self, filename: str) -> int`](#loadself-filename-str---int)
     * [`save(self, filename: str)`](#saveself-filename-str)
     * [`sort(self, column_index: int) -> CuArray`](#sortself-column_index-int---cuarray)
-    * [`__getitem__(self, index: int) -> ElementType`](#__getitem__self-index-int---elementtype)
+    * [`__getitem__(self, index: int) -> Union[CuArray, ElementType]`](#__getitem__self-index-int---unionelementtype-cuarray)
     * [`argsort(self, column_index: int) -> CuArray`](#argsortself-column_index-int---cuarray)
 
   </details>
@@ -1639,7 +1639,7 @@ delete sortedCuArray;
 - **Parameters**:
     - `int i`: Index of the element.
 - **Returns**: Reference to the element at the specified index.
-- **Related**: [`__getitem__(self, index: int) -> ElementType` ](#__getitem__self-index-int---unionelementtype-cuarray)
+- **Related**: [`__getitem__(self, index: int) -> [Union, ElementType]` ](#__getitem__self-index-int---unionelementtype-cuarray)
 
 ---
 #### `int owner() const`
