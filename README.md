@@ -1640,6 +1640,44 @@ delete sortedCuArray;
     - `int i`: Index of the element.
 - **Returns**: Reference to the element at the specified index.
 - **Related**: [`__getitem__(self, index: int) -> [Union, ElementType]` ](#__getitem__self-index-int---unionelementtype-cuarray)
+ 
+<details><summary><b>Example</b></summary>
+
+  ```cpp
+#include <cuarray.h>
+#include <iostream>
+
+/* Create a new float CuArray instance */
+auto cuArray = new CuArray<float>;
+
+/* Initialize the CuArray with 3 rows and 3 columns */
+cuArray->init(3, 3);
+
+/*Set each i, j element equal to i*3 + j */
+for (int i = 0; i < 9; i++) {
+    cuArray->host()[i] = i;
+}
+
+/* Calculate the linear index that  
+ * retrieves the 3rd element in the 2nd row of the CuArray. */
+int i = 1;
+int j = 2;
+int linearIndex = i * cuArray->n() + j;
+auto ijLinearVal = (*(cuArray))[linearIndex];
+auto ijVal = cuArray->get(i, j);
+
+/* Print the values at the linear index and the (i, j) index. */
+std::cout
+<< ijLinearVal << " "
+<< ijVal
+<< std::endl;
+
+/*Deallocate memory*/ 
+delete cuArray;
+
+```
+
+ </details>
 
 ---
 #### `int owner() const`
@@ -1979,6 +2017,7 @@ delete sortedIndicesCuArray;
 - **Parameters**:
   - `index (int)`: The index of the element or row to retrieve.
 - **Returns**: The element or row at the specified index.
+- **Related**: [`T &operator[](int i) const` ](#t-operatorint-i-const)
 
 ---
 
