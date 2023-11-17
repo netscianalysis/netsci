@@ -159,6 +159,12 @@ libraries to maintain simplicity and reliability.
 
 - **Languages**: C++, Python, Tcl
 - **Library**: [CuArray](#cuarray)
+- **Description**: The `CuArray` class is designed for managing arrays with CUDA support, providing methods for
+  initialization, memory management, data manipulation, and utility operations. It is implemented as a template class
+  in C++, and has wrapper interfaces for Python and Tcl. However, since these languages do not support templates, the
+  CuArray class must be imported as `<ElementType>CuArray`, where `<ElementType>` is the 
+  CuArray templated data type, which is always capitalized. As of now, only `float` and `int` types are supported in Python and Tcl, while all numeric data 
+   types are supported in C++.
 
 - <details><summary><b>Method</b>s</summary>
 
@@ -205,8 +211,10 @@ libraries to maintain simplicity and reliability.
     * [`m(self) -> int`](#mself---int)
     * [`n(self) -> int`](#nself---int)
     * [`size(self) -> int`](#sizeself---int)
-    * [`fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int`](#fromnumpyself-numpyarray-dim1-int-dim2-int---int)
-    * [`toNumpy(self) -> (numpy_array, dim1: int, dim2: int)`](#tonumpyself---numpyarray-dim1-int-dim2-int)
+    * [`fromNumpy1D(self, numpy_array: numpy.ndarray) -> int`](#fromnumpy1dself-numpyarray-numpyndarray---int)
+    * [`fromNumpy2D(self, numpy_array: numpy.ndarray) -> int`](#fromnumpy2dself-numpyarray-numpyndarray---int)
+    * [`toNumpy1D(self) -> numpy.ndarray`](#tonumpy1dself---numpyndarray)
+    * [`toNumpy2D(self) -> numpy.ndarray`](#tonumpy2dself---numpyndarray)
     * [`get(self, i: int, j: int) -> ElementType`](#getself-i-int-j-int---elementtype)
     * [`set(self, value: ElementType, i: int, j: int) -> int`](#setself-value-elementtype-i-int-j-int---int)
     * [`load(self, filename: str) -> int`](#loadself-filename-str---int)
@@ -1220,7 +1228,9 @@ delete cuArray;
     - `int NUMPY_ARRAY_DIM1`: Dimension 1 of the NumPy array.
     - `int NUMPY_ARRAY_DIM2`: Dimension 2 of the NumPy array.
 - **Returns**: `CuArrayError` indicating success (`0’) or specific error code.
-- **Related**: [`fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int` ](#fromnumpyself-numpyarray-dim1-int-dim2-int---int)
+- **Related**:
+  - [`fromNumpy2D(self, numpy_array: numpy.ndarray) -> int`](#fromnumpy2dself-numpyarray-numpyndarray---int)
+  - [`fromNumpy1D(self, numpy_array: numpy.ndarray) -> int`](#fromnumpy1dself-numpyarray-numpyndarray---int)
 
 <details><summary><b>Example</b></summary>
 
@@ -1273,7 +1283,9 @@ delete[] NUMPY_ARRAY;
     - `T **NUMPY_ARRAY`: Pointer to the output NumPy array.
     - `int **NUMPY_ARRAY_DIM1`: Dimension 1 of the NumPy array.
     - `int **NUMPY_ARRAY_DIM2`: Dimension 2 of the NumPy array.
-- **Related**: [`toNumpy(self) -> (numpy_array, dim1: int, dim2: int)` ](#tonumpyself---numpyarray-dim1-int-dim2-int)
+- **Related**: 
+  - [`toNumpy2D(self) -> numpy.ndarray`](#tonumpy2dself---numpyndarray)
+  - [`toNumpy1D(self) -> numpy.ndarray`](#tonumpy2dself---numpyndarray)
 
 <details><summary><b>Example</b></summary>
 
@@ -1845,6 +1857,25 @@ delete sortedIndicesCuArray;
 - **Description**: Default constructor. Constructs an empty `CuArray` object.
 - **Related**: [`CuArray()` ](#cuarray-constructor)
 
+<details><summary><b>Example</b></summary>
+
+```python
+"""
+Always precede CuArray with the data type
+Here we are importing CuArray int and float templates.
+"""
+from cuarray import FloatCuArray, IntCuArray
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Create a new int CuArray instance"""
+int_cuarray = IntCuArray()
+
+```
+
+</details>
+
 ---
 
 #### `init(self, m: int, n: int) -> int`
@@ -1859,6 +1890,31 @@ delete sortedIndicesCuArray;
     - `n` (`int`): Number of columns.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
 - **Related**: [`CuArrayError init(int m, int n)` ](#cuarrayerror-initint-m-int-n)
+
+<details><summary><b>Example</b></summary>
+
+```python
+"""
+Always precede CuArray with the data type
+Here we are importing CuArray int and float templates.
+"""
+from cuarray import FloatCuArray
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Initialize the float CuArray with 10 rows and 10 columns"""
+float_cuarray.init(10, 10)
+
+"""
+Print the CuArray, 
+which has a __repr__ method implemented in the SWIG interface
+"""
+print(float_cuarray)
+
+```
+
+</details>
 
 ---
 
@@ -1875,8 +1931,47 @@ delete sortedIndicesCuArray;
     - `m` (`int`): Number of rows in this `CuArray`.
     - `n` (`int`): Number of columns in this `CuArray`.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
-- **Related
-  **: [`CuArrayError fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n)` ](#cuarrayerror-fromcuarraydeepcopycuarrayt-cuarray-int-start-int-end-int-m-int-n)
+- **Related**: [`CuArrayError fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n)` ](#cuarrayerror-fromcuarraydeepcopycuarrayt-cuarray-int-start-int-end-int-m-int-n)
+
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+"""
+Always precede CuArray with the data type
+Here we are importing CuArray int and float templates.
+"""
+from cuarray import FloatCuArray
+
+
+"""Create two new float CuArray instances"""
+float_cuarray1 = FloatCuArray()
+float_cuarray2 = FloatCuArray()
+
+"""Initialize float_cuarray1 with 10 rows and 10 columns"""
+float_cuarray1.init(10, 10)
+
+"""Fill float_cuarray1 with random values"""
+for i in range(float_cuarray1.m()):
+    for j in range(float_cuarray1.n()):
+        val = np.random.random()
+        """Cast val to float32."""
+        float_cuarray1[i][j] = val
+        
+"""Copy the data from float_cuarray1 into float_cuarray2"""
+float_cuarray2.fromCuArray(float_cuarray1, 0, 9, 10, 10)
+
+"""
+Print both CuArrays. Also this performs a deep copy for 
+memory safety.
+"""
+for i in range(float_cuarray1.m()):
+    for j in range(float_cuarray1.n()):
+        print(float_cuarray1[i][j], float_cuarray2[i][j])
+
+```
+
+</details>
 
 ---
 
@@ -1889,6 +1984,30 @@ delete sortedIndicesCuArray;
 - **Returns**: Number of rows as `int`.
 - **Related**: [`int m() const` ](#int-n-const)
 
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+"""
+Always precede CuArray with the data type
+Here we are importing CuArray int and float templates.
+"""
+from cuarray import FloatCuArray
+
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Initialize the float CuArray with 10 rows and 2 columns"""
+float_cuarray.init(10, 2)
+
+"""Print the number of rows in the CuArray"""
+print(float_cuarray.m())
+
+```
+
+</details>
+
 ---
 
 #### `n(self) -> int`
@@ -1900,6 +2019,31 @@ delete sortedIndicesCuArray;
 - **Returns**: Number of columns as `int`.
 - **Related**: [`int n() const` ](#int-n-const)
 
+<details><summary><b>Example</b></summary>
+
+```python
+"""
+Always precede CuArray with the data type
+Here we are importing CuArray int and float templates.
+"""
+from cuarray import FloatCuArray
+
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Initialize the float CuArray with 10 rows and 2 columns"""
+float_cuarray.init(10, 2)
+
+"""Print the number of columns in the CuArray"""
+print(float_cuarray.n())
+
+```
+
+</details>
+
+---
+
 #### `size(self) -> int`
 
 - **Language**: Python
@@ -1909,24 +2053,72 @@ delete sortedIndicesCuArray;
 - **Returns**: Total number of elements as `int`.
 - **Related**: [`int size() const` ](#int-size-const)
 
+<details><summary><b>Example</b></summary>
+
+```python
+"""
+Always precede CuArray with the data type
+Here we are importing CuArray int and float templates.
+"""
+from cuarray import FloatCuArray
+
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Initialize the float CuArray with 10 rows and 2 columns"""
+float_cuarray.init(10, 2)
+
+"""Print the total number of values in the CuArray"""
+print(float_cuarray.size())
+
+```
+
+</details>
+
 ---
 
-#### `fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int`
+#### `fromNumpy1D(self, numpy_array: numpy.ndarray) -> int`
 
 - **Language**: Python
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Copy data from a NumPy array to the `CuArray`.
+- **Description**: Copy data from a 1-dimensional NumPy array to the `CuArray`.
 - **Parameters**:
-    - `numpy_array`: NumPy array to copy from.
+    - `numpy_array`(`numpy.ndarray`): NumPy array to copy from.
     - `dim1` (`int`): Dimension 1 of the NumPy array.
     - `dim2` (`int`): Dimension 2 of the NumPy array.
 - **Returns**: `int`: `CuArrayError` indicating success (`0’) or specific error code.
 - **Related**:[`CuArrayError fromNumpy(T *NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2)` ](#cuarrayerror-fromnumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
 
 ---
+#### `fromNumpy2D(self, numpy_array: numpy.ndarray) -> int`
 
-#### `toNumpy(self) -> (numpy_array, dim1: int, dim2: int)`
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
+- **Class**: [CuArray](#cuarray-class)
+- **Description**: Copy data from a 2-dimensional NumPy array to the `CuArray`.
+- **Parameters**:
+  - `numpy_array` (`numpy.ndarray`): NumPy array to copy from.
+  - `dim1` (`int`): Dimension 1 of the NumPy array.
+  - `dim2` (`int`): Dimension 2 of the NumPy array.
+- **Returns**: `int`: `CuArrayError` indicating success (`0’) or specific error code.
+- **Related**:[`CuArrayError fromNumpy(T *NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2)` ](#cuarrayerror-fromnumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+
+---
+
+#### `toNumpy1D(self) -> numpy.ndarray`
+
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
+- **Class**: [CuArray](#cuarray-class)
+- **Description**: Copy data from the `CuArray` to a 1-dimension NumPy array.
+- **Returns**: Tuple containing the NumPy array and its dimensions.
+- **Related:**[`void toNumpy(T **NUMPY_ARRAY, int **NUMPY_ARRAY_DIM1, int **NUMPY_ARRAY_DIM2)` ](#void-tonumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+
+---
+
+#### `toNumpy2D(self) -> numpy.ndarray`
 
 - **Language**: Python
 - **Library**: [CuArray](#cuarray)
