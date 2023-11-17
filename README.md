@@ -82,11 +82,6 @@ libraries to maintain simplicity and reliability.
     source activate netsci
     ```
    
-1. #### Navigate to the NetSci Root Directory:
-    ```bash
-    cd netsci
-    ```
-   
 1. #### Create CMake Build Directory:
     ```bash
     mkdir build
