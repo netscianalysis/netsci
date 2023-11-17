@@ -245,10 +245,21 @@ CuArrayError CuArray<T>::set(
 template<typename T>
 CuArrayError CuArray<T>::load(const std::string &fname) {
     cnpy::NpyArray npyArray = cnpy::npy_load(fname);
+    int m = npyArray.shape[0];
+    int n = npyArray.shape[1];
+    int minDim = std::min(m, n);
+    int maxDim = std::max(m, n);
+    if (minDim == 0) {
+        auto err = this->fromNumpy(
+                npyArray.data<T>(),
+                maxDim
+        );
+        return err;
+    }
     auto err = this->fromNumpy(
             npyArray.data<T>(),
-            npyArray.shape[0],
-            npyArray.shape[1]
+            m,
+            n
     );
     return err;
 }
