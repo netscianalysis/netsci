@@ -15,7 +15,7 @@ systems featuring CUDA-capable GPUs (compute capability 3.5 and above). It lever
 libraries to maintain simplicity and reliability.
 <details>
 
-<summary>Steps</summary>
+<summary><b>Steps</b></summary>
 
   * [Download Miniconda Installation Script](#download-miniconda-installation-script)
   * [Execute the Installation Script](#execute-the-installation-script)
@@ -114,9 +114,9 @@ libraries to maintain simplicity and reliability.
  </details>
 
 # API Documentation
-<details>
 
-<summary>Libraries</summary>
+<details>
+<summary><b>Libraries</b></summary>
 
 - [CuArray](#cuarray)
 - [NetChem](#netchem)
@@ -126,7 +126,7 @@ libraries to maintain simplicity and reliability.
 ---
 
 # CuArray
-  <details><summary>Classes</summary>
+  <details><summary><b>Classe</b>s</summary>
 
 - [CuArray](#cuarray-class)
 
@@ -142,9 +142,9 @@ libraries to maintain simplicity and reliability.
 - **Languages**: C++, Python, Tcl 
 - **Library**: [CuArray](#cuarray)
 
-- <details><summary>Methods</summary>
+- <details><summary><b>Method</b>s</summary>
 
-  <details><summary>C++</summary>
+  <details><summary><b>C++</b></summary>
 
   * [`CuArray()` ___constructor___](#cuarray-constructor)
   * [`~CuArray()` ___destructor___](#cuarray-destructor)
@@ -179,7 +179,7 @@ libraries to maintain simplicity and reliability.
 
   </details>
 
-  <details><summary>Python</summary>
+  <details><summary><b>Python</b></summary>
 
   * [`__init__()`](#__init__)
   * [`__del__()`](#__del__)
@@ -236,6 +236,20 @@ management, data manipulation, and utility operations.
 - **Description**: Default constructor. Constructs an empty `CuArray` object.
 - **Related**: [`__init__()` ](#__init__)
 
+<details><summary><b>Example</b></summary>
+
+  ```cpp
+#include <cuarray.h>
+  
+  /* Creates a new float CuArray instance */
+  CuArray<float> *cuArray = new CuArray<float>();
+  
+  delete cuArray;
+  ```
+</details>
+
+
+
 ---
 
 #### `~CuArray()` ___destructor___
@@ -260,6 +274,24 @@ management, data manipulation, and utility operations.
     - `int n`: Number of columns.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
 - **Related**: [`init(self, m: int, n: int) -> int` ](#initself-m-int-n-int---int)
+
+<details><summary><b>Example</b></summary>
+
+  ```cpp
+#include <cuarray.h>
+    
+    /* Creates a new float CuArray instance */
+    CuArray<float> *cuArray = new CuArray<float>();
+    
+    /* 
+     * Initializes the CuArray with 10 rows and 5 columns 
+     * and allocates memory on host.
+     */
+    cuArray->init(10, 5);
+    
+    delete cuArray;
+   ```
+</details>
 
 ---
 
@@ -293,6 +325,75 @@ management, data manipulation, and utility operations.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
 - **Related**: [`fromCuArrayShallowCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int` ](#fromcuarrayshallowcopyself-cuarray-start-int-end-int-m-int-n-int---int)
 
+<details><summary><b>Example</b></summary>
+
+  ```cpp
+#include <cuarray.h>
+#include <iostream>
+
+/* Create a new float CuArray instance */
+auto cuArray = new CuArray<float>;
+
+/* Initialize the CuArray with 3 rows and 3 columns */
+cuArray->init(3, 3);
+
+/*Set each i, j element equal to i*3 + j */
+for (int i = 0; i < 9; i++) {
+    cuArray->host()[i] = i;
+}
+
+/*
+ * Create a float 'CuArray' that 
+ * will be a shallow copy of the last two cuArray rows
+ */
+auto cuArray2x3Copy = new CuArray<float>;
+cuArray2x3Copy->init(2, 3);
+
+/* First row to copy from cuArray into cuArray2x3Copy */
+int startRowIndex = 1;
+
+/* Last row to copy from cuArray into cuArray2x3Copy */
+int endRowIndex = 2;
+
+cuArray2x3Copy->fromCuArrayShallowCopy(
+        cuArray, /* Source for copying data into cuArray2x3Copy. 
+            * Both cuArray and cuArray2x3Copy will point to the same 
+            * data, which helps with
+            * performance at the expense of being extremely dangerous. As an
+            * attempt to make this method somewhat safe, there is an "owner"
+            * attribute that is set to 1 if the CuArray owns the data and 0
+            * otherwise. Logic is implemented in the destructor to check for ownership
+            * and only delete data if the CuArray owns the data. As of now, this method has 
+            * passed all real life stress tests, and CUDA-MEMCHECK doesn't hate it,
+            * but it still shouldn't be used in the vast majority of cases.
+            * The legitimate reason this should ever be called is when you have to 
+            * pass the CuArray data as a double pointer to a function that 
+            * cannot itself take a CuArray object. Eg.) A CUDA kernel.*/
+        ,
+        startRowIndex, /* First row to copy from cuArray into cuArray2x3Copy */
+        endRowIndex, /* Last row to copy from cuArray into cuArray2x3Copy */
+        cuArray2x3Copy->m(), /* Number of rows in cuArray2x3Copy */
+        cuArray2x3Copy->n() /* Number of columns in cuArray2x3Copy */
+        );
+
+/* Print each element in cuArray2x3Copy */
+for (int i = 0; i < cuArray2x3Copy->m(); i++) {
+    for (int j = 0; j < cuArray2x3Copy->n(); j++) {
+        std::cout << cuArray2x3Copy->get(i, j) << " ";
+    }
+    std::cout << std::endl;
+}
+/* Output: 
+ * 3 4 5
+ * 6 7 8
+ */
+delete cuArray2x3Copy;
+delete cuArray;
+
+  ```
+  
+ </details>
+
 ---
 
 #### `CuArrayError fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n)`
@@ -310,6 +411,74 @@ management, data manipulation, and utility operations.
 - **Returns**: `CuArrayError` indicating success (`0`) or specific error code.
 - **Related**: [`fromCuArrayDeepCopy(self, cuArray, start: int, end: int, m: int, n: int) -> int` ](#fromcuarraydeepcopyself-cuarray-start-int-end-int-m-int-n-int---int)
 
+<details><summary><b>Example</b></summary>
+
+  ```cpp
+#include <cuarray.h>
+#include <iostream>
+ ```cpp
+#include <cuarray.h>
+#include <iostream>
+
+/* Create a new float CuArray instance */
+auto cuArray = new CuArray<float>;
+
+/* Initialize the CuArray with 3 rows and 3 columns */
+cuArray->init(3, 3);
+
+/*Set each i, j element equal to i*3 + j */
+for (int i = 0; i < 9; i++) {
+    cuArray->host()[i] = i;
+}
+
+/*
+ * Create a float 'CuArray' that 
+ * will be a deep copy of the last two cuArray rows
+ */
+auto cuArray2x3Copy = new CuArray<float>;
+cuArray2x3Copy->init(2, 3);
+
+/* First row to copy from cuArray into cuArray2x3Copy */
+int startRowIndex = 1;
+
+/* Last row to copy from cuArray into cuArray2x3Copy */
+int endRowIndex = 2;
+
+cuArray2x3Copy->fromCuArrayDeepCopy(
+        cuArray, /*Source for copying data into cuArray2x3Copy. This method is 
+            * significantly safer than its shallow copy equivalent. However, it is also 
+            * slower, which can impact performance if it's called a lot.*/ 
+        startRowIndex, /* First row to copy from cuArray into cuArray2x3Copy */
+        endRowIndex, /* Last row to copy from cuArray into cuArray2x3Copy */
+        cuArray2x3Copy->m(), /* Number of rows in cuArray2x3Copy */
+        cuArray2x3Copy->n() /* Number of columns in cuArray2x3Copy */
+        );
+
+/* Print each element in cuArray2x3Copy */
+for (int i = 0; i < cuArray2x3Copy->m(); i++) {
+    for (int j = 0; j < cuArray2x3Copy->n(); j++) {
+        std::cout << cuArray2x3Copy->get(i, j) << " ";
+    }
+    std::cout << std::endl;
+}
+/* Output: 
+ * 3 4 5
+ * 6 7 8
+ */
+
+ /* Both cuArray and cuArray2x3Copy own their data.*/
+std::cout
+<< cuArray->owner() << " "
+<< cuArray2x3Copy->owner()
+<< std::endl;
+/* Output: 
+ * 1 1
+ */
+
+delete cuArray2x3Copy;
+delete cuArray;
+
+```
 ---
 
 #### `int n() const`
