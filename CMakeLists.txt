@@ -167,3 +167,16 @@ IF (${BUILD_PYTHON_BINDINGS})
             )
 ENDIF ()
 
+LINK_LIBRARIES("${NETCALC_LINK_LIBRARIES}")
+ADD_EXECUTABLE(
+        tmp
+        ${CMAKE_SOURCE_DIR}/scratch/tmp.cpp
+        )
+ADD_DEPENDENCIES(tmp cuarray)
+SET_TARGET_PROPERTIES(
+        tmp
+        PROPERTIES
+        CUDA_SEPARABLE_COMPILATION ON
+        CUDA_ARCHITECTURES ${CUDA_ARCHITECTURE}
+        )
+

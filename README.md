@@ -1,13 +1,22 @@
 <center><h1>NetSci<br><small>A Toolkit for High Performance Scientific Network Analysis Computation</small></h1></center>
 
+---
+
+<details><summary><b>Table of Contents</b></summary>
+
+* [Installation](#installation)
+* [API Documentation](#api-documentation)
+
+</details>
+
+---
+
+# Overview
 NetSci is a specialized toolkit designed for advanced network analysis in computational sciences. Utilizing the
 capabilities of modern GPUs, it offers a powerful and efficient solution for processing computationally demanding
 network analysis metrics while delivering state-of-the-art performance.
 
 ---
-
-* [Installation](#installation)
-* [API Documentation](#api-documentation)
 
 # Installation
 
@@ -24,10 +33,11 @@ libraries to maintain simplicity and reliability.
 * [Install Git with Conda](#install-git-with-conda)
 * [Clone the NetSci Repository](#clone-the-netsci-repository)
 * [Navigate to the NetSci Root Directory](#navigate-to-the-netsci-root-directory)
-* [Set NetSci Root Directory Variable](#set-netsci-root-directory-variable)
 * [Create NetSci Conda Environment](#create-netsci-conda-environment)
 * [Activate NetSci Conda Environment](#activate-netsci-conda-environment)
-* [Prepare the Build Directory](#prepare-the-build-directory)
+* [Create CMake Build Directory](#create-cmake-build-directory)
+* [Set NetSci Root Directory Variable](#set-netsci-root-directory-variable)
+* [Navigate to the CMake Build Directory](#navigate-to-the-cmake-build-directory)
 * [Compile CUDA Script for GPU Capability](#compile-cuda-script-for-gpu-capability)
 * [Set CUDA Architecture Variable](#set-cuda-architecture-variable)
 * [Configure the Build with CMake](#configure-the-build-with-cmake)
@@ -62,10 +72,6 @@ libraries to maintain simplicity and reliability.
     ```bash
     cd netsci
     ```
-1. #### Set NetSci Root Directory Variable:
-    ```bash
-    NETSCI_ROOT=$(pwd)
-    ```
 
 1. #### Create NetSci Conda Environment:
     ```bash
@@ -75,13 +81,28 @@ libraries to maintain simplicity and reliability.
     ```bash
     source activate netsci
     ```
-1. #### Prepare the Build Directory:
+   
+1. #### Navigate to the NetSci Root Directory:
     ```bash
-    mkdir ${NETSCI_ROOT}/build
+    cd netsci
+    ```
+   
+1. #### Create CMake Build Directory:
+    ```bash
+    mkdir build
+    ```
+   
+1. #### Set NetSci Root Directory Variable:
+    ```bash
+    NETSCI_ROOT=$(pwd)
+    ```
+   
+1. #### Navigate to the CMake Build Directory:
+    ```bash
     cd ${NETSCI_ROOT}/build
     ```
 
-1. #### Compile CUDA Script for GPU Capability:
+1. #### Compile CUDA Architecture Script:
     ```bash
     nvcc ${NETSCI_ROOT}/build_scripts/cuda_architecture.cu -o cuda_architecture
     ```
@@ -112,6 +133,8 @@ libraries to maintain simplicity and reliability.
     ```
 
  </details>
+
+---
 
 # API Documentation
 
@@ -1488,6 +1511,71 @@ delete cuArray;
     - `const std::string &fname`: Name of the NumPy binary (.npy) file to save the CuArray to.
 - **Related**: [`save(self, filename: str)` ](#saveself-filename-str)
 
+<details><summary><b>Example</b></summary>
+
+```cpp
+#include "cuarray.h"
+#include <iostream>
+
+#define NETSCI_ROOT_DIR "."
+
+/* Create a new double CuArray instance that will have 10 rows and 10
+* columns*/
+CuArray<float> *cuArray = new CuArray<float>();
+cuArray->init(10,
+              10
+);
+
+/* Fill the CuArray with random values. */
+for (int i = 0; i < cuArray->m(); i++) {
+    for (int j = 0; j < cuArray->n(); j++) {
+        float val = static_cast <float> (rand()) /
+                    static_cast <float> (RAND_MAX);
+        cuArray->set(val,
+                     i,
+                     j);
+    }
+}
+
+/* Save the CuArray to a .npy file. */
+auto npyFname = NETSCI_ROOT_DIR "/tmp.npy";
+cuArray->save(npyFname);
+
+/* Create a new CuArray instance from the .npy file. */
+auto cuArrayFromNpy = new CuArray<float>();
+cuArrayFromNpy->load(npyFname);
+
+/*Print (i, j) elements of the CuArray's next to each other.
+ * and check for equality*/
+for (int i = 0; i < cuArray->m(); i++) {
+    for (int j = 0; j < cuArray->n(); j++) {
+        auto val1 = cuArray->get(i, j);
+        auto val2 = cuArrayFromNpy->get(i, j);
+        bool equal = val1 == val2;
+        std::cout
+        << val1 << " "
+        << val2 << " "
+        << equal
+        << std::endl;
+        if (!equal) {
+            std::cout
+            << "Values at ("
+            << i << ", "
+            << j << ") are not equal."
+            << std::endl;
+            return 1;
+        }
+
+
+    }
+}
+delete cuArray;
+return 0;
+
+```
+
+</details>
+
 ---
 
 #### `CuArray<T> *sort(int i)`
@@ -1501,6 +1589,45 @@ delete cuArray;
 - **Returns**: Pointer to a new `CuArray` containing the sorted data.
 - **Related**: [`sort(self, column_index: int) -> CuArray` ](#sortself-column_index-int---cuarray)
 
+<details><summary><b>Example</b></summary>
+
+```cpp
+#include <cuarray.h>
+#include <random>
+
+/* Creates a new float CuArray instance */
+CuArray<float> *cuArray = new CuArray<float>();
+
+/* Initialize the CuArray with 300 rows and 300 columns */
+auto rows = 300;
+auto cols = 300;
+cuArray->init(rows,
+              cols);
+
+/* Fill the CuArray with random values */
+for (int i = 0; i < cuArray->m(); i++) {
+    for (int j = 0; j < cuArray->n(); j++) {
+        cuArray->host()[i * cuArray->n() + j] =
+                static_cast<float>(rand() / (float) RAND_MAX);
+    }
+}
+
+/* Create a new CuArray that contains the sorted data from the 
+ * 8th column of the original CuArray. */
+auto sortedCuArray = cuArray->sort(7);
+
+/* Print the sorted CuArray. */
+for (int j = 0; j < sortedCuArray->n(); j++) {
+    std::cout << sortedCuArray->get(0, j) << std::endl;
+}
+
+/* Cleanup time. */
+delete cuArray;
+delete sortedCuArray;
+```
+
+</details>
+
 ---
 
 #### `T &operator[](int i) const`
@@ -1508,22 +1635,103 @@ delete cuArray;
 - **Language**: C++
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Get a reference to the element at the specified index in the `CuArray`.
+- **Description**: Get a reference to the element at the specified **linear** index in the `CuArray`. The linear index is calculated as `i * n + j`, where n is the number of columns.
 - **Parameters**:
     - `int i`: Index of the element.
 - **Returns**: Reference to the element at the specified index.
-- **Related**: [`__getitem__(self, index: int) -> ElementType` ](#__getitem__self-index-int---elementtype)
+- **Related**: [`__getitem__(self, index: int) -> ElementType` ](#__getitem__self-index-int---unionelementtype-cuarray)
 
 ---
-
 #### `int owner() const`
+* Language: C++
+* Library: [CuArray](#cuarray)
+* Class: [CuArray](#cuarray-class)
+* Description: Determines if the CuArray instance owns the host data.
+* Returns: `1` if the CuArray owns the host data, `0` otherwise.
 
-- **Language**: C++
-- **Library**: [CuArray](#cuarray)
-- **Class**: [CuArray](#cuarray-class)
-- **Description**: Get the owner of the `CuArray`, which indicates whether the `CuArray` is responsible for memory
-  deallocation.
-- **Returns**: Owner of the `CuArray`.
+<details><summary><b>Example</b></summary>
+
+  ```cpp
+#include <cuarray.h>
+#include <iostream>
+
+/* Create a new float CuArray instance */
+auto cuArray = new CuArray<float>;
+
+/* Initialize the CuArray with 3 rows and 3 columns */
+cuArray->init(3, 3);
+
+/*Set each i, j element equal to i*3 + j */
+for (int i = 0; i < 9; i++) {
+    cuArray->host()[i] = i;
+}
+
+/*
+ * Create a float 'CuArray' that 
+ * will be a shallow copy of the last two cuArray rows
+ */
+auto cuArray2x3Copy = new CuArray<float>;
+cuArray2x3Copy->init(2, 3);
+
+/* First row to copy from cuArray into cuArray2x3Copy */
+int startRowIndex = 1;
+
+/* Last row to copy from cuArray into cuArray2x3Copy */
+int endRowIndex = 2;
+
+cuArray2x3Copy->fromCuArrayShallowCopy(
+        cuArray, /* Source for copying data into cuArray2x3Copy. See
+                  * CuArray::fromCuArrayShallowCopy for more info. */
+        startRowIndex, /* First row to copy from cuArray into cuArray2x3Copy */
+        endRowIndex, /* Last row to copy from cuArray into cuArray2x3Copy */
+        cuArray2x3Copy->m(), /* Number of rows in cuArray2x3Copy */
+        cuArray2x3Copy->n() /* Number of columns in cuArray2x3Copy */
+        );
+
+/* Now make another CuArray that is a deep copy of cuArray2x3Copy */
+auto cuArray2x3DeepCopy = new CuArray<float>;
+cuArray2x3DeepCopy->init(2, 3);
+cuArray2x3DeepCopy->fromCuArrayDeepCopy(
+        cuArray, /* Source for copying data into cuArray2x3DeepCopy. See
+                  * CuArray::fromCuArrayDeepCopy for more info. */
+        startRowIndex, /* First row to copy from cuArray into cuArray2x3DeepCopy */
+        endRowIndex, /* Last row to copy from cuArray into cuArray2x3DeepCopy */
+        cuArray2x3DeepCopy->m(), /* Number of rows in cuArray2x3DeepCopy */
+        cuArray2x3DeepCopy->n() /* Number of columns in cuArray2x3DeepCopy */
+        );
+
+/* Check if cuArray2x3Copy owns the host data. */
+auto cuArray2x3CopyOwnsHostData = cuArray2x3Copy->owner();
+
+/* Check if cuArray2x3DeepCopy owns the host data. 
+ * Sorry for the verbosity :), I'm sure this is painful for 
+ * Python devs to read (though Java devs are probably loving it).*/
+auto cuArray2x3DeepCopyOwnsHostData = cuArray2x3DeepCopy->owner();
+
+/* Print data in both arrays. */
+for (int i = 0; i < cuArray2x3Copy->m(); i++) {
+    for (int j = 0; j < cuArray2x3Copy->n(); j++) {
+        std::cout
+        << cuArray2x3Copy->get(i, j) << " "
+        << cuArray2x3DeepCopy->get(i, j) << std::endl;
+    }
+} 
+
+/* Print ownership info. */
+std::cout
+<< "cuArray2x3Copy owns host data: "
+<< cuArray2x3CopyOwnsHostData
+<< " cuArray2x3DeepCopy owns host data: "
+<< cuArray2x3DeepCopyOwnsHostData
+<< std::endl;
+
+delete cuArray2x3Copy;
+delete cuArray2x3DeepCopy;
+delete cuArray;
+
+```
+
+ </details>
 
 ---
 
@@ -1538,6 +1746,59 @@ delete cuArray;
     - `int i`: Column index to argsort.
 - **Returns**: Pointer to a new `CuArray` containing the sorted indices.
 - **Related**: [`argsort(self, column_index: int) -> CuArray` ](#argsortself-column_index-int---cuarray)
+
+<details><summary><b>Example</b></summary>
+
+```cpp
+#include <cuarray.h>
+#include <iostream>
+
+/* Creates a new float CuArray instance */
+CuArray<float> *cuArray = new CuArray<float>();
+
+/* Initialize the CuArray with 300 rows and 300 columns */
+auto rows = 300;
+auto cols = 300;
+cuArray->init(rows,
+              cols);
+
+/* Fill the CuArray with random values */
+for (int i = 0; i < cuArray->m(); i++) {
+    for (int j = 0; j < cuArray->n(); j++) {
+        cuArray->host()[i * cuArray->n() + j] =
+                static_cast<float>(rand() / (float) RAND_MAX);
+    }
+}
+
+/* Create a new CuArray with indices that sort the 8th column 
+ * of the original CuArray.*/
+auto cuArrayRowIndex = 7;
+auto sortedIndicesCuArray = cuArray->argsort(cuArrayRowIndex);
+
+/* Create a new CuArray containing sorted data from the 8th column 
+ * of the original CuArray.*/
+auto sortedCuArray = cuArray->sort(cuArrayRowIndex);
+
+/* Print the sorted CuArray and the corresponding values from the 
+ * original CuArray using the sortedIndicesCuArray.*/
+for (int j = 0; j < sortedCuArray->n(); j++) {
+    auto sortedIndex = sortedIndicesCuArray->get(0, j);
+    auto sortedValue = sortedCuArray->get(0, j);
+    auto sortedValueFromOriginalCuArray = 
+            cuArray->get(sortedIndex, cuArrayRowIndex);
+    std::cout
+    << sortedIndex << " "
+    << sortedValue << " "
+    << sortedValueFromOriginalCuArray << std::endl;
+}
+
+/* Cleanup time. */
+delete cuArray;
+delete sortedCuArray;
+delete sortedIndicesCuArray;
+```
+
+</details>
 
 ---
 
@@ -1710,16 +1971,14 @@ delete cuArray;
 
 ---
 
-#### `__getitem__(self, index: int) -> ElementType`
-
+#### `__getitem__(self, index: int) -> Union[ElementType, CuArray]`
 - **Language**: Python
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Get the element at the specified index in the `CuArray`.
+- **Description**: Retrieves the element or row at the specified index in the `CuArray`. If the `CuArray` consists of a single row, returns the element at the given index.
 - **Parameters**:
-    - `index` (`int`): Index of the element.
-- **Returns**: Element at the specified index.
-- **Related**: [`T &operator[](int i) const` ](#t-operatorint-i-const)
+  - `index (int)`: The index of the element or row to retrieve.
+- **Returns**: The element or row at the specified index.
 
 ---
 
@@ -1742,6 +2001,8 @@ delete cuArray;
  ---
 
 ## NetCalc
+
+---
 
 ---
 
