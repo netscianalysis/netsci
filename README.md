@@ -1578,7 +1578,7 @@ return 0;
 - **Language**: C++
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Sort the `CuArray` in ascending order based on the values in the specified column.
+- **Description**: Sort the `CuArray` in descending order based on the values in the specified column.
 - **Parameters**:
     - `int i`: Column index to sort.
 - **Returns**: Pointer to a new `CuArray` containing the sorted data.
@@ -1996,7 +1996,7 @@ delete sortedIndicesCuArray;
 - **Language**: Python
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Sort the `CuArray` in ascending order based on the values in the specified column.
+- **Description**: Sort the `CuArray` in descending order based on the values in the specified column.
 - **Parameters**:
     - `column_index` (`int`): Column index to sort.
 - **Returns**: New `CuArray` object containing sorted data.
