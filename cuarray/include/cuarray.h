@@ -339,11 +339,12 @@ public:
     void save(const std::string &fname);
 
     /**
-     * \brief Sort the CuArray based on the specified column.
+     * \brief Sort the CuArray based on the specified row.
      *
-     * Sorts the CuArray in ascending order based on the values in the specified column.
+     * Sorts the CuArray in descending order based on the values in the
+     * specified row.
      *
-     * \param i The column index to sort.
+     * \param i The index of the row to sort.
      * \return A pointer to a new CuArray containing the sorted data.
      */
     CuArray<T> *sort(int i);
@@ -361,16 +362,18 @@ public:
     /**
      * \brief Get the owner of the CuArray.
      *
-     * Returns the owner of the CuArray, which indicates whether the CuArray is responsible for memory deallocation.
+     * Returns the owner of the CuArray, which indicates whether the
+     * CuArray is responsible for memory deallocation.
      *
      * \return The owner of the CuArray.
      */
     int owner() const;
 
     /**
-     * \brief Perform an argsort on the specified column of the CuArray.
+     * \brief Perform an argsort on the specified row of the CuArray.
      *
-     * Performs an argsort on the specified column of the CuArray and returns a new CuArray that contains the sorted indices.
+     * Performs an argsort on the specified row of the CuArray and
+     * returns a new CuArray that contains the sorted indices.
      *
      * \param i The column index to argsort.
      * \return A pointer to a new CuArray containing the sorted indices.

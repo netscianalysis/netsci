@@ -159,8 +159,14 @@ libraries to maintain simplicity and reliability.
 
 - **Languages**: C++, Python, Tcl
 - **Library**: [CuArray](#cuarray)
+- **Description**: The `CuArray` class is designed for managing arrays with CUDA support, providing methods for
+  initialization, memory management, data manipulation, and utility operations. It is implemented as a template class
+  in C++, and has wrapper interfaces for Python and Tcl. However, since these languages do not support templates, the
+  CuArray class must be imported as `<ElementType>CuArray`, where `<ElementType>` is the 
+  CuArray templated data type, which is always capitalized. As of now, only `float` and `int` types are supported in Python and Tcl, while all numeric data 
+   types are supported in C++.
 
-- <details><summary><b>Method</b>s</summary>
+- <details><summary><b>Methods</b></summary>
 
   <details><summary><b>C++</b></summary>
 
@@ -205,15 +211,17 @@ libraries to maintain simplicity and reliability.
     * [`m(self) -> int`](#mself---int)
     * [`n(self) -> int`](#nself---int)
     * [`size(self) -> int`](#sizeself---int)
-    * [`fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int`](#fromnumpyself-numpyarray-dim1-int-dim2-int---int)
-    * [`toNumpy(self) -> (numpy_array, dim1: int, dim2: int)`](#tonumpyself---numpyarray-dim1-int-dim2-int)
+    * [`fromNumpy1D(self, numpy_array: numpy.ndarray) -> int`](#fromnumpy1dself-numpyarray-numpyndarray---int)
+    * [`fromNumpy2D(self, numpy_array: numpy.ndarray) -> int`](#fromnumpy2dself-numpyarray-numpyndarray---int)
+    * [`toNumpy1D(self) -> numpy.ndarray`](#tonumpy1dself---numpyndarray)
+    * [`toNumpy2D(self) -> numpy.ndarray`](#tonumpy2dself---numpyndarray)
     * [`get(self, i: int, j: int) -> ElementType`](#getself-i-int-j-int---elementtype)
     * [`set(self, value: ElementType, i: int, j: int) -> int`](#setself-value-elementtype-i-int-j-int---int)
     * [`load(self, filename: str) -> int`](#loadself-filename-str---int)
     * [`save(self, filename: str)`](#saveself-filename-str)
-    * [`sort(self, column_index: int) -> CuArray`](#sortself-column_index-int---cuarray)
+    * [`sort(self, i: int) -> CuArray`](#sortself-i-int---cuarray)
     * [`__getitem__(self, index: int) -> Union[CuArray, ElementType]`](#__getitem__self-index-int---unionelementtype-cuarray)
-    * [`argsort(self, column_index: int) -> CuArray`](#argsortself-column_index-int---cuarray)
+    * [`argsort(self, i: int) -> CuArray`](#argsortself-i-int---cuarray)
 
   </details>
   </details>
@@ -1220,7 +1228,9 @@ delete cuArray;
     - `int NUMPY_ARRAY_DIM1`: Dimension 1 of the NumPy array.
     - `int NUMPY_ARRAY_DIM2`: Dimension 2 of the NumPy array.
 - **Returns**: `CuArrayError` indicating success (`0’) or specific error code.
-- **Related**: [`fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int` ](#fromnumpyself-numpyarray-dim1-int-dim2-int---int)
+- **Related**:
+  - [`fromNumpy2D(self, numpy_array: numpy.ndarray) -> int`](#fromnumpy2dself-numpyarray-numpyndarray---int)
+  - [`fromNumpy1D(self, numpy_array: numpy.ndarray) -> int`](#fromnumpy1dself-numpyarray-numpyndarray---int)
 
 <details><summary><b>Example</b></summary>
 
@@ -1273,7 +1283,9 @@ delete[] NUMPY_ARRAY;
     - `T **NUMPY_ARRAY`: Pointer to the output NumPy array.
     - `int **NUMPY_ARRAY_DIM1`: Dimension 1 of the NumPy array.
     - `int **NUMPY_ARRAY_DIM2`: Dimension 2 of the NumPy array.
-- **Related**: [`toNumpy(self) -> (numpy_array, dim1: int, dim2: int)` ](#tonumpyself---numpyarray-dim1-int-dim2-int)
+- **Related**: 
+  - [`toNumpy2D(self) -> numpy.ndarray`](#tonumpy2dself---numpyndarray)
+  - [`toNumpy1D(self) -> numpy.ndarray`](#tonumpy2dself---numpyndarray)
 
 <details><summary><b>Example</b></summary>
 
@@ -1295,7 +1307,7 @@ auto NUMPY_ARRAY = new float*[1];
 
 /* Create two double pointer int arrays that will store
  * the number rows and columns in the CuArray. 
- * Btw this is what the NumPy C backend is doing everytime 
+ * Btw this is what the NumPy C backend is doing every time  
  * you create a numpy array in Python*/
 auto rows = new int*[1];
 auto cols = new int*[1];
@@ -1578,11 +1590,11 @@ return 0;
 - **Language**: C++
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Sort the `CuArray` in descending order based on the values in the specified column.
+- **Description**: Sort the `CuArray` in descending order based on the values in the specified row.
 - **Parameters**:
-    - `int i`: Column index to sort.
+    - `int i`: Index of row to sort.
 - **Returns**: Pointer to a new `CuArray` containing the sorted data.
-- **Related**: [`sort(self, column_index: int) -> CuArray` ](#sortself-column_index-int---cuarray)
+- **Related**: [`sort(self, i: int) -> CuArray` ](#sortself-i-int---cuarray)
 
 <details><summary><b>Example</b></summary>
 
@@ -1608,7 +1620,7 @@ for (int i = 0; i < cuArray->m(); i++) {
 }
 
 /* Create a new CuArray that contains the sorted data from the 
- * 8th column of the original CuArray. */
+ * 8th row of the original CuArray. */
 auto sortedCuArray = cuArray->sort(7);
 
 /* Print the sorted CuArray. */
@@ -1773,12 +1785,12 @@ delete cuArray;
 - **Language**: C++
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Perform an argsort on the specified column of the `CuArray` and return a new `CuArray` containing the
+- **Description**: Perform an argsort on the specified row of the `CuArray` and return a new `CuArray` containing the
   sorted indices.
 - **Parameters**:
-    - `int i`: Column index to argsort.
+    - `int i`: Index of row to perform argsort on.
 - **Returns**: Pointer to a new `CuArray` containing the sorted indices.
-- **Related**: [`argsort(self, column_index: int) -> CuArray` ](#argsortself-column_index-int---cuarray)
+- **Related**: [`argsort(self, i: int) -> CuArray` ](#argsortself-i-int---cuarray)
 
 <details><summary><b>Example</b></summary>
 
@@ -1803,12 +1815,12 @@ for (int i = 0; i < cuArray->m(); i++) {
     }
 }
 
-/* Create a new CuArray with indices that sort the 8th column 
+/* Create a new CuArray with indices that sort the 8th row 
  * of the original CuArray.*/
 auto cuArrayRowIndex = 7;
 auto sortedIndicesCuArray = cuArray->argsort(cuArrayRowIndex);
 
-/* Create a new CuArray containing sorted data from the 8th column 
+/* Create a new CuArray containing sorted data from the 8th row 
  * of the original CuArray.*/
 auto sortedCuArray = cuArray->sort(cuArrayRowIndex);
 
@@ -1845,6 +1857,25 @@ delete sortedIndicesCuArray;
 - **Description**: Default constructor. Constructs an empty `CuArray` object.
 - **Related**: [`CuArray()` ](#cuarray-constructor)
 
+<details><summary><b>Example</b></summary>
+
+```python
+"""
+Always precede CuArray with the data type
+Here we are importing CuArray int and float templates.
+"""
+from cuarray import FloatCuArray, IntCuArray
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Create a new int CuArray instance"""
+int_cuarray = IntCuArray()
+
+```
+
+</details>
+
 ---
 
 #### `init(self, m: int, n: int) -> int`
@@ -1859,6 +1890,31 @@ delete sortedIndicesCuArray;
     - `n` (`int`): Number of columns.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
 - **Related**: [`CuArrayError init(int m, int n)` ](#cuarrayerror-initint-m-int-n)
+
+<details><summary><b>Example</b></summary>
+
+```python
+"""
+Always precede CuArray with the data type
+Here we are importing float templates.
+"""
+from cuarray import FloatCuArray
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Initialize the float CuArray with 10 rows and 10 columns"""
+float_cuarray.init(10, 10)
+
+"""
+Print the CuArray, 
+which has a __repr__ method implemented in the SWIG interface
+"""
+print(float_cuarray)
+
+```
+
+</details>
 
 ---
 
@@ -1875,8 +1931,46 @@ delete sortedIndicesCuArray;
     - `m` (`int`): Number of rows in this `CuArray`.
     - `n` (`int`): Number of columns in this `CuArray`.
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
-- **Related
-  **: [`CuArrayError fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n)` ](#cuarrayerror-fromcuarraydeepcopycuarrayt-cuarray-int-start-int-end-int-m-int-n)
+- **Related**: [`CuArrayError fromCuArrayDeepCopy(CuArray<T> *cuArray, int start, int end, int m, int n)` ](#cuarrayerror-fromcuarraydeepcopycuarrayt-cuarray-int-start-int-end-int-m-int-n)
+
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+"""
+Always precede CuArray with the data type
+Here we are float template.
+"""
+from cuarray import FloatCuArray
+
+
+"""Create two new float CuArray instances"""
+float_cuarray1 = FloatCuArray()
+float_cuarray2 = FloatCuArray()
+
+"""Initialize float_cuarray1 with 10 rows and 10 columns"""
+float_cuarray1.init(10, 10)
+
+"""Fill float_cuarray1 with random values"""
+for i in range(float_cuarray1.m()):
+    for j in range(float_cuarray1.n()):
+        val = np.random.random()
+        float_cuarray1[i][j] = val
+        
+"""Copy the data from float_cuarray1 into float_cuarray2"""
+float_cuarray2.fromCuArray(float_cuarray1, 0, 9, 10, 10)
+
+"""
+Print both CuArrays. Also this performs a deep copy for 
+memory safety.
+"""
+for i in range(float_cuarray1.m()):
+    for j in range(float_cuarray1.n()):
+        print(float_cuarray1[i][j], float_cuarray2[i][j])
+
+```
+
+</details>
 
 ---
 
@@ -1889,6 +1983,30 @@ delete sortedIndicesCuArray;
 - **Returns**: Number of rows as `int`.
 - **Related**: [`int m() const` ](#int-n-const)
 
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+"""
+Always precede CuArray with the data type
+Here we are importing float template.
+"""
+from cuarray import FloatCuArray
+
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Initialize the float CuArray with 10 rows and 2 columns"""
+float_cuarray.init(10, 2)
+
+"""Print the number of rows in the CuArray"""
+print(float_cuarray.m())
+
+```
+
+</details>
+
 ---
 
 #### `n(self) -> int`
@@ -1900,6 +2018,31 @@ delete sortedIndicesCuArray;
 - **Returns**: Number of columns as `int`.
 - **Related**: [`int n() const` ](#int-n-const)
 
+<details><summary><b>Example</b></summary>
+
+```python
+"""
+Always precede CuArray with the data type
+Here we are importing the float template. 
+"""
+from cuarray import FloatCuArray
+
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Initialize the float CuArray with 10 rows and 2 columns"""
+float_cuarray.init(10, 2)
+
+"""Print the number of columns in the CuArray"""
+print(float_cuarray.n())
+
+```
+
+</details>
+
+---
+
 #### `size(self) -> int`
 
 - **Language**: Python
@@ -1909,24 +2052,168 @@ delete sortedIndicesCuArray;
 - **Returns**: Total number of elements as `int`.
 - **Related**: [`int size() const` ](#int-size-const)
 
+<details><summary><b>Example</b></summary>
+
+```python
+"""
+Always precede CuArray with the data type
+Here we are importing the float template.
+"""
+from cuarray import FloatCuArray
+
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""Initialize the float CuArray with 10 rows and 2 columns"""
+float_cuarray.init(10, 2)
+
+"""Print the total number of values in the CuArray"""
+print(float_cuarray.size())
+
+```
+
+</details>
+
 ---
 
-#### `fromNumpy(self, numpy_array, dim1: int, dim2: int) -> int`
+#### `fromNumpy1D(self, numpy_array: numpy.ndarray) -> int`
 
 - **Language**: Python
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Copy data from a NumPy array to the `CuArray`.
+- **Description**: Copy data from a 1-dimensional NumPy array to the `CuArray`.
 - **Parameters**:
-    - `numpy_array`: NumPy array to copy from.
-    - `dim1` (`int`): Dimension 1 of the NumPy array.
-    - `dim2` (`int`): Dimension 2 of the NumPy array.
+    - `numpy_array`(`numpy.ndarray`): NumPy array to copy from.
 - **Returns**: `int`: `CuArrayError` indicating success (`0’) or specific error code.
 - **Related**:[`CuArrayError fromNumpy(T *NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2)` ](#cuarrayerror-fromnumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+ 
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""
+Create a random float32, 1-dimension numpy array, 
+with 10 elements
+"""
+
+np_array = np.random.rand(10).astype(np.float32)
+
+"""Copy the numpy array to the CuArray instance"""
+float_cuarray.fromNumpy1D(np_array)
+
+"""Print the CuArray and numpy array to compare."""
+for _ in range(10):
+    print(float_cuarray[0][_], np_array[_])
+
+```
+
+</details>
+
+---
+#### `fromNumpy2D(self, numpy_array: numpy.ndarray) -> int`
+
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
+- **Class**: [CuArray](#cuarray-class)
+- **Description**: Copy data from a 2-dimensional NumPy array to the `CuArray`.
+- **Parameters**:
+  - `numpy_array` (`numpy.ndarray`): NumPy array to copy from.
+- **Returns**: `int`: `CuArrayError` indicating success (`0’) or specific error code.
+- **Related**:[`CuArrayError fromNumpy(T *NUMPY_ARRAY, int NUMPY_ARRAY_DIM1, int NUMPY_ARRAY_DIM2)` ](#cuarrayerror-fromnumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+ 
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""
+Create a random float32, 2-dimension numpy array
+with 10 rows and 10 columns.
+"""
+np_array = np.random.random((10, 10)).astype(np.float32)
+
+"""Copy the numpy array to the CuArray instance"""
+float_cuarray.fromNumpy2D(np_array)
+
+"""Print the CuArray and numpy array to compare."""
+for i in range(10):
+    for j in range(10):
+        print(float_cuarray[i][j], np_array[i][j])
+
+```
+
+</details>
 
 ---
 
-#### `toNumpy(self) -> (numpy_array, dim1: int, dim2: int)`
+#### `toNumpy1D(self) -> numpy.ndarray`
+
+- **Language**: Python
+- **Library**: [CuArray](#cuarray)
+- **Class**: [CuArray](#cuarray-class)
+- **Description**: Copy data from the `CuArray` to a 1-dimension NumPy array.
+- **Returns**: Tuple containing the NumPy array and its dimensions.
+- **Related:**[`void toNumpy(T **NUMPY_ARRAY, int **NUMPY_ARRAY_DIM1, int **NUMPY_ARRAY_DIM2)` ](#void-tonumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""
+Create a random float32, 1-dimension numpy array
+with 10 elements.
+"""
+np_array1 = np.random.rand(10).astype(np.float32)
+
+"""Copy the numpy array to the CuArray instance"""
+float_cuarray.fromNumpy1D(np_array1)
+
+"""Convert the CuArray instance to a numpy array"""
+np_array2 = float_cuarray.toNumpy1D()
+
+"""Print the CuArray and both numpy arrays to compare."""
+for _ in range(10):
+      print(
+          float_cuarray[0][_],
+          np_array1[_],
+          np_array2[_]
+      )
+
+```
+
+</details>
+
+---
+
+#### `toNumpy2D(self) -> numpy.ndarray`
 
 - **Language**: Python
 - **Library**: [CuArray](#cuarray)
@@ -1934,6 +2221,45 @@ delete sortedIndicesCuArray;
 - **Description**: Copy data from the `CuArray` to a NumPy array.
 - **Returns**: Tuple containing the NumPy array and its dimensions.
 - **Related:**[`void toNumpy(T **NUMPY_ARRAY, int **NUMPY_ARRAY_DIM1, int **NUMPY_ARRAY_DIM2)` ](#void-tonumpyt-numpyarray-int-numpyarraydim1-int-numpyarraydim2)
+
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""Create a new float CuArray instance"""
+float_cuarray = FloatCuArray()
+
+"""
+Create a random float32, 2-dimension numpy array
+with 10 rows and 10 columns.
+"""
+np_array1 = np.random.random((10, 10)).astype(np.float32)
+
+"""Copy the numpy array to the CuArray instance"""
+float_cuarray.fromNumpy2D(np_array1)
+
+"""Convert the CuArray instance to a numpy array"""
+np_array2 = float_cuarray.toNumpy2D()
+
+"""Print the CuArray and both numpy arrays to compare."""
+for i in range(10):
+    for j in range(10):
+        print(
+            float_cuarray[i][j],
+            np_array1[i][j],
+            np_array2[i][j]
+        )
+
+```
+
+</details>
 
 ---
 
@@ -1948,6 +2274,38 @@ delete sortedIndicesCuArray;
     - `j` (`int`): Column index.
 - **Returns**: Value at the specified position.
 - **Related**: [`T get(int i, int j) const` ](#t-getint-i-int-j-const)
+
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""
+Create a new float CuArray instance with 
+10 rows and 10 columns
+"""
+float_cuarray = FloatCuArray()
+float_cuarray.init(10, 10)
+
+"""Fill the array with random values"""
+
+for i in range(10):
+    for j in range(10):
+        val = np.random.random()
+        float_cuarray.set(val, i, j)
+
+"""Print the array"""
+print(float_cuarray)
+
+```
+
+</details>
 
 ---
 
@@ -1964,6 +2322,42 @@ delete sortedIndicesCuArray;
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
 - **Related**: [`CuArrayError set(T value, int i, int j)` ](#cuarrayerror-sett-value-int-i-int-j)
 
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""
+Create a new float CuArray instance with 
+10 rows and 10 columns
+"""
+float_cuarray = FloatCuArray()
+float_cuarray.init(10, 10)
+
+"""Fill the array with random values"""
+
+for i in range(10):
+    for j in range(10):
+        val = np.random.random()
+        float_cuarray.set(val, i, j)
+
+"""Print the array using the get method"""
+for i in range(10):
+    for j in range(10):
+        val = float_cuarray.get(i, j)
+        print('{0:.{1}f}'.format(val, 5), end=" ")
+    print()
+
+```
+
+</details>
+
 ---
 
 #### `load(self, filename: str) -> int`
@@ -1977,6 +2371,46 @@ delete sortedIndicesCuArray;
 - **Returns**: `int`: `CuArrayError` indicating success (`0`) or specific error code.
 - **Related**: [`CuArrayError load(const std::string &fname)` ](#cuarrayerror-loadconst-stdstring-fname)
 
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""
+Create a new float CuArray instance with 
+10 rows and 10 columns
+"""
+float_cuarray = FloatCuArray()
+
+"""
+Create a random float32 numpy array with 10 rows
+and 10 columns
+"""
+numpy_array = np.random.rand(10, 10).astype(np.float32)
+
+"""Save the numpy array to a .npy file"""
+np.save("tmp.npy", numpy_array)
+
+"""
+Load the .npy file into the float CuArray instance
+"""
+float_cuarray.load("tmp.npy")
+
+"""Print the CuArray and the numpy array"""
+for i in range(10):
+    for j in range(10):
+        print(float_cuarray[i][j], numpy_array[i, j])
+
+```
+
+</details>
+
 ---
 
 #### `save(self, filename: str)`
@@ -1989,18 +2423,100 @@ delete sortedIndicesCuArray;
     - `filename` (`str`): Name of the file to save.
 - **Related**: [`void save(const std::string &fname)` ](#void-saveconst-stdstring-fname)
 
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""
+Create a new float CuArray instance with 
+10 rows and 10 columns
+"""
+float_cuarray = FloatCuArray()
+
+"""
+Create a random float32 numpy array with 10 rows
+and 10 columns
+"""
+numpy_array = np.random.rand(10, 10).astype(np.float32)
+
+"""Save the numpy array to a .npy file"""
+np.save("tmp.npy", numpy_array)
+
+"""
+Load the .npy file into the float CuArray instance
+"""
+float_cuarray.load("tmp.npy")
+
+"""Print the CuArray and the numpy array"""
+for i in range(10):
+    for j in range(10):
+        print(float_cuarray[i][j], numpy_array[i, j])
+
+```
+
+</details>
+
 ---
 
-#### `sort(self, column_index: int) -> CuArray`
+#### `sort(self, i: int) -> CuArray`
 
 - **Language**: Python
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Sort the `CuArray` in descending order based on the values in the specified column.
+- **Description**: Sort the `CuArray` in descending order based on the values in the specified row.
 - **Parameters**:
-    - `column_index` (`int`): Column index to sort.
+    - `i` (`int`): Row index to sort.
 - **Returns**: New `CuArray` object containing sorted data.
 - **Related**: [`CuArray<T> *sort(int i)` ](#cuarrayt-sortint-i)
+
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""
+Create a new float CuArray instance 
+"""
+float_cuarray = FloatCuArray()
+
+"""
+Create a random float32 numpy array with 10 rows
+and 10 columns
+"""
+numpy_array = np.random.rand(10, 10).astype(np.float32)
+
+"""Load the numpy array into the CuArray"""
+float_cuarray.fromNumpy2D(numpy_array)
+
+"""
+Perform an out of place descending sort on the 
+8th column of float_cuarray
+"""
+sorted_cuarray = float_cuarray.sort(7)
+
+"""
+Print the 8th row of the original 
+CuArray and sorted_cuarray
+"""
+print(sorted_cuarray)
+print(float_cuarray[7])
+
+```
+
+</details>
 
 ---
 
@@ -2014,19 +2530,105 @@ delete sortedIndicesCuArray;
 - **Returns**: The element or row at the specified index.
 - **Related**: [`T &operator[](int i) const` ](#t-operatorint-i-const)
 
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray float template 
+"""
+from cuarray import FloatCuArray
+
+"""
+Create a new float CuArray instance 
+with 10 rows and 10 columns.
+"""
+float_cuarray = FloatCuArray()
+float_cuarray.init(10, 10)
+
+"""Fill it with random values"""
+for i in range(10):
+    for j in range(10):
+        val = np.random.rand()
+        float_cuarray.set(val, i, j)
+
+"""Print the 8th row"""
+print(float_cuarray[7])
+
+"""Print the 5th element of the 8th row"""
+print(float_cuarray[7][4])
+
+```
+
+</details>
+
 ---
 
-#### `argsort(self, column_index: int) -> CuArray`
+#### `argsort(self, i: int) -> CuArray`
 
 - **Language**: Python
 - **Library**: [CuArray](#cuarray)
 - **Class**: [CuArray](#cuarray-class)
-- **Description**: Perform an argsort on the specified column of the `CuArray` and return a new `CuArray` containing the
+- **Description**: Perform an argsort on the specified row of the `CuArray` and return a new `CuArray` containing the
   sorted indices.
 - **Parameters**:
-    - `column_index` (`int`): Column index to argsort.
+    - `i` (`int`): Index of row to perform argsort on.
 - **Returns**: New `CuArray` object containing sorted indices.
 - **Related**: [`CuArray<int> *argsort(int i)` ](#cuarrayint-argsortint-i)
+
+<details><summary><b>Example</b></summary>
+
+```python
+import numpy as np
+
+"""
+Always precede CuArray with the data type
+Here we are importing the CuArray int and float templates 
+"""
+from cuarray import FloatCuArray
+
+"""
+Create a new float CuArray instance 
+"""
+float_cuarray = FloatCuArray()
+
+"""
+Create a random float32 numpy array with 10 rows
+and 10 columns
+"""
+numpy_array = np.random.rand(10, 10).astype(np.float32)
+
+"""Load the numpy array into the CuArray"""
+float_cuarray.fromNumpy2D(numpy_array)
+
+"""
+Perform a descending sort on 
+the 8th row of float_cuarray
+"""
+sorted_cuarray = float_cuarray.sort(7)
+
+"""
+Get the indices that sort the 8th row of float_cuarray
+"""
+argsort_cuarray = float_cuarray.argsort(7)
+
+"""
+Print the sorted 8th row of float_cuarray using 
+sorted_cuarray and argsort_cuarray indices
+"""
+for _ in range(10):
+    sort_idx = argsort_cuarray[0][_]
+    print(
+        sorted_cuarray[0][_],
+        float_cuarray[7][sort_idx]
+    )
+
+
+```
+
+</details>
 
 ---
 
