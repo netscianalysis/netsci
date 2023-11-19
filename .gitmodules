@@ -1,0 +1,3 @@
+[submodule "pyautodoc"]
+	path = pyautodoc
+	url = https://github.com/amstokely/pyautodoc.git
