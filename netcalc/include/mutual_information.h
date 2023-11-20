@@ -8,20 +8,26 @@
 #include "cuarray.h"
 #include "platform.h"
 
+/*!
+ * @namespace netcalc
+ * @brief The netcalc namespace.
+ */
+
 namespace netcalc {
     /*!
-     * \brief Computes the mutual information between all pairs of random variables listed in 'ab'.
+     * @function{mutualInformation} @type{int}
+     * @brief Computes the mutual information between all pairs of random variables listed in 'ab'.
      *
-     * \param X       Mx(d*N) matrix of M d-dimensional random variables with N samples.
-     * \param I       Vector that stores the mutual information between pairs of random variables listed in 'ab'.
-     * \param ab      Vector of pairs of random variables for which mutual information is computed.
-     * \param k       K value used in mutual information calculation.
-     * \param n       Number of samples.
-     * \param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
-     * \param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
-     * \param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
+     * @param X       Mx(d*N) matrix of M d-dimensional random variables with N samples.
+     * @param I       Vector that stores the mutual information between pairs of random variables listed in 'ab'.
+     * @param ab      Vector of pairs of random variables for which mutual information is computed.
+     * @param k       K value used in mutual information calculation.
+     * @param n       Number of samples.
+     * @param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
+     * @param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
+     * @param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
      *
-     * \return 0 if successful, 1 otherwise.
+     * @return 0 if successful, 1 otherwise.
      */
     int mutualInformation(
             CuArray<float>* X,
@@ -35,23 +41,23 @@ namespace netcalc {
     );
 
     /*!
-     * \brief Computes the mutual information between all pairs of random variables listed in 'ab'.
+     * @brief Computes the mutual information between all pairs of random variables listed in 'ab'.
      *
-     * \param X       Mx(d*N) matrix of M d-dimensional random variables with N samples.
-     * \param I       Vector that stores the mutual information between pairs of random variables listed in 'ab'.
-     * \param ab      Vector of pairs of random variables for which mutual information is computed.
-     * \param k       K value used in mutual information calculation.
-     * \param n       Number of samples.
-     * \param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
-     * \param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
-     * \param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
-     * \param checkpointFrequency Saves the intermediate results
+     * @param X       Mx(d*N) matrix of M d-dimensional random variables with N samples.
+     * @param I       Vector that stores the mutual information between pairs of random variables listed in 'ab'.
+     * @param ab      Vector of pairs of random variables for which mutual information is computed.
+     * @param k       K value used in mutual information calculation.
+     * @param n       Number of samples.
+     * @param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
+     * @param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
+     * @param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
+     * @param checkpointFrequency Saves the intermediate results
      * after every 'checkpointFrequency' number of iterations.
-     * \param checkpointFileName The filename to save the
+     * @param checkpointFileName The filename to save the
      * intermediate results. The filename is suffixed with the last
      * ab node pair index the mutual information was calculated for.
      *
-     * \return 0 if successful, 1 otherwise.
+     * @return 0 if successful, 1 otherwise.
      */
 
     int mutualInformation(
@@ -68,16 +74,16 @@ namespace netcalc {
     );
 
     /*!
-     * \brief Computes the mutual information between two random variables Xa and Xb on the GPU.
+     * @brief Computes the mutual information between two random variables Xa and Xb on the GPU.
      *
-     * \param Xa  CuArray representing the first random variable.
-     * \param Xb  CuArray representing the second random variable.
-     * \param k   K value used in mutual information calculation.
-     * \param n   Number of samples.
-     * \param xd  The dimension of the joint random variable. Only 2D-joint random variables are supported.
-     * \param d   The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
+     * @param Xa  CuArray representing the first random variable.
+     * @param Xb  CuArray representing the second random variable.
+     * @param k   K value used in mutual information calculation.
+     * @param n   Number of samples.
+     * @param xd  The dimension of the joint random variable. Only 2D-joint random variables are supported.
+     * @param d   The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
      *
-     * \return The computed mutual information value.
+     * @return The computed mutual information value.
      */
     float mutualInformationGpu(
             CuArray<float>* Xa,
@@ -90,16 +96,16 @@ namespace netcalc {
 
 
     /*!
-     * \brief Computes the mutual information between two random variables Xa and Xb on the CPU.
+     * @brief Computes the mutual information between two random variables Xa and Xb on the CPU.
      *
-     * \param Xa  CuArray representing the first random variable.
-     * \param Xb  CuArray representing the second random variable.
-     * \param k   K value used in mutual information calculation.
-     * \param n   Number of samples.
-     * \param xd  The dimension of the joint random variable. Only 2D-joint random variables are supported.
-     * \param d   The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
+     * @param Xa  CuArray representing the first random variable.
+     * @param Xb  CuArray representing the second random variable.
+     * @param k   K value used in mutual information calculation.
+     * @param n   Number of samples.
+     * @param xd  The dimension of the joint random variable. Only 2D-joint random variables are supported.
+     * @param d   The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
      *
-     * \return The computed mutual information value.
+     * @return The computed mutual information value.
      */
     float mutualInformationCpu(
             CuArray<float>* Xa,
@@ -111,7 +117,7 @@ namespace netcalc {
     );
 
     /*!
-     * \brief Creates an ab array of nodes that still need to have
+     * @brief Creates an ab array of nodes that still need to have
      * their mutual information/generalized correlation calculated,
      * using a mutualInformation
      * or generalizedCorrelation checkpoint file.

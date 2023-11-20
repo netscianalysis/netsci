@@ -11,6 +11,8 @@ SET(CUDA_ARCHITECTURE "52" CACHE STRING "CUDA architecture to compile for. Set t
 SET(BUILD_PYTHON_BINDINGS ON CACHE BOOL "Build python bindings for cuarray, netcalc, and netchem")
 SET(BUILD_TCL_BINDINGS OFF CACHE BOOL "Build tcl bindings for cuarray")
 
+SET(BUILD_SAMPLES ON CACHE BOOL "Compiles examples for CuArray, NetCalc, and NetChem")
+
 #CMake build type defaults to Release
 SET(CMAKE_BUILD_TYPE Release)
 
@@ -37,6 +39,9 @@ FIND_PACKAGE(SWIG REQUIRED)
 
 #Path to "UseSWIG.cmake" file
 INCLUDE(${SWIG_USE_FILE})
+
+#Make sure sure Doxygen is installed for building documentation
+FIND_PACKAGE(Doxygen REQUIRED)
 
 #Make sure ZLIB is installed
 FIND_PACKAGE(ZLIB REQUIRED)
@@ -167,16 +172,48 @@ IF (${BUILD_PYTHON_BINDINGS})
             )
 ENDIF ()
 
-LINK_LIBRARIES("${NETCALC_LINK_LIBRARIES}")
-ADD_EXECUTABLE(
-        tmp
-        ${CMAKE_SOURCE_DIR}/scratch/tmp.cpp
+
+SET(DOXYGEN_PROJECT_NAME NetSci)
+SET(DOXYGEN_EXAMPLE_PATH  ${CMAKE_SOURCE_DIR}/cuarray/samples/cpp/src ${CMAKE_SOURCE_DIR}/cuarray/samples/python)
+SET(DOXYGEN_ALIASES
+    [[PythonExample{1}=<b>Python Example</b><br>\include \1]]
+    [[CppExample{1}=<b>C++ Example</b><br>\include \1]]
+    [[type{1}=<!-- \1 -->]]
+    [[function{1}=<!-- \1 -->]]
+    [[const=<!--  -->]]
+    [[AutoDocIgnore=<!--  -->]]
+    )
+SET(DOXYGEN_EXTRACT_PRIVATE YES)
+SET(DOXYGEN_FULL_PATH_NAMES NO)
+SET(DOXYGEN_FILE_PATTERNS *.cu)
+SET(DOXYGEN_EXTENSION_MAPPING cu=c++)
+SET(DOXYGEN_ENABLE_PREPROCESSING NO)
+SET(DOXYGEN_STRIP_CODE_COMMENTS NO)
+SET(DOXYGEN_COMPACT_LATEX YES)
+SET(DOXYGEN_EXTRACT_PRIVATE YES)
+SET(DOXYGEN_GENERATE_DOCBOOK YES)
+SET(DOXYGEN_GENERATE_LATEX YES)
+SET(DOXYGEN_SHOW_FILES NO)
+SET(DOXYGEN_USE_PDFLATEX YES)
+SET(DOXYGEN_FULL_PATH_NAMES NO)
+SET(DOXYGEN_GENERATE_XML TRUE)
+SET(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/docs)
+LIST(APPEND NETSCI_DOCUMENTATION_INPUT_FILES
+     ${CMAKE_SOURCE_DIR}/doxygen/index.h
+     ${CMAKE_SOURCE_DIR}/cuarray/include/cuarray.h
+     ${CMAKE_SOURCE_DIR}/netcalc/include/mutual_information.h
+     ${CMAKE_SOURCE_DIR}/netcalc/include/generalized_correlation.h
+     ${CMAKE_SOURCE_DIR}/netchem/include/network.h
+     ${CMAKE_SOURCE_DIR}/netchem/include/node.h
+     ${CMAKE_SOURCE_DIR}/netchem/include/atom.h
+     ${CMAKE_SOURCE_DIR}/netchem/include/atoms.h
+     )
+DOXYGEN_ADD_DOCS(
+        NetSci_docs
+        ${NETSCI_DOCUMENTATION_INPUT_FILES}
         )
-ADD_DEPENDENCIES(tmp cuarray)
-SET_TARGET_PROPERTIES(
-        tmp
-        PROPERTIES
-        CUDA_SEPARABLE_COMPILATION ON
-        CUDA_ARCHITECTURES ${CUDA_ARCHITECTURE}
-        )
+SET(DOCUMENTATION_ARGS "Doxyfile.NetSci_docs")
+ADD_CUSTOM_TARGET(docs
+                  COMMAND ${DOXYGEN_EXECUTABLE} ${DOCUMENTATION_ARGS}
+                  )
 

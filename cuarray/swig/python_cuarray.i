@@ -1,6 +1,7 @@
 %module cuarray
 
 %include "std_string.i"
+%include "python_cuarray_docs.i"
 %include "python_cuarray_headers.i"
 %include "numpy_float_array.i"
 %include "numpy_int_array.i"
