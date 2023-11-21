@@ -113,149 +113,33 @@ libraries to maintain simplicity and reliability.
 <hr>
 
  * \section theory Theory
- *
- * \subsection introduction Introduction
- *
- * In the realm of network analysis, understanding the intricate relationships and dependencies between elements in a dataset is crucial. The 'netsci' library, developed using CUDA for GPU-accelerated performance, provides a sophisticated toolkit for such analysis. At the heart of this library lies a deep integration of core theoretical concepts from information theory and statistical analysis, tailored to extract meaningful insights from complex network data.
- * This library harnesses the computational power of modern GPUs to
- * perform high-speed calculations, enabling the analysis of
- * large-scale networks that are often encountered in fields like
- * social network analysis, biological network analysis, and communication networks. The underlying theory, rooted in principles of mutual information, Shannon entropy, and generalized correlation, provides a robust framework for understanding the dynamics and structure of networks.
- * The utilization of CUDA not only accelerates computations but also
- * allows for handling intricate calculations involving high-dimensional data, making 'netsci' an ideal choice for researchers and practitioners dealing with complex network systems. The integration of these theoretical concepts with state-of-the-art computational techniques opens new avenues for network analysis, offering insights that were previously challenging to obtain due to computational constraints.
- * In the following sections, we delve into the core theoretical
- * constructs that form the foundation of the 'netsci' library. Starting with Mutual Information, we explore how this measure serves as a cornerstone in understanding and quantifying the relationships between variables in a network. The subsequent sections will further elucidate how these theoretical principles are translated into practical, high-performance tools for network analysis.
- *
- * \subsection mutual_information Mutual Information
- * Mutual information serves as a way to measure correlation, both
- * linear and non-linear, between two random variables. Given a bivariate set of data
- * \f$z_i=(x_i,y_i),i=1,...,N\f$, which can be of any dimension,
- *   we assume that each of the \f$N\f$ elements of the data are
- *   independent
- * and identically distributed realizations of the random variables \f$Z=(X,Y)\f$, and that
- * they are distributed according to \f$\mu(x,y)\f$, a proper smooth function. The marginal densities are
- * \f$\mu(x)=\int \mu(x,y)dy\f$ and \f$\mu(y)=\int \mu(x,y)dx\f$.
- *
- * The Shannon entropy can be defined as
+ * Mutual information is used to measure how much two random variables
+ * are correlated, including both linear and non-linear relationships.
+ * Imagine we have a set of data pairs \f$(x_i, y_i)\f$, where each pair
+ * is an independent realization of random variables \f$(X, Y)\f$.
+ * These variables follow a distribution \f$\mu(x, y)\f$.
+ * Shannon entropy, denoted as \f$H(X)\f$, is calculated using:
  * \f[
- * H(X)=-\int\mu(x)\log\mu(x)dx
+ * H(X) = -\int\mu(x)\log\mu(x)dx
  * \f]
- *
- * where the base of the logarithm depends on the units desired for
- * the information, whether bits (\f$\log_2\f$), nats (\f$\log_e\f$),
- * decimal digits (\f$\log_{10}\f$), or otherwise. In this work, we use the natural logarithm.
- * The mutual information \f$I(X,Y)\f$ is defined as:
- *
+ * where the logarithm's base determines the information's unit
+ * (bits, nats, etc.). We use the natural logarithm in our context.
+ * Mutual information, \f$I(X, Y)\f$, is defined as:
  * \f[
- * I(X,Y)=H(X)+H(Y)-H(X,Y)
+ * I(X, Y) = H(X) + H(Y) - H(X, Y)
  * \f]
- *
- * The value of \f$I(X,Y)\f$ measures the strength of the connection between the variables \f$X\f$ and \f$Y\f$;
- * if the two variables were completely independent, then \f$I(X,Y)\f$ would be zero.
- *
- * In most cases, the density distribution \f$\mu\f$ is not known exactly, and must be estimated.
- * Under the condition that \f$\mu\f$ is a uniform distribution, we
- * may approximate \f$H(X)\f$ by a discrete sum,
+ * This value indicates how strongly \f$X\f$ and \f$Y\f$ are connected.
+ * If they are completely independent, \f$I(X, Y)\f$ equals zero.
+ * Often, we don't know \f$\mu\f$ exactly and need to estimate it.
+ * Assuming \f$\mu\f$ is uniform, we approximate \f$H(X)\f$ with:
  * \f[
  *    \widehat{H}(X) = -\frac{1}{N}\sum_{i=1}^N\widehat{\log(\mu(x_i))}
  * \f]
- * Now, an estimate for \f$\widehat{\log(\mu(x_i))}\f$ must be
- * defined. In this paper, we use a k-nearest neighbor estimator,
- * which generalizes well to high-dimensions.
- * In order to rank neighbors of a data point \f$z_i\f$ by nearness,
- * we use the max norm,
- * \f[
- * ||z-z'|| = \max \{ ||x-x'||,||y-y'||\}
- * \f]
- * where we choose to use a similar max norm for \f$||x-x'||\f$ and
- * \f$||y-y'||\f$,
- * although this is not required - a Euclidean norm could be used,
- * for instance.
- * For each data point \f$z_i\f$, let \f$\epsilon_x(i)/2\f$ and
- * \f$\epsilon_y(i)/2\f$ represent
- * the distances from \f$z_i\f$ to its \f$k\f$th nearest neighbor
- * projected onto the X and Y subspaces, respectively.
- * The value \f$p_i\f$ is the integrated density within a distance
- * \f$\epsilon/2\f$ of the point
- * \f$x_i\f$, \f$p_i(\epsilon)=\int_{||\xi-x_i||<\epsilon/2}\mu(\xi)
- * d\xi\f$.
- * Consider the probability distribution
- * \f[
- * P_k(\epsilon_x, \epsilon_y)=P_k^{(b)}(\epsilon_x, \epsilon_y)
- * +P_k^{(c)}(\epsilon_x, \epsilon_y)
- * \f]
- * Specifically, \f$ P_k^{(b)}(\epsilon_x, \epsilon_y) \f$ represents
- * the probability distribution that there
- * are \f$ k-1 \f$ data points within the rectangle \f$
- * x_i\pm\epsilon_x(i)/2 \f$ and \f$ y_i\pm\epsilon_y(i)/2 \f$, a rectangle
- * defined by the \f$ k \f$th nearest neighbor within in the \f$ x
- * \f$ subspace, \f$ N-k-1 \f$ points that are
- * outside a different rectangle defined by \f$ x_i\pm(\epsilon_x(i)
- * +d\epsilon_x)/2 \f$ and
- * \f$ y_i\pm(\epsilon_y(i)+d\epsilon_y)/2 \f$, and one data point in
- * the space between the two rectangles.
- * The probability distribution \f$ P_k^{(c)}(\epsilon_x, \epsilon_y)
- * \f$ is similar, though the rectangles
- * are defined by the \f$ k \f$th nearest neighbor within the \f$ y
- * \f$ subspace, which may be the same, or a different,
- * point used to define \f$ P_k^{(b)}(\epsilon_x, \epsilon_y) \f$.
- * These quantities are then
- * \f[
- *    P_k^{(b)}(\epsilon_x, \epsilon_y) = \begin{pmatrix}
- *    N - 1 \\
- *    k
- *    \end{pmatrix}\left(\frac{d^2[q_i^k]}{d\epsilon_x
- *    d\epsilon_y}\right)\left(1-p_i\right)^{N-1-k}
- * \f]
- * and
- * \f[
- *    P_k^{(c)}(\epsilon_x, \epsilon_y) = (k-1)\begin{pmatrix}
- *    N - 1 \\
- *    k
- *    \end{pmatrix}\left(\frac{d^2[q_i^k]}{d\epsilon_x
- *    d\epsilon_y}\right)\left(1-p_i\right)^{N-1-k}
- * \f]
- * Similar to \f$ p_i \f$, the value \f$ q_i(\epsilon_x, \epsilon_y)
- * \f$ is the integrated density
- * within a tiny rectangle of size \f$ \epsilon_x \times \epsilon_y
- * \f$ centered at \f$ (x_i, y_i) \f$.
- * As mentioned before, \f$ p_i \f$ is the integrated density within
- * a tiny square of side length \f$ \epsilon \f$ - tiny enough
- * that we may assume that \f$ \mu(x) \f$ is constant within:
- * \f[
- * p_i(\epsilon)\approx c_d \epsilon^d \mu (x_i)
- * \f]
- * where \f$ d \f$ is the dimension of \f$ x \f$, and \f$ c_d \f$ is
- * the volume of the \f$ d \f$-dimensional unit ball.
- * For the maximum norm used in this study, we simply use \f$ c_d=1
- * \f$. In this case,
- * \f[
- * I(X_1,X_2) = \psi(k) - 1/k - \langle \psi(n_x) + \psi(n_y) \rangle
- * + \psi(N)
- * \f]
- * where \f$ \psi(x) \f$ is the digamma function, and \f$ n_x(i) \f$
- * and \f$ n_y(i) \f$ are the number of
- * points with distance less than or equal to \f$ \epsilon_x(i)/2 \f$
- * and \f$ \epsilon_y(i)/2 \f$, respectively.
- * \subsection generalized_correlation Generalized Correlation
- * The Pearson product-moment correlation is defined as
- * \f[
- *    r(X, Y) = \frac{(X - \mu_{X})(Y - \mu_{Y})}{\sigma_{X}\sigma_{Y}},
- * \f]
- *  where \f$ \mu_{X} \f$ is the average of random variable \f$ X \f$,
- * \f$ \mu_{Y} \f$ is the mean of random variable
- * \f$ Y \f$, \f$ \sigma_{X} \f$ is the standard deviation of \f$ X \f$ and \f$ \sigma_{Y} \f$ is the standard deviation of
- * \f$ Y \f$. The Pearson correlation defines the best linear fit between data sets sampled from \f$ X \f$ and \f$ Y \f$.
- * As mentioned before, the Pearson correlation suffers a number of insufficiencies when used for data that is related
- * nonlinearly, and sets of related data that oscillate in non-parallel directions. The Mutual Information (MI) can address
- * these shortcomings. In order to provide an equivalent quantity to \f$ r \f$ in eq. \ref{pearson_correlation}, we define the
- * generalized correlation coefficient \f$ r_{\textrm{MI}} \f$:
- * \f[
- *    r_{\textrm{MI}}(X, Y) = \left(1-e^{-\frac{2I(X,Y)}{d}}\right)
- *    ^{\frac{1}{2}}
- * \f]
- * Where \f$ d \f$ is the dimensionality of the data.
- *
+ * We use a k-nearest neighbor estimator for this purpose.
+ * To calculate the probability distributions necessary for these
+ * estimations, we consider the distances to a data point's nearest
+ * neighbors in both X and Y dimensions, and compute probabilities based
+ * on these distances.
  * <hr>
  *
  * \section Algorithms
