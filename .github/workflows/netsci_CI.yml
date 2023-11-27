@@ -22,6 +22,7 @@ jobs:
       - name: build
         run: |
             ${CONDA}/bin/activate test
+            apt install cmake -y
             mkdir build
             cd build
             cmake .. -DCONDA_DIR=$CONDA_PREFIX -DCUDA_ARCHITECTURE=52
