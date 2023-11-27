@@ -5,6 +5,9 @@ on: push
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
+    defaults:
+        run:
+            working-directory: .
     steps:
       - name: Install Doxygen
         run: sudo apt-get install doxygen
