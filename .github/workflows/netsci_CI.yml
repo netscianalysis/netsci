@@ -18,11 +18,12 @@ jobs:
           auto-activate-base: false
           show-channel-urls: true
           activate-environment: netsci
-        name: build
+
+      - name: build
         shell: bash -l {0}
         run: |
-          mkdir build
-          cd build
-          cmake ..
+         mkdir build
+         cd build
+         cmake ..
           
           
