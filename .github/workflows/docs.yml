@@ -27,7 +27,7 @@ jobs:
           path: gh-pages
 
       - name: Copy Documentation to GitHub Pages Repository
-        run: cp -r ../docs/html/* gh-pages/
+        run: cp -r ./docs/html/* gh-pages/
 
       - name: Commit and Push Documentation
         run: |
