@@ -192,4 +192,39 @@ libraries to maintain simplicity and reliability.
  * \subsubsection step6 Step 6: Update Global Counts
  * - If \c localThreadIndex == 0, update \c nXa[i], \c nXb[i] with reduced counts from \c s_nXa[0], \c s_nXb[0]
  * - Synchronize threads using \c __syncthreads()
+ *
+ * \section tutorials Tutorials
+ * \subsection mutual_information_gpu Mutual Information
+ * ```{.py}
+ * from pathlib import Path
+ *
+ * import numpy as np
+ *
+ * from netcalc import mutualInformation
+ * from cuarray import floatCuArray, IntCuArray
+ * from netchem import Network, data_files
+ *
+ * dcd, pdb = data_files("pyro")
+ *
+ * trajectory_file = str(dcd)
+ * topology_file = str(pdb)
+ * first_frame = 0
+ * last_frame = 999
+ * stride = 1
+ *
+ * network = Network()
+ * network.init(
+ *    trajectory_file,
+ *    topology_file,
+ *    first_frame,
+ *    last_frame,
+ *    stride
+ * )
+ *
+ * num_nodes = network.numNodes()
+ * num_frames = network.numNodes()
+ * k = 4
+ *
+ *
+ * ```
  */

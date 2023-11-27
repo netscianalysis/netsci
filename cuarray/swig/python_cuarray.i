@@ -10,6 +10,7 @@
 %include "python_cuarray_ignore.i"
 %include "python_cuarray_rename.i"
 %include "python_cuarray_template.i"
+%include "python_cuarray_pythoncode.i"
 
 
 
