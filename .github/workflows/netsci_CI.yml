@@ -23,7 +23,7 @@ jobs:
         run: |
             mkdir build
             cd build
-            cmake .. -DCONDA_DIR=$CONDA_PREFIX
+            cmake .. -DCONDA_DIR=$CONDA_PREFIX -DCUDA_ARCHITECTURE=52
             cmake --build . -j
             make python
       - name: ctest
@@ -32,7 +32,4 @@ jobs:
           ctest
       - name: pytest
         run: |
-            cd tests/cuarray/python
-            pytest
-            cd ../../netsci/python
             pytest
