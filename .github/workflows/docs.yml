@@ -5,6 +5,8 @@ on: push
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
+    env:
+      repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Install Doxygen
         run: sudo apt-get install doxygen
