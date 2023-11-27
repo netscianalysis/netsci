@@ -1,34 +1,34 @@
 name: netcalc
-on: [push, workflow_dispatch]
+on: [ push, workflow_dispatch ]
 jobs:
   run:
-    runs-on: [self-hosted]
+    runs-on: [ self-hosted ]
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup anaconda
-        uses: conda-incubator/setup-miniconda@v2
+      - uses: mamba-org/setup-micromamba@v1
         with:
-          miniconda-version: "latest"
-          channels: bioconda, conda-forge, defaults
-          use-only-tar-bz2: true  # IMPORTANT: This needs to be set for caching to work properly!
-          auto-update-conda: true
-          auto-activate-base: true
+          micromamba-version: '1.3.1-0'
+          environment-file: netsci.yml
+          init-shell: >-
+            bash
+            powershell
+          cache-environment: true
+          post-cleanup: 'all'
       - name: Install netcalc dependencies
         run: |
-            conda install -c conda-forge swig boost numpy cmake pytest
+          conda install -c conda-forge swig boost numpy cmake pytest
       - name: build
         run: |
-            mkdir build
-            cd build
-            cmake .. -DCONDA_DIR=$CONDA_PREFIX -DCUDA_ARCHITECTURE=52
-            cmake --build . -j
-            make python
+          mkdir build
+          cd build
+          cmake .. -DCONDA_DIR=$CONDA_PREFIX -DCUDA_ARCHITECTURE=52
+          cmake --build . -j
+          make python
       - name: ctest
         run: |
           cd build
           ctest
       - name: pytest
         run: |
-            pytest
+          pytest
