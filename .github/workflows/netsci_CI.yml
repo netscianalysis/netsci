@@ -23,6 +23,7 @@ jobs:
       - name: build
         shell: bash -l {0}
         run: |
+         apt-get update && apt-get install -y cmake
          mkdir build
          cd build
          cmake ..
