@@ -5,19 +5,21 @@ on: push
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
-    defaults:
-        run:
-            working-directory: .
+    container: dvcorg/cml-py3:latest
+    env:
+      repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - uses: actions/checkout@v2
       - name: Install Doxygen
         run: sudo apt-get install doxygen
       - name: Install CMake
         run: sudo apt-get install cmake
-      - name: Configure CMake
-        run: cmake -S . -DBUILD_NETSCI=OFF -DBUILD_PYTHON_BINDINGS=OFF -DBUILD_SAMPLES=OFF -DGENERATE_DOCS=ON
-      - name: Build Doxygen Documentation
-        run: make docs
-
+      - name: build
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DBUILD_NETSCI=OFF -DBUILD_PYTHON_BINDINGS=OFF -DBUILD_SAMPLES=OFF -DGENERATE_DOCS=ON
+          make docs
       - name: Checkout GitHub Pages Repository
         uses: actions/checkout@v2
         with:
