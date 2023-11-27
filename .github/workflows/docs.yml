@@ -16,10 +16,8 @@ jobs:
         run: sudo apt-get install doxygen
       - name: Install CMake
         run: sudo apt-get install cmake
-      - name: Make build directory
-        run: mkdir build && cd build
       - name: Configure CMake
-        run: cmake ..
+        run: cmake .
       - name: Build Doxygen Documentation
         run: make docs
 
