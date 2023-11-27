@@ -18,6 +18,7 @@ def data_files(key: str) -> tuple:
         test="test.tar.gz",
         pyro="pyro.tar.gz",
     )
+    cwd = Path.cwd()
     with resources.path("netchem.data", data_files_dict[key]) as tarball_file:
         os.chdir(tarball_file.parent)
         tarball = tarfile.open(tarball_file)
@@ -28,6 +29,7 @@ def data_files(key: str) -> tuple:
         for tarball_member, temp_file in zip(tarball_members, temp_files):
             shutil.copy(tarball_member, temp_file)
             tarball_member.unlink()
+    os.chdir(cwd)
     return (
         Path(temp_dir) / f"{key}.dcd",
         Path(temp_dir) / f"{key}.pdb"

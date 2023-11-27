@@ -33,6 +33,8 @@ public:
      * \param firstFrame Index of the first frame to consider.
      * \param lastFrame Index of the last frame to consider.
      * \param stride Stride between frames.
+     *
+     * @PythonExample{NetChem_Network_init.py}
      */
     void init(
             const std::string &trajectoryFile,
@@ -48,6 +50,8 @@ public:
      * Returns the number of nodes in the Network.
      *
      * \return The number of nodes.
+     *
+     * @PythonExample{NetChem_Network_numNodes.py}
      */
     int numNodes() const;
 
@@ -57,6 +61,8 @@ public:
      * Returns a pointer to the CuArray object containing the node coordinates.
      *
      * \return A pointer to the CuArray containing the node coordinates.
+     *
+     * @PythonExample{NetChem_Network_nodeCoordinates1.py}
      */
     CuArray<float>* nodeCoordinates();
 
@@ -66,6 +72,8 @@ public:
      * Returns a reference to the vector of nodes in the Network.
      *
      * \return A reference to the vector of nodes.
+     *
+     * @PythonExample{NetChem_Network_nodes.py}
      */
     std::vector<Node*>& nodes();
 
@@ -75,6 +83,8 @@ public:
      * Returns the number of frames in the Network.
      *
      * \return The number of frames.
+     *
+     * @PythonExample{NetChem_Network_numFrames.py}
      */
     int numFrames() const;
 
@@ -86,6 +96,8 @@ public:
      *
      * \param atomIndex The index of the Atom.
      * \return A pointer to the Node corresponding to the Atom index.
+     *
+     * @PythonExample{NetChem_Network_nodeFromAtomIndex.py}
      */
     Node* nodeFromAtomIndex(int atomIndex);
 
@@ -95,6 +107,8 @@ public:
      * Returns a pointer to the Atoms object associated with the Network.
      *
      * \return A pointer to the Atoms object.
+     *
+     * @PythonExample{NetChem_Network_atoms.py}
      */
     Atoms* atoms() const;
 
@@ -130,6 +144,8 @@ public:
      * Saves the Network as a JSON file.
      *
      * \param jsonFile Path to the JSON file.
+     *
+     * @PythonExample{NetChem_Network_save.py}
      */
     void save(const std::string& jsonFile);
 
@@ -139,6 +155,8 @@ public:
      * Loads a Network from the specified JSON file.
      *
      * \param jsonFile Path to the JSON file.
+     *
+     * @PythonExample{NetChem_Network_load.py}
      */
     void load(const std::string& jsonFile);
 
@@ -148,6 +166,8 @@ public:
      * Sets the node coordinates from the specified node coordinates file.
      *
      * \param nodeCoordinatesFile Path to the node coordinates file.
+     *
+     * @PythonExample{NetChem_Network_nodeCoordinates2.py}
      */
     void nodeCoordinates(const std::string& nodeCoordinatesFile);
 

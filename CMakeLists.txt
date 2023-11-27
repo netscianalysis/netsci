@@ -174,7 +174,12 @@ ENDIF ()
 
 
 SET(DOXYGEN_PROJECT_NAME NetSci)
-SET(DOXYGEN_EXAMPLE_PATH  ${CMAKE_SOURCE_DIR}/cuarray/samples/cpp/src ${CMAKE_SOURCE_DIR}/cuarray/samples/python)
+SET(DOXYGEN_EXAMPLE_PATH
+    ${CMAKE_SOURCE_DIR}/cuarray/samples/cpp/src
+    ${CMAKE_SOURCE_DIR}/cuarray/samples/python
+    ${CMAKE_SOURCE_DIR}/netchem/samples/python
+    ${CMAKE_SOURCE_DIR}/netcalc/samples/python
+    )
 SET(DOXYGEN_ALIASES
     [[PythonExample{1}=<b>Python Example</b><br>\include \1]]
     [[CppExample{1}=<b>C++ Example</b><br>\include \1]]

@@ -50,6 +50,8 @@ public:
      * Returns the tag of the Node, which represents its unique identifier.
      *
      * \return The tag of the Node.
+     *
+     * @PythonExample{NetChem_Node_tag.py}
      */
     std::string tag();
 
@@ -59,6 +61,8 @@ public:
      * Returns the number of Atoms contained in the Node.
      *
      * \return The number of Atoms in the Node.
+     *
+     * @PythonExample{NetChem_Node_numAtoms.py}
      */
     unsigned int numAtoms() const;
 
@@ -68,6 +72,8 @@ public:
      * Returns the index of the Node.
      *
      * \return The index of the Node.
+     *
+     * @PythonExample{NetChem_Node_index.py}
      */
     unsigned int index() const;
 
@@ -78,6 +84,8 @@ public:
      * of all the Atoms in the Node.
      *
      * \return The total mass of the Node.
+     *
+     * @PythonExample{NetChem_Node_totalMass.py}
      */
     float totalMass() const;
 
@@ -97,6 +105,8 @@ public:
      * Returns a vector of pointers to the Atoms contained in the Node.
      *
      * \return A vector of pointers to the Atoms in the Node.
+     *
+     * @PythonExample{NetChem_Node_atoms.py}
      */
     std::vector<Atom*> atoms() const;
 

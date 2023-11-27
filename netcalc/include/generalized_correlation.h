@@ -16,8 +16,12 @@ namespace netcalc {
      * \param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
      * \param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
      * \param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
+     * \param checkpointFrequency Frequency, in terms of per generalized correlation calculation, results are checkpointed.
+     * \param checkpointFileName Name of NumPy binary (.npy) checkpointed results is saved to.
      *
      * \return 0 if successful, 1 otherwise.
+     *
+     * @PythonExample{NetCalc_generalizedCorrelationWithCheckpointing.py}
      */
     int generalizedCorrelation(
             CuArray<float>* X,
@@ -32,6 +36,22 @@ namespace netcalc {
             std::string checkpointFileName
     );
 
+    /*!
+     * \brief Computes the generalized correlation between all pairs of random variables listed in 'ab'.
+     *
+     * \param X       Mx(d*N) matrix of M d-dimensional random variables with N samples.
+     * \param R       Vector that stores the generalized correlation between pairs of random variables listed in 'ab'.
+     * \param ab      Vector of pairs of random variables for which generalized correlation is computed.
+     * \param k       K value used in generalized correlation calculation.
+     * \param n       Number of samples.
+     * \param xd      The dimension of the joint random variable. Only 2D-joint random variables are supported.
+     * \param d       The dimension of each random variable. Only 1, 2, and 3-dimensional random variables are supported.
+     * \param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
+     *
+     * \return 0 if successful, 1 otherwise.
+     *
+     * @PythonExample{NetCalc_generalizedCorrelation.py}
+     */
     int generalizedCorrelation(
             CuArray<float>* X,
             CuArray<float>* R,

@@ -28,6 +28,8 @@ namespace netcalc {
      * @param platform Platform (CPU or GPU) used for computation. Use 0 for GPU, and 1 for CPU.
      *
      * @return 0 if successful, 1 otherwise.
+     *
+     * @PythonExample{"NetCalc_mutualInformation.py"}
      */
     int mutualInformation(
             CuArray<float>* X,
@@ -58,9 +60,10 @@ namespace netcalc {
      * ab node pair index the mutual information was calculated for.
      *
      * @return 0 if successful, 1 otherwise.
+     *
+     * @PythonExample{NetCalc_mutualInformationWithCheckpointing.py}
      */
-
-    int mutualInformation(
+    int mutualinformation(
             CuArray<float>* X,
             CuArray<float>* I,
             CuArray<int>* ab,

@@ -1,4 +1,5 @@
 from .netcalc import mutualInformation
+from .netcalc import mutualInformationWithCheckpointing
 from .netcalc import mutualInformationGpu
 from .netcalc import mutualInformationCpu
 from .netcalc import generalizedCorrelation
