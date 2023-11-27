@@ -5,19 +5,13 @@ on: push
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Main Repository
-        uses: actions/checkout@v2
-        with:
-          repository: 'netscianalysis/netsci'
-
       - name: Install Doxygen
         run: sudo apt-get install doxygen
       - name: Install CMake
         run: sudo apt-get install cmake
       - name: Configure CMake
-        run: cmake .
+        run: cmake .. -DBUILD_NETSCI=OFF -DBUILD_PYTHON_BINDINGS=OFF -DBUILD_SAMPLES=OFF -DGENERATE_DOCS=ON
       - name: Build Doxygen Documentation
         run: make docs
 
