@@ -1,11 +1,8 @@
-name: netcalc
+name: netsci
 on: [push]
 jobs:
   run:
-    runs-on: [self-hosted]
-    defaults:
-      run:
-        shell: bash -l {0}
+    runs-on: [self-hosted, gpu]
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -14,9 +11,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.10.5
+      - name: Install netsci dependencies
         run: |
-          conda install -c conda-forge swig boost numpy pytest
-          conda install -c anaconda cmake
+          conda install -c conda-forge swig boost numpy cmake pytest
       - name: build
         run: |
           mkdir build
