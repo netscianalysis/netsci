@@ -7,6 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: read
+      pages: write
     steps:
       - uses: actions/checkout@v2
       - name: Install Doxygen
