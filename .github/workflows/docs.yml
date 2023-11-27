@@ -11,9 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install Doxygen
-        run: sudo apt-get install doxygen
+        run: conda install -c conda-forge doxygen
       - name: Install CMake
-        run: sudo apt-get install cmake
+        run: conda install -c conda-forge cmake
       - name: build
         run: |
           mkdir build
