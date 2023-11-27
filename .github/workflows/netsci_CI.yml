@@ -6,6 +6,9 @@ jobs:
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - uses: actions/checkout@v2
+      - name: Update linux env
+        run: apt-get update
       - uses: mamba-org/setup-micromamba@v1
         with:
           micromamba-version: '1.3.1-0'
