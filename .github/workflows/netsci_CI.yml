@@ -9,27 +9,29 @@ jobs:
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - steps:
       - uses: actions/checkout@v2
-      - name: Setup anaconda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          miniconda-version: "latest"
-          channels: bioconda, conda-forge, defaults, anaconda
-          packages: cmake, swig, pytest, doxygen, boost, numpy
-          use-only-tar-bz2: true  # IMPORTANT: This needs to be set for caching to work properly!
-          auto-update-conda: true
-          auto-activate-base: true
-      - name: build
-        run: |
-            mkdir build
-            cd build
-            cmake .. -DCONDA_DIR=$CONDA_PREFIX -DCUDA_ARCHITECTURE=52
-            cmake --build . -j
-            make python
-      - name: ctest
-        run: |
-          cd build
-          ctest
-      - name: pytest
-        run: |
-          pytest
+          - name: Setup anaconda
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.10.5
+          - name: Install netsci dependencies
+            run: |
+              conda install -c conda-forge swig boost numpy cmake pytest
+          - name: build
+            run: |
+              mkdir build
+              cd build
+              cmake .. -DCONDA_DIR=$CONDA_PREFIX
+              cmake --build . -j
+              make python
+          - name: ctest
+            run: |
+              cd build
+              ctest
+          - name: pytest
+            run: |
+              cd tests/cuarray/python
+              pytest
+              cd ../../netsci/python
+              pytest
