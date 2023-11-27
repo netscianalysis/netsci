@@ -1,0 +1,43 @@
+name: Generate and Deploy Doxygen Documentation
+
+on: push
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Main Repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'netscianalysis/netsci'
+
+      - name: Install Doxygen
+        run: sudo apt-get install doxygen
+      - name: Install CMake
+        run: sudo apt-get install cmake
+      - name: Make build directory
+        run: mkdir build && cd build
+      - name: Configure CMake
+        run: cmake ..
+      - name: Build Doxygen Documentation
+        run: make docs
+
+      - name: Checkout GitHub Pages Repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'netscianalysis/netscianalysis.github.io'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: gh-pages
+
+      - name: Copy Documentation to GitHub Pages Repository
+        run: cp -r ../docs/html/* gh-pages/
+
+      - name: Commit and Push Documentation
+        run: |
+          cd gh-pages
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "feat: Update documentation"
+          git push origin main

@@ -63,7 +63,7 @@ namespace netcalc {
      *
      * @PythonExample{NetCalc_mutualInformationWithCheckpointing.py}
      */
-    int mutualinformation(
+    int mutualInformation(
             CuArray<float>* X,
             CuArray<float>* I,
             CuArray<int>* ab,
