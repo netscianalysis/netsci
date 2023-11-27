@@ -17,6 +17,9 @@ jobs:
           auto-activate-base: false
           activate-environment: netsci
           environment-file: netsci.yml
+      - name: activate netsci conda environment
+        run: |
+          source activate netsci
       - name: build
         run: |
             mkdir build
