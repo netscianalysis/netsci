@@ -9,7 +9,6 @@ jobs:
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - steps:
       - uses: actions/checkout@v2
           - name: Setup anaconda
             uses: actions/setup-python@v2
