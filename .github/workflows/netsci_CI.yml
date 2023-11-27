@@ -3,6 +3,9 @@ on: [push]
 jobs:
   run:
     runs-on: [self-hosted]
+    defaults:
+      run:
+        shell: bash -l {0}
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -18,8 +21,7 @@ jobs:
           activate-environment: netsci
           environment-file: netsci.yml
       - name: activate netsci conda environment
-        run: |
-          source activate netsci
+        run: source activate netsci
       - name: build
         run: |
             mkdir build
