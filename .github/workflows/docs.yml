@@ -5,15 +5,13 @@ on: push
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
-    env:
-      repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Install Doxygen
         run: sudo apt-get install doxygen
       - name: Install CMake
         run: sudo apt-get install cmake
       - name: Configure CMake
-        run: cmake . -DBUILD_NETSCI=OFF -DBUILD_PYTHON_BINDINGS=OFF -DBUILD_SAMPLES=OFF -DGENERATE_DOCS=ON
+        run: cmake -S . -DBUILD_NETSCI=OFF -DBUILD_PYTHON_BINDINGS=OFF -DBUILD_SAMPLES=OFF -DGENERATE_DOCS=ON
       - name: Build Doxygen Documentation
         run: make docs
 
