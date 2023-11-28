@@ -1,9 +1,9 @@
 name: netsci
 channels:
-  - conda-forge
+  - conda-forge anaconda
 dependencies:
   - python=3.10
-  - conda-forge::cmake
+  - anaconda::cmake
   - conda-forge::numpy
   - conda-forge::doxygen
   - conda-forge::boost

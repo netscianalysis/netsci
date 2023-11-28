@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
+#include <cmath>
 #include "hedetniemi.h"
 
 void netcalc::hedetniemiAllShortestPaths(
@@ -64,25 +65,6 @@ void netcalc::correlationToAdjacency(
     }
 }
 
-template<typename ForwardIterator>
-ForwardIterator remove_duplicates(
-        ForwardIterator first,
-        ForwardIterator last
-) {
-    auto new_last = first;
-
-    for (auto current = first; current != last; ++current) {
-        if (std::find(first,
-                      new_last,
-                      *current) == new_last) {
-            if (new_last != current) *new_last = *current;
-            ++new_last;
-        }
-    }
-
-    return new_last;
-}
-
 void netcalc::recoverSingleShortestPath(
         int **NUMPY_ARRAY,
         int **NUMPY_ARRAY_DIM1,
@@ -93,23 +75,31 @@ void netcalc::recoverSingleShortestPath(
 ) {
     *(NUMPY_ARRAY_DIM1) = new int[1];
     (*NUMPY_ARRAY_DIM1)[0] = 0;
-    std::vector<int> tmp;
+    std::vector<int> path;
+    path.push_back(i);
+    int n = (int) std::sqrt(paths->n() / maxPathLength);
     for (int k = 0; k < maxPathLength; k++) {
-        auto node = paths->get(i*maxPathLength + k,
-                               j );
-        if (node != -1) {
-            tmp.push_back(node);
+        auto node = paths->get(0,
+                               i * maxPathLength * n +
+                               j * maxPathLength + k);
+        if (std::find(
+                path.begin(),
+                path.end(),
+                node) == path.end()) {
+            path.push_back(node);
         }
     }
-    //Reverse tmp
-    std::reverse(tmp.begin(),
-                 tmp.end());
-    tmp.push_back(j);
-    (*NUMPY_ARRAY_DIM1)[0] = (int)tmp.size();
+    if (std::find(
+            path.begin(),
+            path.end(),
+            j) == path.end()) {
+        path.push_back(j);
+    }
+    (*NUMPY_ARRAY_DIM1)[0] = (int) path.size();
     *NUMPY_ARRAY = new int[(*NUMPY_ARRAY_DIM1)[0]];
     std::copy(
-            tmp.begin(),
-            tmp.end(),
+            path.begin(),
+            path.end(),
             *NUMPY_ARRAY
     );
 }

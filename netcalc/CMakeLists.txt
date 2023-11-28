@@ -33,10 +33,7 @@ add_library(netcalc SHARED
         ${CMAKE_CURRENT_SOURCE_DIR}/src/hedetniemi_gpu.cu
         ${CMAKE_CURRENT_SOURCE_DIR}/src/generalized_correlation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/psi.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/cutoff_matrix.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/cutoff_matrix_gpu.cu
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/cutoff_matrix_cpu.cpp
-        )
+            )
 add_dependencies(netcalc cuarray)
 set_target_properties(
         netcalc
@@ -58,12 +55,6 @@ set_target_properties(
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/netcalc
         LINK_LIBRARIES "${NETCALC_PYTHON_LINK_LIBRARIES}"
 )
-
-link_libraries(netcalc cuarray)
-add_dependencies(netcalc cuarray)
-add_executable(cutoff_matrix
-        ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-        )
 
 set(PIP_UNINSTALL_NETCALC_ARGS "uninstall" "netcalc" "-y")
 set(PYTHON_NETCALC_INSTALL_ARGS "setup.py" "install")

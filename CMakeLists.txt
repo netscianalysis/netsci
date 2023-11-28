@@ -33,7 +33,10 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
 find_package(SWIG REQUIRED)
 
 #Path to "UseSWIG.cmake" file
-include(${SWIG_USE_FILE})
+INCLUDE(${SWIG_USE_FILE})
+
+#Make sure ZLIB is installed
+FIND_PACKAGE(ZLIB REQUIRED)
 
 #Global include directories used by all build targets
 set(
@@ -54,7 +57,7 @@ include_directories("${INCLUDE_DIRS}")
 #Libraries cnpy is linked against
 set(
         CNPY_LINK_LIBRARIES
-        ${CONDA_DIR}/lib/libz.so
+        ${ZLIB_LIBRARIES}
 )
 
 #Libraries cuarray is linked against

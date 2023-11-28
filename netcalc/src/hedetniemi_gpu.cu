@@ -52,8 +52,7 @@ hedetniemiAllShortestPathsPart1Kernel(
         float *H,
         float *Hi,
         int n,
-        int maxPathLength,
-        int p
+        int *p
 ) {
     unsigned i = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned j = blockIdx.y * blockDim.y + threadIdx.y;
@@ -61,11 +60,11 @@ hedetniemiAllShortestPathsPart1Kernel(
         float cij = INFINITY;
         for (int k = 0; k < n; k++) {
             auto AikHkjSum = A[j * n + k] + H[k * n + i];
-            if (AikHkjSum < cij + .0001) {
+            if (AikHkjSum < cij) {
                 cij = AikHkjSum;
             }
         }
-        Hi[p * n * n + i * n + j] = H[i * n + j];
+        Hi[p[0] * (n * n) + i * n + j] = H[i * n + j];
         H[i * n + j] = cij;
     }
 }
@@ -82,21 +81,23 @@ __global__ void hedetniemiAllShortestPathsKernelPart2(
     int j = blockIdx.y * blockDim.y + threadIdx.y;
 
     if (i < n && j < n) {
-        float length = H[i * n + j];
-        int kj = j;
-        for (int p = 0; p < maxPathLength; p++) {
-            for (int k = 0; k < n; k++) {
-                float a = A[k * n + kj];
-                float h = Hi[n * n * (maxPathLength - 2 - p) + i * n +
-                             k];
-                if (k != kj) {
-                    if (std::fabs(a + h - length) < .0001) {
-                        paths[i * n * maxPathLength + p * n + j] = k;
-                        length = h;
-                        kj = k;
+        if (i == j) {
+            // The path from a vertex to itself is always zero
+            paths[j * n + i] = i;
+        } else {
+            float pathLength = H[i * n + j];
+            int k = j;
+            for (int p = maxPathLength - 1; p >= 0; --p) {
+                for (int q = 0; q < n; ++q) {
+                    if (Hi[p * (n * n) + i * n + q] + A[q * n + k] ==
+                        pathLength) {
+                        pathLength -= A[q * n + k];
+                        k = q;
                         break;
                     }
                 }
+                paths[i * n * maxPathLength + j * maxPathLength +
+                      p] = k;
             }
         }
     }
@@ -174,28 +175,35 @@ void netcalc::hedetniemiAllShortestPathsGpu(
     dim3 grid(blocksPerGrid,
               blocksPerGrid);
     paths->init(
-            numNodes * maxPathLength,
-            numNodes
+            1,
+            numNodes * maxPathLength * numNodes
     );
     for (int _ = 0; _ < paths->size(); _++) {
         paths->host()[_] = -1;
     }
     paths->allocateDevice();
     paths->toDevice();
-    for (int p = 0; p < maxPathLength; p++) {
-        void *hedetniemiAllShortestPathsPart1KernelArgs[] = {
-                &A->device(),
-                &H->device(),
-                &Hi->device(),
-                &numNodes,
-                &maxPathLength,
-                &p
-        };
+    auto p = new CuArray<int>;
+    p->init(1,
+            1);
+    p->allocateDevice();
+    p->toDevice();
+    void *hedetniemiAllShortestPathsPart1KernelArgs[] = {
+            &A->device(),
+            &H->device(),
+            &Hi->device(),
+            &numNodes,
+            &p->device(),
+    };
+    for (int _ = 0; _ < maxPathLength; _++) {
         cudaLaunchKernel((void *) hedetniemiAllShortestPathsPart1Kernel,
                          grid,
                          block,
                          hedetniemiAllShortestPathsPart1KernelArgs
         );
+        p->toHost();
+        p->host()[0] = _ + 1;
+        p->toDevice();
     }
     void *hedetniemiAllShortestPathsPart2KernelArgs[] = {
             &H->device(),
@@ -210,12 +218,15 @@ void netcalc::hedetniemiAllShortestPathsGpu(
                      block,
                      hedetniemiAllShortestPathsPart2KernelArgs
     );
-    H->toHost();
     paths->toHost();
-    A->deallocateDevice();
+    H->toHost();
     H->deallocateDevice();
     paths->deallocateDevice();
+    A->deallocateDevice();
+    paths->deallocateDevice();
+    Hi->toHost();
     delete Hi;
+    delete p;
 }
 
 void netcalc::correlationToAdjacencyGpu(

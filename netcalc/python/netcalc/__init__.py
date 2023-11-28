@@ -9,7 +9,6 @@ from .netcalc import hedetniemiAllShortestPathsGpu
 from .netcalc import hedetniemiAllShortestPathLengths
 from .netcalc import hedetniemiAllShortestPathLengthsGpu
 from .netcalc import correlationToAdjacency
-from .netcalc import cutoffMatrix
 from .netcalc import mean
 from .netcalc import meanGpu
 from .netcalc import standardDeviation
