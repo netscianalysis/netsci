@@ -12,6 +12,8 @@ SET(CREATE_VMD_TCL_PACKAGE OFF CACHE BOOL "If ON, the CuArray TCL library is add
 
 SET(CUDA_ARCHITECTURE "52" CACHE STRING "CUDA architecture to compile for. Set this equal to a valid CUDA architecture less than or equal to 10X the compute capability of your GPU.")
 
+SET(BUILD_NETSCI ON CACHE BOOL "Build all NetSci toolkit libraries.")
+
 SET(BUILD_PYTHON_BINDINGS ON CACHE BOOL "Build python bindings for cuarray, netcalc, and netchem")
 SET(BUILD_TCL_BINDINGS OFF CACHE BOOL "Build tcl bindings for cuarray")
 
