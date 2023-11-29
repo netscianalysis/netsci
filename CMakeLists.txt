@@ -214,6 +214,7 @@ IF (${GENERATE_DOCS})
          ${CMAKE_SOURCE_DIR}/doxygen/index.h
          ${CMAKE_SOURCE_DIR}/cuarray/include/cuarray.h
          ${CMAKE_SOURCE_DIR}/netcalc/include/mutual_information.h
+         ${CMAKE_SOURCE_DIR}/netcalc/include/hedetniemi.h
          ${CMAKE_SOURCE_DIR}/netcalc/include/generalized_correlation.h
          ${CMAKE_SOURCE_DIR}/netchem/include/network.h
          ${CMAKE_SOURCE_DIR}/netchem/include/node.h
