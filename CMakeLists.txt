@@ -15,6 +15,10 @@ SET(CUDA_ARCHITECTURE "52" CACHE STRING "CUDA architecture to compile for. Set t
 SET(BUILD_PYTHON_BINDINGS ON CACHE BOOL "Build python bindings for cuarray, netcalc, and netchem")
 SET(BUILD_TCL_BINDINGS OFF CACHE BOOL "Build tcl bindings for cuarray")
 
+SET(BUILD_SAMPLES ON CACHE BOOL "Compiles examples for CuArray, NetCalc, and NetChem")
+
+SET(GENERATE_DOCS OFF CACHE BOOL "Generate documentation for CuArray, NetCalc, and NetChem")
+
 #CMake build type defaults to Release
 SET(CMAKE_BUILD_TYPE Release)
 
