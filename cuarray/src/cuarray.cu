@@ -18,6 +18,12 @@ CuArrayError CuArray<T>::init(
         int m,
         int n
 ) {
+    if (this->allocatedHost_ == 1 && this->owner_) {
+        this->deallocateHost();
+    }
+    if (this->allocatedDevice_ == 1) {
+        this->deallocateDevice();
+    }
     this->n_ = n;
     this->m_ = m;
     this->owner_ = 1;
