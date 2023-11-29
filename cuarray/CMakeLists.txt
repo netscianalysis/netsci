@@ -78,8 +78,13 @@ IF (${BUILD_TCL_BINDINGS})
     IF (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/tcl/tcl_cuarrayTCL_wrap.cxx)
         FILE(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/tcl/tcl_cuarrayTCL_wrap.cxx)
     ENDIF ()
-ENDIF ()
-
-IF(${BUILD_SAMPLES})
-    ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/samples/cpp)
-ENDIF()
+    IF (${VMD_TCL_PACKAGE})
+        SET(ENV{VMD_TCL_INDEX_PATH} "${VMD_LIB_DIR}/scripts/vmd/tclIndex")
+        SET(ENV{TCL_CUARRAY_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/tcl")
+        SET(ENV{TCL_CUARRAY_LIB_PATH} "$ENV{TCL_CUARRAY_DIR}/cuarray.so")
+        SET(ENV{TCL_CUARRAY_SCRIPT_PATH} "$ENV{TCL_CUARRAY_DIR}/cuarray.tcl")
+        EXECUTE_PROCESS(
+                COMMAND tclsh ${CMAKE_CURRENT_SOURCE_DIR}/tcl/create_vmd_package.tcl
+                )
+    ENDIF (${VMD_TCL_PACKAGE})
+ENDIF (${BUILD_TCL_BINDINGS})

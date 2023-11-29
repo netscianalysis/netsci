@@ -10,7 +10,7 @@ cuarray/python/cuarray/cuarray.py
 cuarray/python/cuarray/python_cuarrayPYTHON_wrap.cxx
 cuarray/python/dist/
 cuarray/samples/
-cuarray/tcl
+cuarray/tcl/cuarray.so
 cuarray/python/cuarray/_python_cuarray.so
 cuarray/lib
 cuarray/swig/generate_documentation.py
