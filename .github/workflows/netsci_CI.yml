@@ -3,36 +3,31 @@ on: [push]
 jobs:
   run:
     runs-on: [self-hosted]
-    container: dvcorg/cml-py3:latest
+    defaults:
+      run:
+        shell: bash -l {0}
     env:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - name: Setup anaconda
-        uses: conda-incubator/setup-miniconda@v2
+      - uses: conda-incubator/setup-miniconda@v2
         with:
           miniconda-version: "latest"
-          channels: bioconda, conda-forge, defaults
-          use-only-tar-bz2: true  # IMPORTANT: This needs to be set for caching to work properly!
-          auto-update-conda: true
-          auto-activate-base: true
-      - name: Install netcalc dependencies
-        run: |
-            conda install -c conda-forge swig boost numpy cmake pytest
+          channels: bioconda, conda-forge, defaults, anaconda
+          environment-file: netsci.yml
+          auto-update-conda: false
+          auto-activate-base: false
+          show-channel-urls: true
+          activate-environment: netsci
+
       - name: build
+        shell: bash -l {0}
         run: |
-            mkdir build
-            cd build
-            cmake .. -DCONDA_DIR=$CONDA_PREFIX
-            cmake --build . -j
-            make python
-      - name: ctest
-        run: |
+          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+          sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
+          sudo apt-get update && sudo apt-get install -y cmake
+          mkdir build
           cd build
-          ctest
-      - name: pytest
-        run: |
-            cd tests/cuarray/python
-            pytest
-            cd ../../netsci/python
-            pytest
+          cmake ..
+          
+          

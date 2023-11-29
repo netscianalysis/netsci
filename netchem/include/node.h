@@ -1,25 +1,3 @@
-/*--------------------------------------------------------------------*
- *                         CuRva                                      *
- *--------------------------------------------------------------------*
- * This is part of the GPU-accelerated, random variable analysis      *
- * library CuRva.                                                     *
- * Copyright (C) 2022 Andy Stokely                                    *
- *                                                                    *
- * This program is free software: you can redistribute it             *
- * and/or modify it under the terms of the GNU General Public License *
- * as published by the Free Software Foundation, either version 3 of  *
- * the License, or (at your option) any later version.                *
- *                                                                    *
- * This program is distributed in the hope that it will be useful,    *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of     *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *
- * GNU General Public License for more details.                       *
- *                                                                    *
- * You should have received a copy of the GNU General Public License  *
- * along with this program.                                           *
- * If not, see <https://www.gnu.org/licenses/>                        *
- * -------------------------------------------------------------------*/
-
 /**
  * \file node.h
  * \brief Defines the Node class representing a node in a graph.
@@ -72,6 +50,8 @@ public:
      * Returns the tag of the Node, which represents its unique identifier.
      *
      * \return The tag of the Node.
+     *
+     * @PythonExample{NetChem_Node_tag.py}
      */
     std::string tag();
 
@@ -81,6 +61,8 @@ public:
      * Returns the number of Atoms contained in the Node.
      *
      * \return The number of Atoms in the Node.
+     *
+     * @PythonExample{NetChem_Node_numAtoms.py}
      */
     unsigned int numAtoms() const;
 
@@ -90,6 +72,8 @@ public:
      * Returns the index of the Node.
      *
      * \return The index of the Node.
+     *
+     * @PythonExample{NetChem_Node_index.py}
      */
     unsigned int index() const;
 
@@ -100,6 +84,8 @@ public:
      * of all the Atoms in the Node.
      *
      * \return The total mass of the Node.
+     *
+     * @PythonExample{NetChem_Node_totalMass.py}
      */
     float totalMass() const;
 
@@ -119,6 +105,8 @@ public:
      * Returns a vector of pointers to the Atoms contained in the Node.
      *
      * \return A vector of pointers to the Atoms in the Node.
+     *
+     * @PythonExample{NetChem_Node_atoms.py}
      */
     std::vector<Atom*> atoms() const;
 
