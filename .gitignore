@@ -1,31 +1,31 @@
- .idea/
-        .ipynb_checkpoints/
-        Untitled.ipynb
-        build/
-        cmake-build-debug/
-        collapsible_doc_code_examples.py
-        cuarray/python/build/
-        cuarray/python/cuarray.egg-info/
-        cuarray/python/cuarray/cuarray.py
-        cuarray/python/cuarray/python_cuarrayPYTHON_wrap.cxx
-        cuarray/python/dist/
-        cuarray/samples/
-        cuarray/swig/generate_documentation.py
-        cuarray/swig/python_cuarray_docs.i
-        netcalc/python/build/
-        netcalc/python/dist/
-        netcalc/python/netcalc.egg-info/
-        netcalc/python/netcalc/netcalc.py
-        netcalc/python/netcalc/python_netcalcPYTHON_wrap.cxx
-        netchem/python/build/
-        netchem/python/dist/
-        netchem/python/netchem.egg-info/
-        netchem/python/netchem/__pycache__/
-        netchem/python/netchem/data/__pycache__/
-        netchem/python/netchem/netchem.py
-        netchem/python/netchem/python_netchemPYTHON_wrap.cxx
-        out/
-        pyautodoc/
-        tests/cuarray/python/__pycache__/
-        tests/netcalc/python/__pycache__/
-        tests/netchem/python/__pycache__/
+ .idea
+**/.ipynb_checkpoints
+Untitled.ipynb
+build/
+cmake-build-debug/
+collapsible_doc_code_examples.py
+cuarray/python/build/
+cuarray/python/cuarray.egg-info/
+cuarray/python/cuarray/cuarray.py
+cuarray/python/cuarray/python_cuarrayPYTHON_wrap.cxx
+cuarray/python/dist/
+cuarray/samples/
+cuarray/swig/generate_documentation.py
+cuarray/swig/python_cuarray_docs.i
+netcalc/python/build/
+netcalc/python/dist/
+netcalc/python/netcalc.egg-info/
+netcalc/python/netcalc/netcalc.py
+netcalc/python/netcalc/python_netcalcPYTHON_wrap.cxx
+netchem/python/build/
+netchem/python/dist/
+netchem/python/netchem.egg-info/
+netchem/python/netchem/__pycache__/
+netchem/python/netchem/data/__pycache__/
+netchem/python/netchem/netchem.py
+netchem/python/netchem/python_netchemPYTHON_wrap.cxx
+out/
+pyautodoc/
+tests/cuarray/python/__pycache__/
+tests/netcalc/python/__pycache__/
+tests/netchem/python/__pycache__/
