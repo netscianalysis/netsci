@@ -9,7 +9,6 @@ cuarray/python/cuarray.egg-info/
 cuarray/python/cuarray/cuarray.py
 cuarray/python/cuarray/python_cuarrayPYTHON_wrap.cxx
 cuarray/python/dist/
-cuarray/samples/
 cuarray/tcl/cuarray.so
 cuarray/python/cuarray/_python_cuarray.so
 cuarray/lib

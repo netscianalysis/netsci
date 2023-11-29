@@ -1,7 +1,7 @@
 name: netsci
 dependencies:
   - python=3.10
-  - anaconda::cmake
+  - conda-forge::cmake
   - conda-forge::numpy
   - conda-forge::doxygen
   - conda-forge::boost

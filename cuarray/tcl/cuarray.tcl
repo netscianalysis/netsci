@@ -63,3 +63,4 @@ proc sortIntCuArray {cuArray} {
 }
 load /home/astokely/CLionProjects/netsci/cuarray/tcl/cuarray.so
 load /home/astokely/CLionProjects/netsci/cuarray/tcl/cuarray.so
+load /home/astokely/CLionProjects/netsci/cuarray/tcl/cuarray.so
