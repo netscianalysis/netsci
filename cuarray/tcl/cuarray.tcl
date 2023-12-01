@@ -9,12 +9,12 @@ proc saveFloatCuArray {fname cuArray} {
 }
 
 proc argsortFloatCuArray {cuArray} {
-    set argsortCuArray [$cuArray argsort]}
+    set argsortCuArray [$cuArray argsort]
     return $argsortCuArray
 }
 
 proc sortFloatCuArray {cuArray} {
-    set sortedCuArray [$cuArray sort]}
+    set sortedCuArray [$cuArray sort]
     return $sortedCuArray
 }
 

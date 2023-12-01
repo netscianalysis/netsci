@@ -12,6 +12,7 @@ void netcalc::hedetniemiAllShortestPaths(
         CuArray<float> *H,
         CuArray<int> *paths,
         int maxPathLength,
+        float tolerance,
         int platform
 ) {
     H->init(A->m(),
@@ -20,12 +21,14 @@ void netcalc::hedetniemiAllShortestPaths(
         netcalc::hedetniemiAllShortestPathsGpu(A,
                                                H,
                                                paths,
+                                               tolerance,
                                                maxPathLength
         );
     } else if (platform == 1) {
         netcalc::hedetniemiAllShortestPathsCpu(A,
                                                H,
                                                paths,
+                                               tolerance,
                                                maxPathLength
         );
     } else {

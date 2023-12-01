@@ -74,6 +74,7 @@ __global__ void hedetniemiAllShortestPathsKernelPart2(
         const float *Hi,
         const float *A,
         int *paths,
+        float tolerance,
         int n,
         int maxPathLength
 ) {
@@ -89,8 +90,12 @@ __global__ void hedetniemiAllShortestPathsKernelPart2(
             int k = j;
             for (int p = maxPathLength - 1; p >= 0; --p) {
                 for (int q = 0; q < n; ++q) {
-                    if (Hi[p * (n * n) + i * n + q] + A[q * n + k] ==
-                        pathLength) {
+                    if (q==j) {
+                        continue;
+                    }
+                    if (Hi[p * (n * n) + i * n + q] + A[q * n + k] -
+                        pathLength
+                        < tolerance) {
                         pathLength -= A[q * n + k];
                         k = q;
                         break;
@@ -146,6 +151,7 @@ void netcalc::hedetniemiAllShortestPathsGpu(
         CuArray<float> *A,
         CuArray<float> *H,
         CuArray<int> *paths,
+        float tolerance,
         int maxPathLength
 ) {
     H->fromCuArrayDeepCopy(
@@ -210,6 +216,7 @@ void netcalc::hedetniemiAllShortestPathsGpu(
             &Hi->device(),
             &A->device(),
             &paths->device(),
+            &tolerance,
             &numNodes,
             &maxPathLength
     };

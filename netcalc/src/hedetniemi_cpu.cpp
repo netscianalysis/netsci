@@ -7,6 +7,7 @@ void netcalc::hedetniemiAllShortestPathsCpu(
         CuArray<float> *A,
         CuArray<float> *H,
         CuArray<int> *paths,
+        float tolerance,
         int maxPathLength
 
 ) {
@@ -73,7 +74,7 @@ void netcalc::hedetniemiAllShortestPathsCpu(
                             k
                     );
                     if (k != kj) {
-                        if (a + h == length) {
+                        if (a + h - length < tolerance) {
                             paths->set(
                                     k,
                                     i * maxPathLength + p,
