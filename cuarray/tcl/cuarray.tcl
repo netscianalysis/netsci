@@ -58,6 +58,7 @@ proc argsortIntCuArray {cuArray} {
 }
 
 proc sortIntCuArray {cuArray} {
-    set sortedCuArray [$cuArray sort]}
+    set sortedCuArray [$cuArray sort]
     return $sortedCuArray
 }
+load /home/astokely/CLionProjects/netsci/cuarray/tcl/cuarray.so
