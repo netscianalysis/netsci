@@ -36,3 +36,5 @@ tests/cuarray/python/__pycache__/
 tests/netcalc/python/__pycache__/
 tests/netchem/python/__pycache__/
 cnpy/
+/docs/
+/cuarray/tcl/tcl_cuarrayTCL_wrap.cxx
