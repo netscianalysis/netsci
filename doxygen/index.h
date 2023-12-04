@@ -19,14 +19,14 @@ NetSci is designed with a focus on ease of installation and long-term stability,
 systems featuring CUDA-capable GPUs (compute capability 3.5 and above). It leverages well-supported core C++ and Python
 libraries to maintain simplicity and reliability.
 
-1. **Download Miniconda Installation Script**:
+1. **Download Miniforge Installation Script**:
    \code
-   wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+   wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh
    \endcode
 
 2. **Execute the Installation Script**:
    \code
-   bash Miniconda3-latest-Linux-x86_64.sh
+   bash Miniforge3-$(uname)-$(uname -m).sh
    \endcode
 
 3. **Update Environment Settings**:
@@ -34,9 +34,9 @@ libraries to maintain simplicity and reliability.
    source ~/.bashrc
    \endcode
 
-4. **Install Git with Conda**:
+4. **Install Git with Mamba**:
    \code
-   conda install -c conda-forge git
+   mamba install -c conda-forge git
    \endcode
 
 5. **Clone the NetSci Repository**:
@@ -51,12 +51,12 @@ libraries to maintain simplicity and reliability.
 
 7. **Create NetSci Conda Environment**:
    \code
-   conda env create -f netsci.yml
+   mamba env create -f netsci.yml
    \endcode
 
 8. **Activate NetSci Conda Environment**:
    \code
-   conda activate netsci
+   mamba activate netsci
    \endcode
 
 9. **Create CMake Build Directory**:

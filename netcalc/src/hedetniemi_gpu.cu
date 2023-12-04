@@ -2,8 +2,6 @@
 // Created by astokely on 5/10/23.
 //
 #include <numeric>
-#include <limits>
-#include <iostream>
 #include "hedetniemi.h"
 
 
