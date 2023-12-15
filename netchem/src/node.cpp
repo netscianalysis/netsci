@@ -125,3 +125,7 @@ std::vector<Atom *> Node::atoms() const {
     return this->atoms_;
 }
 
+unsigned int Node::numFrames() const {
+    return this->_numFrames;
+}
+

@@ -16,8 +16,9 @@ SET_SOURCE_FILES_PROPERTIES(
 
 ADD_LIBRARY(netvis SHARED
             ${CMAKE_CURRENT_SOURCE_DIR}/src/path.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/paths.cpp
             )
-ADD_DEPENDENCIES(netvis cuarray)
+ADD_DEPENDENCIES(netvis netchem)
 SET_TARGET_PROPERTIES(
         netvis
         PROPERTIES
@@ -31,6 +32,7 @@ IF (${BUILD_TCL_BINDINGS})
                      OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tcl
                      SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/swig/tcl_netvis.i
                      )
+    ADD_DEPENDENCIES(tcl_netvis netvis)
     SET_TARGET_PROPERTIES(
             tcl_netvis
             PROPERTIES

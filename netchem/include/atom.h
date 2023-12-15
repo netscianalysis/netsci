@@ -45,6 +45,7 @@ public:
             int atomIndex
     );
 
+
     /**
      * \brief Get the atom index.
      *

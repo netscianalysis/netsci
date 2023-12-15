@@ -1,8 +1,9 @@
 %module tcl_netvis
 
 %include "std_string.i"
+%include "std_vector.i"
+%include "std_map.i"
 %include "tcl_netvis_headers.i"
+%include "tcl_netvis_templates.i"
+%include "tcl_netvis_typemaps.i"
 %include "tcl_netvis_include.i"
-// %include "tcl_netvis_ignore.i"
-// %include "tcl_netvis_rename.i"
-// %include "tcl_netvis_template.i"

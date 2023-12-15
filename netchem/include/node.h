@@ -110,6 +110,8 @@ public:
      */
     std::vector<Atom*> atoms() const;
 
+    unsigned int numFrames() const;
+
 private:
     friend nlohmann::adl_serializer<Node*>;
 

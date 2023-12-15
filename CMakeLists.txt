@@ -103,19 +103,6 @@ IF (${BUILD_NETSCI})
             gtest
             )
 
-    #Libraries netvis is linked against
-    SET(
-            NETVIS_LINK_LIBRARIES
-            "${CUARRAY_LINK_LIBRARIES}"
-            )
-    #Libraries the python netvis swig module is linked against
-    SET(
-           NETVIS_TCL_LINK_LIBRARIES
-            "${NETVIS_LINK_LIBRARIES}"
-            netvis
-            )
-
-
     #Libraries netcalc is linked against
     SET(
             NETCALC_LINK_LIBRARIES
@@ -172,6 +159,19 @@ IF (${BUILD_NETSCI})
             netchem
             )
 
+    #Libraries netvis is linked against
+    SET(
+            NETVIS_LINK_LIBRARIES
+            "${NETCHEM_LINK_LIBRARIES}"
+            netchem
+            )
+    #Libraries the python netvis swig module is linked against
+    SET(
+            NETVIS_TCL_LINK_LIBRARIES
+            "${NETVIS_LINK_LIBRARIES}"
+            netvis
+            )
+
     #Add cnpy src directory to the build
     ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/cnpy)
     #Add cuarray src directory to the build
@@ -180,6 +180,8 @@ IF (${BUILD_NETSCI})
     ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/netcalc)
     #Add netchem src directory to the build
     ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/netchem)
+    #Add netvis src directory to the build
+    ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/netvis)
 
     #Write all unit tests to the build directory
     ENABLE_TESTING()
