@@ -36,6 +36,8 @@ public:
      * Returns the number of Atoms in the collection.
      *
      * \return The number of Atoms.
+     *
+     * @PythonExample{NetChem_Atoms_numAtoms.py}
      */
     int numAtoms() const;
 
@@ -46,6 +48,8 @@ public:
      *
      * \param atomIndex The index of the Atom.
      * \return A pointer to the Atom with the specified index.
+     *
+     * @PythonExample{NetChem_Atoms_at.py}
      */
     Atom* at(int atomIndex);
 
@@ -65,6 +69,8 @@ public:
      * Returns a reference to the vector of Atoms.
      *
      * \return A reference to the vector of Atoms.
+     *
+     * @PythonExample{NetChem_Atoms_atoms.py}
      */
     std::vector<Atom*>& atoms();
 

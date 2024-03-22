@@ -22,16 +22,17 @@ namespace netcalc {
      *                  path between the node corresponding to the row index and all other nodes. Each path has k elements,
      *                  where the first element is the node corresponding to the row index and the last element is the node
      *                  corresponding to the column. Unless the path is the longest shortest path, the remaining elements are -1.
-     * \param tolerance A very small floating-point number (usually less than 1e-4) used in one of the algorithm steps to
-     *                  determine if a node belongs to the shortest path being calculated. If this value is too large,
-     *                  the shortest path returned may be incorrect, and if it is too small, the algorithm may never terminate.
-     *                  In all testing, 1e-5 has been a good value.
+     * \param maxPathLength The maximum number of nodes in a shortest
+     *                      allowed in a shortest path. The maximum
+     *                      number of edges allowed in a shortest path
+     *                      is equal to maxPathLength - 1.
      * \param platform  Platform used to perform the calculation. Use 0 for GPU and 1 for CPU.
      */
-    void hedetniemiShortestPaths(
+    void hedetniemiAllShortestPaths(
             CuArray<float>* A,
             CuArray<float>* H,
             CuArray<int>* paths,
+            int maxPathLength,
             float tolerance,
             int platform
     );
@@ -40,24 +41,88 @@ namespace netcalc {
      * \brief Compute the shortest paths and shortest path lengths between all pairs of nodes in a graph on the GPU.
      *
      * \param A         Adjacency matrix of the graph.
+     *
      * \param H         NxN matrix of shortest path lengths, where N is the number of nodes in the graph.
      *                  Each matrix element represents the shortest path length between the nodes corresponding
      *                  to the row and column indices of the element.
+     *
      * \param paths     Nx(N*k) matrix of shortest paths, where N is the number of nodes in the graph and k is
      *                  the number of nodes in the longest shortest path. Each row of the matrix contains the shortest
      *                  path between the node corresponding to the row index and all other nodes. Each path has k elements,
      *                  where the first element is the node corresponding to the row index and the last element is the node
      *                  corresponding to the column. Unless the path is the longest shortest path, the remaining elements are -1.
-     * \param tolerance A very small floating-point number (usually less than 1e-4) used in one of the algorithm steps to
-     *                  determine if a node belongs to the shortest path being calculated. If this value is too large,
-     *                  the shortest path returned may be incorrect, and if it is too small, the algorithm may never terminate.
-     *                  In all testing, 1e-5 has been a good value.
+     *
+     * \param maxPathLength The maximum number of nodes in a shortest
+     *                      allowed in a shortest path. The maximum
+     *                      number of edges allowed in a shortest path
+     *                      is equal to maxPathLength - 1.
      */
-    void hedetniemiShortestPathsGpu(
+    void hedetniemiAllShortestPathsGpu(
             CuArray<float>* A,
             CuArray<float>* H,
             CuArray<int>* paths,
-            float tolerance
+            float tolerance,
+            int maxPathLength
+    );
+
+    /*!
+     * \brief Compute the shortest paths and shortest path lengths
+     * between all pairs of nodes in a graph on the CPU.
+     *
+     * \param A         Adjacency matrix of the graph.
+     *
+     * \param H         NxN matrix of shortest path lengths, where N is the number of nodes in the graph.
+     *                  Each matrix element represents the shortest path length between the nodes corresponding
+     *                  to the row and column indices of the element.
+     *
+     * \param paths     Nx(N*k) matrix of shortest paths, where N is the number of nodes in the graph and k is
+     *                  the number of nodes in the longest shortest path. Each row of the matrix contains the shortest
+     *                  path between the node corresponding to the row index and all other nodes. Each path has k elements,
+     *                  where the first element is the node corresponding to the row index and the last element is the node
+     *                  corresponding to the column. Unless the path is the longest shortest path, the remaining elements are -1.
+     *
+     * \param maxPathLength The maximum number of nodes in a shortest
+     *                      allowed in a shortest path. The maximum
+     *                      number of edges allowed in a shortest path
+     *                      is equal to maxPathLength - 1.
+     */
+    void hedetniemiAllShortestPathsCpu(
+            CuArray<float>* A,
+            CuArray<float>* H,
+            CuArray<int>* paths,
+            float tolerance,
+            int maxPathLength
+    );
+
+    /*!
+     * \brief Compute the shortest path lengths between all pairs of nodes in a graph.
+     *
+     * \param A         Adjacency matrix of the graph.
+     *
+     * \param H         NxN matrix of shortest path lengths, where N is the number of nodes in the graph.
+     *                  Each matrix element represents the shortest path length between the nodes corresponding
+     *                  to the row and column indices of the element.
+     */
+    void hedetniemiAllShortestPathLengths(
+            CuArray<float> *A,
+            CuArray<float> *H,
+            int maxPathLength,
+            int platform
+    );
+
+    /*!
+     * \brief Compute the shortest path lengths between all pairs of nodes in a graph on the GPU.
+     *
+     * \param A         Adjacency matrix of the graph.
+     *
+     * \param H         NxN matrix of shortest path lengths, where N is the number of nodes in the graph.
+     *                  Each matrix element represents the shortest path length between the nodes corresponding
+     *                  to the row and column indices of the element.
+     */
+    void hedetniemiAllShortestPathLengthsGpu(
+            CuArray<float> *A,
+            CuArray<float> *H,
+            int maxPathLength
     );
 
     /*!
@@ -95,29 +160,21 @@ namespace netcalc {
     );
 
     /*!
-     * \brief Returns the number of nodes in the longest shortest path.
-     *
-     * \param paths Nx(N*k) matrix of shortest paths, where N is the number of nodes in the graph and k is
-     *              the number of nodes in the longest shortest path.
-     *
-     * \return The number of nodes in the longest shortest path.
-     */
-    int longestShortestPathNodeCount(
-            CuArray<int>* paths
-    );
-
-    /*!
      * \brief Returns the shortest path between node i and node j.
      *
      * \param paths     Nx(N*k) matrix of shortest paths, where N is the number of nodes in the graph and k is
      *                  the number of nodes in the longest shortest path.
+     * \param maxPathLength The maximum number of nodes in a shortest
+     *                      path, which is equal to the maximum number
+     *                      of edges allowed plus 1.
      * \param i         The index of the first node in the path.
      * \param j         The index of the last node in the path.
      */
-    void pathFromPathsCuArray(
+    void recoverSingleShortestPath(
             int** NUMPY_ARRAY,
             int** NUMPY_ARRAY_DIM1,
             CuArray<int>* paths,
+            int maxPathLength,
             int i,
             int j
     );

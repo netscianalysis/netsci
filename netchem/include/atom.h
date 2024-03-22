@@ -51,6 +51,8 @@ public:
      * Returns the atom index.
      *
      * \return The atom index.
+     *
+     * @PythonExample{NetChem_Atom_index.py}
      */
     int index() const;
 
@@ -60,6 +62,8 @@ public:
      * Returns the atom name.
      *
      * \return The atom name.
+     *
+     * @PythonExample{NetChem_Atom_name.py}
      */
     std::string name();
 
@@ -69,6 +73,8 @@ public:
      * Returns the atom element.
      *
      * \return The atom element.
+     *
+     * @PythonExample{NetChem_Atom_element.py}
      */
     std::string element();
 
@@ -78,6 +84,8 @@ public:
      * Returns the residue name.
      *
      * \return The residue name.
+     *
+     * @PythonExample{NetChem_Atom_residueName.py}
      */
     std::string residueName();
 
@@ -87,6 +95,8 @@ public:
      * Returns the residue ID.
      *
      * \return The residue ID.
+     *
+     * @PythonExample{NetChem_Atom_residueId.py}
      */
     int residueId() const;
 
@@ -96,6 +106,8 @@ public:
      * Returns the chain ID.
      *
      * \return The chain ID.
+     *
+     * @PythonExample{NetChem_Atom_chainId.py}
      */
     std::string chainId();
 
@@ -105,6 +117,8 @@ public:
      * Returns the segment ID.
      *
      * \return The segment ID.
+     *
+     * @PythonExample{NetChem_Atom_segmentId.py}
      */
     std::string segmentId();
 
@@ -114,6 +128,8 @@ public:
      * Returns the temperature factor.
      *
      * \return The temperature factor.
+     *
+     * @PythonExample{NetChem_Atom_temperatureFactor.py}
      */
     float temperatureFactor() const;
 
@@ -123,6 +139,8 @@ public:
      * Returns the occupancy.
      *
      * \return The occupancy.
+     *
+     * @PythonExample{NetChem_Atom_occupancy.py}
      */
     float occupancy() const;
 
@@ -132,6 +150,8 @@ public:
      * Returns the serial number, which is one greater than the atom index.
      *
      * \return The serial number.
+     *
+     * @PythonExample{NetChem_Atom_serial.py}
      */
     int serial() const;
 
@@ -142,6 +162,8 @@ public:
      * residue ID, chain ID, and segment ID.
      *
      * \return The atom tag.
+     *
+     * @PythonExample{NetChem_Atom_tag.py}
      */
     std::string tag();
 
@@ -151,6 +173,8 @@ public:
      * Returns the mass of the atom.
      *
      * \return The mass of the atom.
+     *
+     * @PythonExample{NetChem_Atom_mass.py}
      */
     float mass() const;
 

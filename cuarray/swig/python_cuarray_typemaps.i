@@ -14,9 +14,21 @@
 
 %extend CuArray{
     CuArrayRow<T> *__getitem__(int i) {
+        if (!$self->allocatedHost()) {
+            throw std::runtime_error("CuArray memory not allocated");
+        }
+        if (i < 0 || i >= $self->m()) {
+            throw std::out_of_range("CuArray index out of range");
+        }
         return new CuArrayRow<T>($self, i);
     }
     void __setitem__(int i, CuArrayRow<T> *cuArrayRow) {
+        if (!$self->allocatedHost()) {
+            throw std::runtime_error("CuArray memory not allocated");
+        }
+        if (i < 0 || i >= $self->m()) {
+            throw std::out_of_range("CuArray index out of range");
+        }
         for (int j = 0; j < cuArrayRow->n(); j++) {
             $self->set(cuArrayRow->operator[](j), i, j);
         }
@@ -28,9 +40,15 @@
 
 %extend CuArrayRow{
         T __getitem__(int i) {
+            if (i < 0 || i >= $self->n() || $self->n() == 0) {
+                throw std::out_of_range("CuArrayRow index out of range");
+            }
             return $self->operator[](i);
         }
         void __setitem__(int i, T value) {
+            if (i < 0 || i >= $self->n() || $self->n() == 0) {
+                throw std::out_of_range("CuArrayRow index out of range");
+            }
             $self->operator[](i) = value;
         }
         int __len__() {
@@ -38,6 +56,9 @@
         }
 
         std::string __repr__() {
+            if ($self->n() == 0) {
+                return "null";
+            }
             int isFloatingPoint =
                     std::to_string($self->operator[](0)).find(".")
                     != std::string::npos;
@@ -79,6 +100,9 @@
 
 %extend CuArray{
     std::string __repr__() {
+        if (!$self->allocatedHost()) {
+            return "null";
+        }
         int isFloatingPoint =
                 std::to_string($self->get(0, 0)).find(".")
                 != std::string::npos;

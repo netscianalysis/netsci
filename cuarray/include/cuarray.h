@@ -10,63 +10,84 @@
 
 typedef int CuArrayError;
 
+/*!
+ * @class CuArray
+ * @param T Data type of the array elements.
+ * @brief Manages CUDA-supported arrays, offering initialization,
+ * memory management, and data manipulation. Implemented as a template
+ * class in C++, with Python and Tcl wrapper interfaces. In Python and
+ * Tcl, use as <ElementType>CuArray (e.g., FloatCuArray, IntCuArray), as
+ * they don't support templates. Supports float and int types in Python
+ * and Tcl, and all numeric types in C++.
+ */
 template<typename T>
 class CuArray {
 public:
-    /**
-     * \brief Default constructor for CuArray.
-     *
-     * Constructs an empty CuArray object.
-     */
+    /*!
+ * @function{CuArray} @type{constructor}
+ * @brief Constructs an empty CuArray object.
+ *
+ * @CppExample{CuArray_CuArray.cpp}
+ *
+ * @PythonExample{CuArray___init__.py}
+ */
     CuArray();
 
-    /**
-     * \brief Initialize the CuArray with the specified dimensions.
-     *
-     * Initializes the CuArray with the specified dimensions, allocating memory on both the host and the device.
-     *
-     * \param m The number of rows.
-     * \param n The number of columns.
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{init} @type{CuArrayError}
+ * @brief Initializes CuArray with specified dimensions and allocates
+ * memory on host and device.
+ *
+ * @param m Number of rows.
+ * @param n Number of columns.
+ * @return CuArrayError indicating operation success or failure.
+ *
+ * @CppExample{CuArray_init1.cpp}
+ * @PythonExample{CuArray_init.py}
+ */
+
     CuArrayError init(
             int m,
             int n
     );
 
-    /**
-     * \brief Initialize the CuArray with the specified host data and dimensions.
-     *
-     * Initializes the CuArray with the specified host data and dimensions, allocating memory on both the host and the device.
-     * The data is shallow copied, meaning the ownership is not transferred.
-     *
-     * \param host Pointer to the input host data.
-     * \param m The number of rows.
-     * \param n The number of columns.
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+    /*!
+ * @function{init} @type{CuArrayError}
+ * @brief Initializes CuArray with specified host data and dimensions, performing a shallow copy.
+ * Allocates memory on both the host and the device. The data is shallow copied, so the ownership remains unchanged.
+ *
+ * @param host Pointer to input host data.
+ * @param m Number of rows.
+ * @param n Number of columns.
+ * @return CuArrayError indicating operation success or failure.
+ *
+ * @CppExample{CuArray_init2.cpp}
+ */
+
+
     CuArrayError init(
             T *host,
             int m,
             int n
     );
 
-    /**
-     * \brief Shallow copy data from another CuArray.
-     *
-     * Shallow copies the host data from the provided CuArray. All data
-     * in the range of rows, specified by the 'start' and 'end'
-     * parameters, is copied. The range is inclusive. This CuArray
-     * does not own the data, so the data can only be deallocated by
-     * deleting the source CuArray.
-     *
-     * \param cuArray Pointer to the source CuArray.
-     * \param start The index of the first row to copy.
-     * \param end The index of the last row to copy.
-     * \param m The number of rows in this CuArray.
-     * \param n The number of columns in this CuArray.
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+    /*!
+ * @function{fromCuArrayShallowCopy} @type{CuArrayError}
+ * @brief Performs a shallow copy of data from another CuArray within a specified row range.
+ * Copies the host data from the given CuArray, within the inclusive range
+ * specified by 'start' and 'end'. This CuArray does not own the copied data,
+ * and deallocation is handled by the source CuArray.
+ *
+ * @param cuArray Pointer to the source CuArray.
+ * @param start Index of the first row to copy.
+ * @param end Index of the last row to copy.
+ * @param m Number of rows in this CuArray.
+ * @param n Number of columns in this CuArray.
+ * @return CuArrayError indicating the operation's success or failure.
+ *
+ * @CppExample{CuArray_fromCuArrayShallowCopy.cpp}
+ */
+
     CuArrayError fromCuArrayShallowCopy(
             CuArray<T> *cuArray,
             int start,
@@ -75,21 +96,23 @@ public:
             int n
     );
 
-    /**
-     * \brief Deep copy data from another CuArray.
-     *
-     * Deep copies the host data from the provided CuArray. All data in
-     * the range of rows, specified by the 'start' and 'end'
-     * parameters, is copied.  The range is inclusive.
-     * Memory is allocated on the host CuArray.
-     *
-     * \param cuArray Pointer to the source CuArray.
-     * \param start The index of the first row to copy.
-     * \param end The index of the last row to copy.
-     * \param m The number of rows in this CuArray.
-     * \param n The number of columns in this CuArray.
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+    /*!
+   * @function{fromCuArrayDeepCopy} @type{CuArrayError}
+   * @brief Performs a deep copy of data from another CuArray within a specified row range.
+   * Copies the host data from the given CuArray, including all data within the inclusive range defined
+   * by 'start' and 'end'. Memory for the copied data is allocated in this CuArray's host memory.
+   *
+   * @param cuArray Pointer to the source CuArray.
+   * @param start Index of the first row to copy.
+   * @param end Index of the last row to copy.
+   * @param m Number of rows in this CuArray.
+   * @param n Number of columns in this CuArray.
+   * @return CuArrayError indicating the operation's success or failure.
+   *
+   * @CppExample{CuArray_fromCuArrayDeepCopy.cpp}
+   * @PythonExample{CuArray_fromCuArray.py}
+   */
+
     CuArrayError fromCuArrayDeepCopy(
             CuArray<T> *cuArray,
             int start,
@@ -98,283 +121,340 @@ public:
             int n
     );
 
-    /**
-     * \brief Destructor for CuArray.
-     *
-     * Deallocates the memory on both the host and the device.
-     */
+    /*!
+   * @brief Destructor for CuArray.
+   * Deallocates memory on both the host and the device.
+   */
+
     ~CuArray();
 
-    /**
-     * \brief Get the number of columns in the CuArray.
-     *
-     * Returns the number of columns in the CuArray.
-     *
-     * \return The number of columns.
-     */
+    /*!
+  * @function{n} @type{int}
+  * @brief Returns the number of columns in the CuArray.
+  *
+  * @return Number of columns.
+  *
+  * @CppExample{CuArray_n.cpp}
+
+  * @PythonExample{CuArray_n.py}
+  */
     int n() const;
 
-    /**
-     * \brief Get the number of rows in the CuArray.
-     *
-     * Returns the number of rows in the CuArray.
-     *
-     * \return The number of rows.
-     */
+/*!
+ * @function{m} @type{int}
+ * @brief Returns the number of rows in the CuArray.
+ *
+ * @return Number of rows.
+ *
+ * @CppExample{CuArray_m.cpp}
+
+ * @PythonExample{CuArray_m.py}
+ */
     int m() const;
 
-    /**
-     * \brief Get the total number of elements in the CuArray.
-     *
-     * Returns the total number of elements in the CuArray, which is equal to the number of rows multiplied by the number of columns.
-     *
-     * \return The total number of elements.
-     */
+/*!
+ * @function{size} @type{int}
+ * @brief Returns the total number of elements in the CuArray.
+ *
+ * @return Total number of elements (rows multiplied by columns).
+ *
+ * @CppExample{CuArray_size.cpp}
+
+ * @PythonExample{CuArray_size.py}
+ */
     int size() const;
 
-    /**
-     * \brief Get the total size in bytes of the CuArray data.
-     *
-     * Returns the total size in bytes of the CuArray data, including both the host and device memory.
-     *
-     * \return The size in bytes.
-     */
+
+    /*!
+   * @function{bytes} @type{size_t}
+   * @brief Returns the total size in bytes of the CuArray data.
+   *
+   * Includes both the host and device memory.
+   *
+   * @return Size in bytes.
+   *
+   * @CppExample{CuArray_bytes.cpp}
+
+   * @PythonExample{CuArray_bytes.py}
+   */
     size_t bytes() const;
 
-    /**
-     * \brief Get a reference to the host data.
-     *
-     * Returns a reference to the host data.
-     *
-     * \return A reference to the host data.
-     */
+/*!
+ * @function{host} @type{T *&}
+ * @brief Returns a reference to the host data.
+ *
+ * @return Reference to the host data.
+ *
+ * @CppExample{CuArray_host.cpp}
+ */
     T *&host();
 
-    /**
-     * \brief Get a reference to the device data.
-     *
-     * Returns a reference to the device data.
-     *
-     * \return A reference to the device data.
-     */
+/*!
+ * @function{device} @type{T}
+ * @brief Returns a reference to the device data.
+ *
+ * @return Reference to the device data.
+ *
+ * @CppExample{CuArray_device.cpp}
+ */
     T *&device();
 
-    /**
-     * \brief Allocate memory for the host data.
-     *
-     * Allocates memory for the host data.
-     *
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+
+    /*!
+   * @function{allocateHost} @type{CuArrayError}
+   * @brief Allocates memory for the host data.
+   *
+   * @return CuArrayError indicating success or failure of the operation.
+   *
+   * @CppExample{CuArray_allocateHost.cpp}
+   */
     CuArrayError allocateHost();
 
-    /**
-     * \brief Allocate memory for the device data.
-     *
-     * Allocates memory for the device data.
-     *
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{allocateDevice} @type{CuArrayError}
+ * @brief Allocates memory for the device data.
+ *
+ * @return CuArrayError indicating success or failure of the operation.
+ *
+ * @CppExample{CuArray_allocateDevice.cpp}
+ */
     CuArrayError allocateDevice();
 
-    /**
-     * \brief Check if memory is allocated for the host data.
-     *
-     * Checks if memory is allocated for the host data.
-     *
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{allocatedHost} @type{CuArrayError}
+ * @brief Checks if memory is allocated for the host data.
+ *
+ * @return CuArrayError indicating success or failure of the operation.
+ *
+ * @CppExample{CuArray_allocatedHost.cpp}
+ */
     CuArrayError allocatedHost() const;
 
-    /**
-     * \brief Check if memory is allocated for the device data.
-     *
-     * Checks if memory is allocated for the device data.
-     *
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{allocatedDevice} @type{CuArrayError}
+ * @brief Checks if memory is allocated for the device data.
+ *
+ * @return CuArrayError indicating success or failure of the operation.
+ *
+ * @CppExample{CuArray_allocatedDevice.cpp}
+ */
     CuArrayError allocatedDevice() const;
 
-    /**
-     * \brief Copy data from the host to the device.
-     *
-     * Copies the data from the host to the device.
-     *
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{toDevice} @type{CuArrayError}
+ * @brief Copies data from the host to the device.
+ *
+ * @return CuArrayError indicating success or failure of the operation.
+ *
+ * @CppExample{CuArray_toDevice.cpp}
+ */
     CuArrayError toDevice();
 
-    /**
-     * \brief Copy data from the device to the host.
-     *
-     * Copies the data from the device to the host.
-     *
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+
+    /*!
+   * @function{toHost} @type{CuArrayError}
+   * @brief Copies data from the device to the host.
+   *
+   * @return CuArrayError indicating success or failure of the operation.
+   *
+   * @CppExample{CuArray_toHost.cpp}
+   */
     CuArrayError toHost();
 
-    /**
-     * \brief Deallocate memory for the host data.
-     *
-     * Deallocates the memory for the host data.
-     *
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{deallocateHost} @type{CuArrayError}
+ * @brief Deallocates memory for the host data.
+ *
+ * @return CuArrayError indicating success or failure of the operation.
+ *
+ * @CppExample{CuArray_deallocateHost.cpp}
+ */
     CuArrayError deallocateHost();
 
-    /**
-     * \brief Deallocate memory for the device data.
-     *
-     * Deallocates the memory for the device data.
-     *
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{deallocateDevice} @type{CuArrayError}
+ * @brief Deallocates memory for the device data.
+ *
+ * @return CuArrayError indicating success or failure of the operation.
+ *
+ * @CppExample{CuArray_deallocateDevice.cpp}
+ */
     CuArrayError deallocateDevice();
 
-    /**
-     * \brief Copy data from a NumPy array to the CuArray.
-     *
-     * Copies data from the specified NumPy array to the CuArray.
-     *
-     * \param NUMPY_ARRAY    Pointer to the input NumPy array.
-     * \param NUMPY_ARRAY_DIM1    Pointer to the dimension 1 of the NumPy array.
-     * \param NUMPY_ARRAY_DIM2    Pointer to the dimension 2 of the NumPy array.
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{fromNumpy} @type{CuArrayError}
+ * @brief Copies data from a NumPy array to the CuArray.
+ *
+ * @param NUMPY_ARRAY Pointer to the input NumPy array.
+ * @param NUMPY_ARRAY_DIM1 Dimension 1 of the NumPy array.
+ * @param NUMPY_ARRAY_DIM2 Dimension 2 of the NumPy array.
+ * @return CuArrayError indicating success or failure of the operation.
+ *
+ * @CppExample{CuArray_fromNumpy2.cpp}
+ *
+ * @PythonExample{CuArray_fromNumpy2D.py}
+ */
     CuArrayError fromNumpy(
             T *NUMPY_ARRAY,
             int NUMPY_ARRAY_DIM1,
             int NUMPY_ARRAY_DIM2
     );
 
-    /**
-     * \brief Copy data from a NumPy array to the CuArray.
-     *
-     * Copies data from the specified NumPy array to the CuArray.
-     *
-     * \param NUMPY_ARRAY    Pointer to the input NumPy array.
-     * \param NUMPY_ARRAY_DIM1    Pointer to the dimension 1 of the NumPy array.
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{fromNumpy} @type{CuArrayError}
+ * @brief Copies data from a NumPy array to the CuArray.
+ *
+ * @param NUMPY_ARRAY Pointer to input NumPy array.
+ * @param NUMPY_ARRAY_DIM1 Dimension 1 of the NumPy array.
+ * @return CuArrayError indicating success or failure of the operation.
+ *
+ * @CppExample{CuArray_fromNumpy1.cpp}
+ *
+ * @PythonExample{CuArray_fromNumpy1D.py}
+ */
     CuArrayError fromNumpy(
             T *NUMPY_ARRAY,
             int NUMPY_ARRAY_DIM1
     );
 
-    /**
-     * \brief Copy data from the CuArray to a NumPy array.
-     *
-     * Copies data from the CuArray to the specified NumPy array.
-     *
-     * \param NUMPY_ARRAY    Pointer to the output NumPy array.
-     * \param NUMPY_ARRAY_DIM1    Pointer to the dimension 1 of the NumPy array.
-     * \param NUMPY_ARRAY_DIM2    Pointer to the dimension 2 of the NumPy array.
-     */
+/*!
+ * @function{toNumpy} @type{void}
+ * @brief Copies data from the CuArray to a NumPy array.
+ *
+ * @param NUMPY_ARRAY Pointer to output NumPy array.
+ * @param NUMPY_ARRAY_DIM1 Dimension 1 of the NumPy array.
+ * @param NUMPY_ARRAY_DIM2 Dimension 2 of the NumPy array.
+ *
+ * @CppExample{CuArray_toNumpy2.cpp}
+ *
+ * @PythonExample{CuArray_toNumpy2D.py}
+ */
     void toNumpy(
             T **NUMPY_ARRAY,
             int **NUMPY_ARRAY_DIM1,
             int **NUMPY_ARRAY_DIM2
     );
 
-    /**
-     * \brief Copy data from the CuArray to a NumPy array.
-     *
-     * Copies data from the CuArray to the specified NumPy array.
-     *
-     * \param NUMPY_ARRAY    Pointer to the output NumPy array.
-     * \param NUMPY_ARRAY_DIM1    Pointer to the dimension 1 of the NumPy array.
-     */
+/*!
+ * @function{toNumpy} @type{void}
+ * @brief Copies data from the CuArray to a NumPy array.
+ *
+ * @param NUMPY_ARRAY Pointer to output NumPy array.
+ * @param NUMPY_ARRAY_DIM1 Dimension 1 of the NumPy array.
+ *
+ * @CppExample{CuArray_toNumpy1.cpp}
+ *
+ * @PythonExample{CuArray_toNumpy1D.py}
+ */
     void toNumpy(
             T **NUMPY_ARRAY,
             int **NUMPY_ARRAY_DIM1
     );
 
-    /**
-     * \brief Get the value at the specified position in the CuArray.
-     *
-     * Returns the value at the specified position (i, j) in the CuArray.
-     *
-     * \param i The row index.
-     * \param j The column index.
-     * \return The value at the specified position.
-     */
+/*!
+ * @function{get} @type{T}
+ * @brief Returns the value at a specified position in the CuArray.
+ *
+ * @param i Row index.
+ * @param j Column index.
+ * @return Value at the specified position.
+ *
+ * @CppExample{CuArray_get.cpp}
+ * @PythonExample{CuArray_get.py}
+ */
     T get(
             int i,
             int j
     ) const;
 
-    /**
-     * \brief Set the value at the specified position in the CuArray.
-     *
-     * Sets the value at the specified position (i, j) in the CuArray to the given value.
-     *
-     * \param value The value to set.
-     * \param i The row index.
-     * \param j The column index.
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+
+    /*!
+  * @function{set} @type{CuArrayError}
+  * @brief Sets a value at a specified position in the CuArray.
+  *
+  * @param value Value to set.
+  * @param i Row index.
+  * @param j Column index.
+  * @return CuArrayError indicating success or failure of the operation.
+  *
+  * @CppExample{CuArray_set.cpp}
+  * @PythonExample{CuArray_set.py}
+  */
     CuArrayError set(
             T value,
             int i,
             int j
     );
 
-    /**
-     * \brief Load the CuArray from a file.
-     *
-     * Loads the CuArray data from the specified file.
-     *
-     * \param fname The name of the file to load.
-     * \return The CuArrayError indicating the success or failure of the operation.
-     */
+/*!
+ * @function{load} @type{CuArrayError}
+ * @brief Loads CuArray data from a specified file.
+ *
+ * @param fname File name to load from.
+ * @return CuArrayError indicating success or failure of the operation.
+ *
+ * @CppExample{CuArray_load.cpp}
+ * @PythonExample{CuArray_load.py}
+ */
     CuArrayError load(const std::string &fname);
 
-    /**
-     * \brief Save the CuArray to a file.
-     *
-     * Saves the CuArray data to the specified file.
-     *
-     * \param fname The name of the file to save.
-     */
+/*!
+ * @function{save} @type{void}
+ * @brief Saves CuArray data to a specified file.
+ *
+ * @param fname File name to save to.
+ *
+ * @CppExample{CuArray_save.cpp}
+ * @PythonExample{CuArray_save.py}
+ */
     void save(const std::string &fname);
 
-    /**
-     * \brief Sort the CuArray based on the specified column.
-     *
-     * Sorts the CuArray in ascending order based on the values in the specified column.
-     *
-     * \param i The column index to sort.
-     * \return A pointer to a new CuArray containing the sorted data.
-     */
+/*!
+ * @function{sort} @type{CuArray<T>}
+ * @brief Sorts CuArray based on the values in a specified row.
+ *
+ * @param i Index of the row to sort by.
+ * @return Pointer to a new CuArray with sorted data.
+ *
+ * @CppExample{CuArray_sort.cpp}
+ * @PythonExample{CuArray_sort.py}
+ */
     CuArray<T> *sort(int i);
 
-    /**
-     * \brief Get a reference to the element at the specified index in the CuArray.
-     *
-     * Returns a reference to the element at the specified index in the CuArray.
-     *
-     * \param i The index of the element.
-     * \return A reference to the element at the specified index.
-     */
+/*!
+ * @function{operator[]} @type{T &}
+ * @brief Returns a reference to the element at a specified index in the CuArray.
+ *
+ * @param i Index of the element.
+ * @return Reference to the element at the specified index.
+ *
+ * @CppExample{CuArray_subscriptOperator.cpp}
+ * @PythonExample{CuArray___getitem__.py}
+ */
     T &operator[](int i) const;
 
-    /**
-     * \brief Get the owner of the CuArray.
-     *
-     * Returns the owner of the CuArray, which indicates whether the CuArray is responsible for memory deallocation.
-     *
-     * \return The owner of the CuArray.
-     */
+/*!
+ * @function{owner} @type{int}
+ * @brief Returns the owner status of the CuArray.
+ * Indicates whether the CuArray is responsible for memory deallocation.
+ *
+ * @return Owner status of the CuArray.
+ *
+ * @CppExample{CuArray_owner.cpp}
+ */
     int owner() const;
 
-    /**
-     * \brief Perform an argsort on the specified column of the CuArray.
-     *
-     * Performs an argsort on the specified column of the CuArray and returns a new CuArray that contains the sorted indices.
-     *
-     * \param i The column index to argsort.
-     * \return A pointer to a new CuArray containing the sorted indices.
-     */
+/*!
+ * @function{argsort} @type{CuArray}
+ * @brief Performs an argsort on a specified row of the CuArray.
+ * Returns a new CuArray containing sorted indices.
+ *
+ * @param i Column index to argsort.
+ * @return Pointer to a new CuArray with sorted indices.
+ *
+ * @CppExample{CuArray_argsort.cpp}
+ * @PythonExample{CuArray_argsort.py}
+ */
     CuArray<int> *argsort(int i);
 
 private:
