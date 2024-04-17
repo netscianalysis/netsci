@@ -1,0 +1,29 @@
+Run some example calculations with Netsci.
+
+Be sure that Netsci is installed and the correct Conda environment
+is loaded:
+
+conda activate netsci
+
+# Independent Gaussian Data
+
+As a very simple example of how Netsci can be used to find the mutual
+information (MI) between two sets of data, run the following 
+script to generate random data sampled from independent Gaussian 
+distributions:
+
+```
+python make_two_cols_indep_data.py
+```
+
+That will create a file named "sample.dat", which has two columns, 
+representing each independent distribution, and 100 rows, which are
+instances sampled from the distributions. The mutual information
+of each can be computed by running:
+
+```
+python find_mutual_inf_sample.py
+```
+
+The mutual information between each distribution will be printed to
+the terminal.

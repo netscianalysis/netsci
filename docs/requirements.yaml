@@ -1,0 +1,14 @@
+name: docs
+channels:
+  - defaults
+dependencies:
+    # Base depends
+  - python=3.12
+  - pip
+  - cython
+
+    # Pip-only installs
+  - pip:
+    - sphinx-autoapi
+    - sphinx-rtd-theme
+
