@@ -6,7 +6,8 @@
 NetSci is a specialized toolkit designed for advanced network analysis in computational sciences. Utilizing the
 capabilities of modern GPUs, it offers a powerful and efficient solution for processing computationally demanding
 network analysis metrics while delivering state-of-the-art performance.
-For **API documentation** and a general **overview** of the project, please visit the [NetSci Documentation](https://netscianalysis.github.io).
+For detailed installation **installation** instructions and **tutorials**, please visit [NetSci User Documentation](https://netsci.readthedocs.io/)
+For **API documentation** and a general **overview** of C++/CUDA portions of the project, please visit the [NetSci Developer Documentation](https://netscianalysis.github.io).
 
 # Installation
 
@@ -119,9 +120,11 @@ cd ${NETSCI_ROOT}
 pytest
 ```
 
-# Examples
+# Examples and Tutorials
 
-Examples may be found in the examples/ subdirectory
+Examples may be found in the examples/ subdirectory.
+
+Detailed tutorials can be found at [NetSci User Documentation](https://netsci.readthedocs.io/)
 
 # Citing NetSci
 
