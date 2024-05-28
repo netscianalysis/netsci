@@ -130,7 +130,7 @@ Detailed tutorials can be found at [NetSci User Documentation](https://netsci.re
 
 If you use NetSci, please cite the following paper:
 
-* PAPER CITATION HERE
+1. Stokely A, Votapka L, Hock M, Teitgen A, McCammon JA, McCullough A, et al. NetSci: A Library for High Performance Biomolecular Simulation Network Analysis Computation. ChemRxiv. 2024; doi:10.26434/chemrxiv-2024-fjrpp  This content is a preprint and has not been peer-reviewed.
 
 # Copyright
 
