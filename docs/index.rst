@@ -19,7 +19,7 @@ Cite NetSci
 
 If you wish to cite NetSci, please cite the following paper:
 
-* PAPER HERE
+1. Stokely A, Votapka L, Hock M, Teitgen A, McCammon JA, McCullough A, et al. NetSci: A Library for High Performance Biomolecular Simulation Network Analysis Computation. ChemRxiv. 2024; doi:10.26434/chemrxiv-2024-fjrpp  This content is a preprint and has not been peer-reviewed.
 
 
 Getting Involved
