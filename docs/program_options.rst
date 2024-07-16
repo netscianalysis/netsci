@@ -47,7 +47,7 @@ xd
   Must be of type int, and only xd=2 is currently supported in Netsci.
   
 d
-  Dimensionality of the data. Since these are 1D Gaussians, the dimensionality is equal to
+  Dimensionality of the data. In the case of 1D Gaussians, the dimensionality is equal to
   one. In contrast, for example, the positions of atoms in a protein would be three-dimensional
   data.
   Must be of type int, greater than zero.

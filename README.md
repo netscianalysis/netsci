@@ -6,7 +6,7 @@
 NetSci is a specialized toolkit designed for advanced network analysis in computational sciences. Utilizing the
 capabilities of modern GPUs, it offers a powerful and efficient solution for processing computationally demanding
 network analysis metrics while delivering state-of-the-art performance.
-For detailed installation **installation** instructions and **tutorials**, please visit [NetSci User Documentation](https://netsci.readthedocs.io/)
+For detailed **installation** instructions and **tutorials**, please visit [NetSci User Documentation](https://netsci.readthedocs.io/)
 For **API documentation** and a general **overview** of C++/CUDA portions of the project, please visit the [NetSci Developer Documentation](https://netscianalysis.github.io).
 
 # Installation
@@ -130,7 +130,7 @@ Detailed tutorials can be found at [NetSci User Documentation](https://netsci.re
 
 If you use NetSci, please cite the following paper:
 
-* PAPER CITATION HERE
+* Stokely A, Votapka L, Hock M, Teitgen A, McCammon JA, McCullough A, Amaro R, NetSci: A Library for High Performance Biomolecular Simulation Network Analysis Computation. ChemRxiv. 2024; doi:10.26434/chemrxiv-2024-fjrpp This content is a preprint and has not been peer-reviewed.
 
 # Copyright
 
