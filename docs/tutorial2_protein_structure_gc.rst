@@ -4,7 +4,9 @@ Tutorial 2: Generalized Correlation of a Protein Simulation
 In this tutorial, we will analyze a short trajectory of a 
 protein simulation in order to compute the generalized correlation
 of its motion. We will also look at the importance of doing
-a local alignment.
+a local alignment. A Jupyter notebook of
+this tutorial can be found in the repository 
+https://github.com/netscianalysis/ in the tutorials/ folder.
 
 Make sure to activate the NetSci conda environment::
 

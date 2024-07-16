@@ -3,7 +3,9 @@ Tutorial 1: Simple Gaussian Mutual Information
 
 In this tutorial, we will generate some random data from a
 Gaussian distribution to see how to compute the mutual
-information (MI) for a set of data.
+information (MI) for a set of data. A Jupyter notebook of
+this tutorial can be found in the repository 
+https://github.com/netscianalysis/ in the tutorials/ folder.
 
 Make sure to activate the NetSci conda environment::
 
@@ -202,18 +204,12 @@ This time, when one runs the MI calculation, the predicted MI is much larger::
     
 This is due to the large covariance value between the two Gaussian distributions.
 
-..
-    Calculations on Select Parts of the Data
-    ----------------------------------------
-    In the previous examples, we computed the MI for four pairs of distributions:
-    1. The first Gaussian distribution to itself
-    2. The first Gaussian distribution to the second Gaussian distribution
-    3. The second Gaussian distribution to the first Gaussian distribution (same as the previous point)
-    4. The second Gaussian distribution to itself.
-    These were a lot of unnecessary calculations, which is not a big deal for the GPU because
-    of the parallelism, but for larger datasets, we may want to be more selective with which
-    pairs of distributions to compute. Let us compute only the MI for the following pair:
-    * The first Gaussian distribution to the second Gaussian distribution
-    To do this, we modify the "ab" matrix. The following code represents a modification to do this::
+In Closing
+----------
+
+This tutorial demonstrates the MI calculation on a set of data that was
+generated artificially by sampling from a Gaussian distribution. One could
+repeat the same MI analysis on data that was generated from any other source
+and benefit from the large speedup enabled by GPU acceleration.
 
 

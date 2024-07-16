@@ -124,7 +124,9 @@ pytest
 
 Examples may be found in the examples/ subdirectory.
 
-Detailed tutorials can be found at [NetSci User Documentation](https://netsci.readthedocs.io/)
+Detailed tutorials can be found at [NetSci User Documentation](https://netsci.readthedocs.io/).
+
+Jupyter notebooks of tutorials can be found in the tutorials/ subdirectory.
 
 # Citing NetSci
 
