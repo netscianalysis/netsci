@@ -9,7 +9,8 @@ NetSci: A Toolkit for High Performance Scientific Network Analysis Computation
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
-
+   
+   introduction
    installation
    program_options
    tutorial
