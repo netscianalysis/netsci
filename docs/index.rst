@@ -9,7 +9,8 @@ NetSci: A Toolkit for High Performance Scientific Network Analysis Computation
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
-
+   
+   introduction
    installation
    program_options
    tutorial
@@ -19,8 +20,7 @@ Cite NetSci
 
 If you wish to cite NetSci, please cite the following paper:
 
-1. Stokely A, Votapka L, Hock M, Teitgen A, McCammon JA, McCullough A, et al. NetSci: A Library for High Performance Biomolecular Simulation Network Analysis Computation. ChemRxiv. 2024; doi:10.26434/chemrxiv-2024-fjrpp  This content is a preprint and has not been peer-reviewed.
-
+* Stokely A, Votapka L, Hock M, Teitgen A, McCammon JA, McCullough A, Amaro R, NetSci: A Library for High Performance Biomolecular Simulation Network Analysis Computation. ChemRxiv. 2024; doi:10.26434/chemrxiv-2024-fjrpp This content is a preprint and has not been peer-reviewed.
 
 Getting Involved
 ================

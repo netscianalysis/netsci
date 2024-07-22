@@ -4,7 +4,9 @@ Tutorial 2: Generalized Correlation of a Protein Simulation
 In this tutorial, we will analyze a short trajectory of a 
 protein simulation in order to compute the generalized correlation
 of its motion. We will also look at the importance of doing
-a local alignment.
+a local alignment. A Jupyter notebook of
+this tutorial can be found in the repository 
+https://github.com/netscianalysis/ in the tutorials/ folder.
 
 Make sure to activate the NetSci conda environment::
 
@@ -103,8 +105,15 @@ on this trajectory::
     print(f"Total time: {time.time()-starttime:.3f} s.")
 
 This will generate and save a N by N array of correlation values to the file
-named 'proteinG_corr_matrix.txt'. The results can be visualized with the
-following script::
+named 'proteinG_corr_matrix.txt'. 
+
+.. note::
+  You will need to install **matplotlib** to run the following
+  script. The easiest way to do this within the **netsci** 
+  conda environment is to run :code:`pip install matplotlib`. More
+  instructions can be found at https://matplotlib.org/.
+
+The results can be visualized with the following script::
 
     import numpy as np
     import matplotlib.pyplot as plt
@@ -148,7 +157,15 @@ for larger proteins, will prevent spurious correlations from appearing when glob
 motions occur due to the RMSD alignment.
 
 The following Python script is similar to the previous one, with some changes in how
-the data inputs to the generalized correlation function are defined::
+the data inputs to the generalized correlation function are defined.
+
+.. note::
+  You will need to install **mdtraj** to run the following
+  script. The easiest way to do this within the **netsci** 
+  conda environment is to run :code:`pip install mdtraj`. More
+  instructions can be found at https://www.mdtraj.org.
+
+Here is the script::
 
     import time
 
