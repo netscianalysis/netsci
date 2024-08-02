@@ -27,3 +27,10 @@ python find_mutual_inf_sample.py
 
 The mutual information between each distribution will be printed to
 the terminal.
+
+One may also estimate the error margins for a MI calculation by using
+bootstrapping. An example is provided by running:
+
+```
+python bootstrap_sample.py
+```
