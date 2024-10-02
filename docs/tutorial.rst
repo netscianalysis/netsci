@@ -12,3 +12,4 @@ It is assumed that you have completed the installation and tests outlined in the
 
    tutorial1_simple_gaussian_mi
    tutorial2_protein_structure_gc
+   tutorial3_bootstrapping
