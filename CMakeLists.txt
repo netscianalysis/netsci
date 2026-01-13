@@ -51,7 +51,7 @@ IF (${BUILD_NETSCI})
             ${Python3_NumPy_INCLUDE_DIRS}
             ${CONDA_DIR}/include
             ${CMAKE_SOURCE_DIR}/cnpy/include
-            ${CMAKE_SOURCE_DIR}/netcalc/include
+            ${CMAKE_SOURCE_DIR}/netcalc/src
             ${CMAKE_SOURCE_DIR}/netchem/include
             ${CMAKE_SOURCE_DIR}/netchem/include/json/include
             ${CMAKE_SOURCE_DIR}/netchem/include
@@ -200,9 +200,9 @@ IF (${GENERATE_DOCS})
     LIST(APPEND NETSCI_DOCUMENTATION_INPUT_FILES
             ${CMAKE_SOURCE_DIR}/doxygen/index.h
             ${CMAKE_SOURCE_DIR}/cuarray/include/cuarray.h
-            ${CMAKE_SOURCE_DIR}/netcalc/include/mutual_information.h
-            ${CMAKE_SOURCE_DIR}/netcalc/include/generalized_correlation.h
-            ${CMAKE_SOURCE_DIR}/netcalc/include/hedetniemi.h
+            ${CMAKE_SOURCE_DIR}/netcalc/src/mutual_information.h
+            ${CMAKE_SOURCE_DIR}/netcalc/src/generalized_correlation.h
+            ${CMAKE_SOURCE_DIR}/netcalc/src/hedetniemi.h
             ${CMAKE_SOURCE_DIR}/netchem/include/network.h
             ${CMAKE_SOURCE_DIR}/netchem/include/node.h
             ${CMAKE_SOURCE_DIR}/netchem/include/atom.h
