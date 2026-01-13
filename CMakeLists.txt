@@ -6,16 +6,11 @@ SET(CMAKE_BUILD_TYPE Release)
 #Absolute path to conda environment
 SET(CONDA_DIR "" CACHE PATH "Path to conda environment")
 
-SET(VMD_LIB_DIR "" CACHE PATH "Path to VMD lib directory")
-
-SET(CREATE_VMD_TCL_PACKAGE OFF CACHE BOOL "If ON, the CuArray TCL library is added to VMD's tcl package list.")
-
 SET(CUDA_ARCHITECTURE "52" CACHE STRING "CUDA architecture to compile for. Set this equal to a valid CUDA architecture less than or equal to 10X the compute capability of your GPU.")
 
 SET(BUILD_NETSCI ON CACHE BOOL "Build all NetSci toolkit libraries.")
 
 SET(BUILD_PYTHON_BINDINGS ON CACHE BOOL "Build python bindings for cuarray, netcalc, and netchem")
-SET(BUILD_TCL_BINDINGS OFF CACHE BOOL "Build tcl bindings for cuarray")
 
 SET(BUILD_SAMPLES ON CACHE BOOL "Compiles examples for CuArray, NetCalc, and NetChem")
 
@@ -85,12 +80,6 @@ SET(
 #Libraries the python cuarray swig module is linked against
 SET(
         CUARRAY_PYTHON_LINK_LIBRARIES
-        "${CUARRAY_LINK_LIBRARIES}"
-        cuarray
-        )
-#Libraries the tcl cuarray swig module is linked against
-SET(
-        CUARRAY_TCL_LINK_LIBRARIES
         "${CUARRAY_LINK_LIBRARIES}"
         cuarray
         )
