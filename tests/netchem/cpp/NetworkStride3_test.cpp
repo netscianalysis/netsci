@@ -1,69 +1,42 @@
-//
-// Created by andy on 4/5/23.
-//
-#include <gtest/gtest.h>
+#include <ut.hpp>
 #include <cmath>
+
 #include "network.h"
 
-class NetworkTest : public ::testing::Test {
-protected:
-    void SetUp() override {
+using namespace boost::ut;
 
+// Replacement for the Google Test fixture
+struct NetworkStride3Context {
+    NetworkStride3Context() {
         networkStride3.init(
-                "data/test.dcd",
-                "data/test.pdb",
-                0,
-                9,
-                3
+            "data/test.dcd",
+            "data/test.pdb",
+            0,
+            9,
+            3
         );
     }
 
     Network networkStride3;
-
 };
 
-TEST_F(
-        NetworkTest,
-        NetworkStride3_numFrames
-) {
-    EXPECT_EQ(
-            4,
-            networkStride3.numFrames()
-    );
+int main() {
+
+    test("NetworkStride3_numFrames") = [] {
+        NetworkStride3Context ctx;
+        expect(ctx.networkStride3.numFrames() == 4);
+    };
+
+    test("NetworkStride3_nodeCoordinates_m") = [] {
+        NetworkStride3Context ctx;
+        expect(ctx.networkStride3.nodeCoordinates()->m() == 290);
+    };
+
+    test("NetworkStride3_nodeCoordinates_n") = [] {
+        NetworkStride3Context ctx;
+        expect(ctx.networkStride3.nodeCoordinates()->n() == 12);
+    };
+
+    return 0;
 }
-
-TEST_F(
-        NetworkTest,
-        NetworkStride3_nodeCoordinates_m
-) {
-    EXPECT_EQ(
-            290,
-            networkStride3.nodeCoordinates()->m()
-    );
-}
-
-TEST_F(
-        NetworkTest,
-        NetworkStride3_nodeCoordinates_n
-) {
-    EXPECT_EQ(
-            9,
-            networkStride3.nodeCoordinates()->n()
-    );
-}
-
-int main(
-        int argc,
-        char **argv
-) {
-    ::testing::InitGoogleTest(&argc,
-                              argv);
-    return RUN_ALL_TESTS();
-}
-
-
-
-
-
-
 
