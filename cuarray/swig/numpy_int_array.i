@@ -70,7 +70,7 @@ PyArray_SetBaseObject(array, cap
 );
 $result = SWIG_Python_AppendOutput(
         $result,
-        obj
+        obj, 1
 );
 free(*$2);
 }
@@ -112,7 +112,7 @@ PyArray_SetBaseObject(array, cap
 );
 $result = SWIG_Python_AppendOutput(
         $result,
-        obj
+        obj, 1
 );
 free(*$2);
 free(*$3);
@@ -165,7 +165,7 @@ PyArray_SetBaseObject(array, cap
 );
 $result = SWIG_Python_AppendOutput(
         $result,
-        obj
+        obj, 1
 );
 free(*$2);
 }
@@ -207,7 +207,7 @@ PyArray_SetBaseObject(array, cap
 );
 $result = SWIG_Python_AppendOutput(
         $result,
-        obj
+        obj, 1
 );
 free(*$2);
 free(*$3);

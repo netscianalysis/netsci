@@ -51,7 +51,7 @@ PyArray_SetBaseObject(array, cap
 );
 $result = SWIG_Python_AppendOutput(
         $result,
-        obj
+        obj, 1
 );
 free(*$2);
 }
