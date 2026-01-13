@@ -52,10 +52,10 @@ IF (${BUILD_NETSCI})
             ${CONDA_DIR}/include
             ${CMAKE_SOURCE_DIR}/cnpy/include
             ${CMAKE_SOURCE_DIR}/netcalc/src
-            ${CMAKE_SOURCE_DIR}/netchem/include
-            ${CMAKE_SOURCE_DIR}/netchem/include/json/include
-            ${CMAKE_SOURCE_DIR}/netchem/include
-            ${CMAKE_SOURCE_DIR}/cuarray/include
+            ${CMAKE_SOURCE_DIR}/netchem/src
+            ${CMAKE_SOURCE_DIR}/netchem/src/json/include
+            ${CMAKE_SOURCE_DIR}/netchem/src
+            ${CMAKE_SOURCE_DIR}/cuarray/src
             "${CUDA_INCLUDE_DIRS}"
     )
     INCLUDE_DIRECTORIES("${INCLUDE_DIRS}")
@@ -199,14 +199,14 @@ IF (${GENERATE_DOCS})
     SET(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/docs)
     LIST(APPEND NETSCI_DOCUMENTATION_INPUT_FILES
             ${CMAKE_SOURCE_DIR}/doxygen/index.h
-            ${CMAKE_SOURCE_DIR}/cuarray/include/cuarray.h
+            ${CMAKE_SOURCE_DIR}/cuarray/src/cuarray.h
             ${CMAKE_SOURCE_DIR}/netcalc/src/mutual_information.h
             ${CMAKE_SOURCE_DIR}/netcalc/src/generalized_correlation.h
             ${CMAKE_SOURCE_DIR}/netcalc/src/hedetniemi.h
-            ${CMAKE_SOURCE_DIR}/netchem/include/network.h
-            ${CMAKE_SOURCE_DIR}/netchem/include/node.h
-            ${CMAKE_SOURCE_DIR}/netchem/include/atom.h
-            ${CMAKE_SOURCE_DIR}/netchem/include/atoms.h
+            ${CMAKE_SOURCE_DIR}/netchem/src/network.h
+            ${CMAKE_SOURCE_DIR}/netchem/src/node.h
+            ${CMAKE_SOURCE_DIR}/netchem/src/atom.h
+            ${CMAKE_SOURCE_DIR}/netchem/src/atoms.h
     )
     DOXYGEN_ADD_DOCS(
             NetSci_docs

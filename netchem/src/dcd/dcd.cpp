@@ -37,17 +37,17 @@
  *
  ***************************************************************************/
 
-#include "../../include/dcd/largefiles.h"   /* platform dependent 64-bit file
+#include "largefiles.h"   /* platform dependent 64-bit file
  * I/O defines */
-#include "../../include/dcd/fastio.h"       /* must come before others, for
+#include "fastio.h"       /* must come before others, for
  * O_DIRECT...   */
 
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include "../../include/dcd/endianswap.h"
-#include "../../include/dcd/molfile_plugin.h"
-#include "../../include/dcd/dcd.h"
+#include "endianswap.h"
+#include "molfile_plugin.h"
+#include "dcd.h"
 #include <iostream>
 using namespace std;
 
