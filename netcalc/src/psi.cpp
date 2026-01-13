@@ -3,10 +3,11 @@
 //
 #include "psi.h"
 
+#include <memory>
+
 void generatePsi(
-        CuArray<float> *psi,
-        int n
-) {
+        const std::unique_ptr<CuArray<float>> &psi,
+        int n) {
     psi->set(-0.57721566490153, 0, 1);
     for (int i = 0; i < n; i++) {
         if (i > 0) {

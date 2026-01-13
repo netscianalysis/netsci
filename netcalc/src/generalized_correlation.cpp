@@ -1,58 +1,53 @@
 //
 // Created by andy on 4/17/23.
 //
-#include <stdexcept>
-#include "mutual_information.h"
 #include "generalized_correlation.h"
+#include "mutual_information.h"
+#include <stdexcept>
 
 int netcalc::generalizedCorrelation(
-        CuArray<float> *X,
-        CuArray<float> *R,
-        CuArray<int> *ab,
-        int k,
-        int n,
-        int xd,
-        int d,
-        int platform,
-        int checkpointFrequency,
-        std::string checkpointFileName
-) {
-    if (checkpointFileName.size() > 4 && checkpointFileName.substr
-            (checkpointFileName
-                     .size() - 4,
-             4) == ".npy")
+        const std::unique_ptr<CuArray<float>> &X,
+        const std::unique_ptr<CuArray<float>> &R,
+        const std::unique_ptr<CuArray<int>> &ab,
+        const int k,
+        const int n,
+        const int xd,
+        const int d,
+        const int platform,
+        const int checkpointFrequency,
+        std::string checkpointFileName) {
+    if (checkpointFileName.size() > 4 && checkpointFileName.substr(checkpointFileName
+                                                                                   .size() -
+                                                                           4,
+                                                                   4) == ".npy")
         checkpointFileName = checkpointFileName.substr(0,
                                                        checkpointFileName.size() -
-                                                       4);
+                                                               4);
     ab->save(
-            checkpointFileName + "_ab.npy"
-    );
+            checkpointFileName + "_ab.npy");
     R->init(
             1,
-            ab->m()
-    );
+            ab->m());
 
     for (int i = 0; i < ab->m(); i++) {
         int a = ab->get(i,
                         0);
         int b = ab->get(i,
                         1);
-        auto Xa = new CuArray<float>;
-        auto Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->fromCuArrayShallowCopy(
-                X,
+                X.get(),
                 a,
                 a,
                 1,
-                X->n()
-        );
+                X->n());
         Xb->fromCuArrayShallowCopy(
-                X,
+                X.get(),
                 b,
                 b,
                 1,
-                X->n()
-        );
+                X->n());
         if (platform == 0)
             R->set(
                     netcalc::generalizedCorrelationGpu(
@@ -61,11 +56,9 @@ int netcalc::generalizedCorrelation(
                             k,
                             n,
                             xd,
-                            d
-                    ),
+                            d),
                     0,
-                    i
-            );
+                    i);
         else if (platform == 1)
             R->set(
                     netcalc::generalizedCorrelationCpu(
@@ -74,11 +67,9 @@ int netcalc::generalizedCorrelation(
                             k,
                             n,
                             xd,
-                            d
-                    ),
+                            d),
                     0,
-                    i
-            );
+                    i);
         else {
             throw std::runtime_error("Invalid platform");
         }
@@ -86,89 +77,72 @@ int netcalc::generalizedCorrelation(
         if (i % checkpointFrequency == 0) {
             std::remove(
                     (checkpointFileName + "_" +
-                     std::to_string(i - checkpointFrequency)
-                     + ""
-                       ".npy").c_str()
-            );
+                     std::to_string(i - checkpointFrequency) + ""
+                                                               ".npy")
+                            .c_str());
             R->save(
                     checkpointFileName + "_" + std::to_string(i) + ""
-                                                                   ".npy"
-            );
+                                                                   ".npy");
         }
-        delete Xa;
-        delete Xb;
     }
     return platform;
 }
 
 int netcalc::generalizedCorrelation(
-        CuArray<float> *X,
-        CuArray<float> *R,
-        CuArray<int> *ab,
-        int k,
-        int n,
-        int xd,
-        int d,
-        int platform
-) {
+        const std::unique_ptr<CuArray<float>> &X,
+        const std::unique_ptr<CuArray<float>> &R,
+        const std::unique_ptr<CuArray<int>> &ab,
+        const int k,
+        const int n,
+        const int xd,
+        const int d,
+        const int platform) {
     R->init(
             1,
-            ab->m()
-    );
+            ab->m());
 
     for (int i = 0; i < ab->m(); i++) {
-        int a = ab->get(i,
-                        0);
-        int b = ab->get(i,
+        const int a = ab->get(i,
+                              0);
+        const int b = ab->get(i,
                         1);
-        auto Xa = new CuArray<float>;
-        auto Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->fromCuArrayShallowCopy(
-                X,
+                X.get(),
                 a,
                 a,
                 1,
-                X->n()
-        );
+                X->n());
         Xb->fromCuArrayShallowCopy(
-                X,
+                X.get(),
                 b,
                 b,
                 1,
-                X->n()
-        );
+                X->n());
         if (platform == 0)
             R->set(
                     netcalc::generalizedCorrelationGpu(
-                            Xa,
-                            Xb,
+                            Xa, Xb,
                             k,
                             n,
                             xd,
-                            d
-                    ),
+                            d),
                     0,
-                    i
-            );
+                    i);
         else if (platform == 1)
             R->set(
                     netcalc::generalizedCorrelationCpu(
-                            Xa,
-                            Xb,
+                            Xa, Xb,
                             k,
                             n,
                             xd,
-                            d
-                    ),
+                            d),
                     0,
-                    i
-            );
+                    i);
         else {
             throw std::runtime_error("Invalid platform");
         }
-        delete Xa;
-        delete Xb;
     }
     return platform;
 }
-

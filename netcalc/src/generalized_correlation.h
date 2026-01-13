@@ -4,6 +4,8 @@
 #include "cuarray.h"
 #include "platform.h"
 
+#include <memory>
+
 namespace netcalc {
     /*!
      * \brief Computes the generalized correlation between all pairs of random variables listed in 'ab'.
@@ -24,17 +26,16 @@ namespace netcalc {
      * @PythonExample{NetCalc_generalizedCorrelationWithCheckpointing.py}
      */
     int generalizedCorrelation(
-            CuArray<float>* X,
-            CuArray<float>* R,
-            CuArray<int>* ab,
+            const std::unique_ptr<CuArray<float>> &X,
+            const std::unique_ptr<CuArray<float>> &R,
+            const std::unique_ptr<CuArray<int>> &ab,
             int k,
             int n,
             int xd,
             int d,
             int platform,
             int checkpointFrequency,
-            std::string checkpointFileName
-    );
+            std::string checkpointFileName);
 
     /*!
      * \brief Computes the generalized correlation between all pairs of random variables listed in 'ab'.
@@ -53,15 +54,14 @@ namespace netcalc {
      * @PythonExample{NetCalc_generalizedCorrelation.py}
      */
     int generalizedCorrelation(
-            CuArray<float>* X,
-            CuArray<float>* R,
-            CuArray<int>* ab,
+            const std::unique_ptr<CuArray<float>> &X,
+            const std::unique_ptr<CuArray<float>> &R,
+            const std::unique_ptr<CuArray<int>> &ab,
             int k,
             int n,
             int xd,
             int d,
-            int platform
-    );
+            int platform);
 
     /*!
      * \brief Computes the generalized correlation between two random variables Xa and Xb on the GPU.
@@ -76,13 +76,12 @@ namespace netcalc {
      * \return The computed generalized correlation value.
      */
     float generalizedCorrelationGpu(
-            CuArray<float>* Xa,
-            CuArray<float>* Xb,
+            const std::unique_ptr<CuArray<float>> &Xa,
+            const std::unique_ptr<CuArray<float>> &Xb,
             int k,
             int n,
             int xd,
-            int d
-    );
+            int d);
 
     /*!
      * \brief Computes the generalized correlation between two random variables Xa and Xb on the CPU.
@@ -97,13 +96,12 @@ namespace netcalc {
      * \return The computed generalized correlation value.
      */
     float generalizedCorrelationCpu(
-            CuArray<float>* Xa,
-            CuArray<float>* Xb,
+            const std::unique_ptr<CuArray<float>> &Xa,
+            const std::unique_ptr<CuArray<float>> &Xb,
             int k,
             int n,
             int xd,
-            int d
-    );
+            int d);
 }
 
 #endif // NETSCI_GENERALIZED_CORRELATION_H

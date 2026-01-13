@@ -1,8 +1,8 @@
 %rename(generalizedCorrelation)
 netcalc::generalizedCorrelation(
-        CuArray<float>* X,
-        CuArray<float>* R,
-        CuArray<int>* ab,
+        const std::unique_ptr<CuArray<float>> &X,
+        const std::unique_ptr<CuArray<float>> &R,
+        const std::unique_ptr<CuArray<int>> &ab,
         int k,
         int n,
         int xd,
@@ -12,9 +12,9 @@ netcalc::generalizedCorrelation(
 
 %rename(generalizedCorrelationWithCheckpointing)
 netcalc::generalizedCorrelation(
-        CuArray<float>* X,
-        CuArray<float>* R,
-        CuArray<int>* ab,
+                        const std::unique_ptr<CuArray<float>> &X,
+        const std::unique_ptr<CuArray<float>> &R,
+        const std::unique_ptr<CuArray<int>> &ab,
         int k,
         int n,
         int xd,
@@ -26,9 +26,9 @@ netcalc::generalizedCorrelation(
 
 %rename(mutualInformation)
 netcalc::mutualInformation(
-        CuArray<float> *X,
-CuArray<float> *I,
-CuArray<int> *ab,
+const std::unique_ptr<CuArray<float>> &X,
+const std::unique_ptr<CuArray<float>> &I,
+const std::unique_ptr<CuArray<int>> &ab,
 int k,
 int n,
 int xd,
@@ -38,9 +38,9 @@ int platform
 
 %rename(mutualInformationWithCheckpointing)
 netcalc::mutualInformation(
-        CuArray<float> *X,
-CuArray<float> *I,
-CuArray<int> *ab,
+const std::unique_ptr<CuArray<float>> &X,
+const std::unique_ptr<CuArray<float>> &I,
+const std::unique_ptr<CuArray<int>> &ab,
 int k,
 int n,
 int xd,

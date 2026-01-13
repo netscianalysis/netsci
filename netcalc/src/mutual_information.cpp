@@ -6,15 +6,15 @@
 #include "mutual_information.h"
 
 int netcalc::mutualInformation(
-        CuArray<float> *X,
-        CuArray<float> *I,
-        CuArray<int> *ab,
-        int k,
-        int n,
-        int xd,
-        int d,
-        int platform,
-        int checkpointFrequency,
+    const std::unique_ptr<CuArray<float>> &X,
+    const std::unique_ptr<CuArray<float>> &I,
+    const std::unique_ptr<CuArray<int>> &ab,
+        const int k,
+        const int n,
+        const int xd,
+        const int d,
+        const int platform,
+        const int checkpointFrequency,
         std::string checkpointFileName
 ) {
     if (checkpointFileName.size() > 4 && checkpointFileName.substr
@@ -37,17 +37,17 @@ int netcalc::mutualInformation(
                         0);
         int b = ab->get(i,
                         1);
-        auto Xa = new CuArray<float>;
-        auto Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->fromCuArrayShallowCopy(
-                X,
+                X.get(),
                 a,
                 a,
                 1,
                 X->n()
         );
         Xb->fromCuArrayShallowCopy(
-                X,
+                X.get(),
                 b,
                 b,
                 1,
@@ -61,8 +61,7 @@ int netcalc::mutualInformation(
                             k,
                             n,
                             xd,
-                            d
-                    ),
+                            d),
                     0,
                     i
             );
@@ -74,8 +73,7 @@ int netcalc::mutualInformation(
                             k,
                             n,
                             xd,
-                            d
-                    ),
+                            d),
                     0,
                     i
             );
@@ -94,22 +92,19 @@ int netcalc::mutualInformation(
                                                                    ".npy"
             );
         }
-        delete Xa;
-        delete Xb;
     }
     return platform;
 }
 
 int netcalc::mutualInformation(
-        CuArray<float> *X,
-        CuArray<float> *I,
-        CuArray<int> *ab,
+        const std::unique_ptr<CuArray<float>> &X,
+        const std::unique_ptr<CuArray<float>> &I,
+        const std::unique_ptr<CuArray<int>> &ab,
         int k,
         int n,
         int xd,
         int d,
-        int platform
-) {
+        int platform) {
     I->init(
             1,
             ab->m()
@@ -120,17 +115,17 @@ int netcalc::mutualInformation(
                         0);
         int b = ab->get(i,
                         1);
-        auto Xa = new CuArray<float>;
-        auto Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->fromCuArrayShallowCopy(
-                X,
+                X.get(),
                 a,
                 a,
                 1,
                 X->n()
         );
         Xb->fromCuArrayShallowCopy(
-                X,
+                X.get(),
                 b,
                 b,
                 1,
@@ -144,29 +139,25 @@ int netcalc::mutualInformation(
                             k,
                             n,
                             xd,
-                            d
-                    ),
+                            d),
                     0,
                     i
             );
         else if (platform == 1)
             I->set(
                     netcalc::mutualInformationCpu(
-                            Xa,
+                        Xa,
                             Xb,
                             k,
                             n,
                             xd,
-                            d
-                    ),
+                            d),
                     0,
                     i
             );
         else {
             throw std::runtime_error("Invalid platform");
         }
-        delete Xa;
-        delete Xb;
     }
     return platform;
 }

@@ -16,8 +16,8 @@ int main() {
         int n = 1000;
         int k = 4;
 
-        auto* Xa = new CuArray<float>;
-        auto* Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->init(1, n);
         Xb->init(1, n);
 
@@ -40,16 +40,14 @@ int main() {
 
         expect(approx(cpu, gpu, 1e-6f));
 
-        delete Xa;
-        delete Xb;
     };
 
     test("GeneralizedCorrelation_2X1D_2000n4k_GpuCpu") = [] {
         int n = 2000;
         int k = 4;
 
-        auto* Xa = new CuArray<float>;
-        auto* Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->init(1, n);
         Xb->init(1, n);
 
@@ -72,16 +70,14 @@ int main() {
 
         expect(approx(cpu, gpu, 1e-6f));
 
-        delete Xa;
-        delete Xb;
     };
 
     test("GeneralizedCorrelation_2X2D_1000n4k_GpuCpu") = [] {
         int n = 1000;
         int k = 4;
 
-        auto* Xa = new CuArray<float>;
-        auto* Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->init(1, 2 * n);
         Xb->init(1, 2 * n);
 
@@ -106,16 +102,14 @@ int main() {
 
         expect(approx(cpu, gpu, 1e-6f));
 
-        delete Xa;
-        delete Xb;
     };
 
     test("GeneralizedCorrelation_2X2D_2000n4k_GpuCpu") = [] {
         int n = 2000;
         int k = 4;
 
-        auto* Xa = new CuArray<float>;
-        auto* Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->init(1, 2 * n);
         Xb->init(1, 2 * n);
 
@@ -140,16 +134,14 @@ int main() {
 
         expect(approx(cpu, gpu, 1e-6f));
 
-        delete Xa;
-        delete Xb;
     };
 
     test("GeneralizedCorrelation_2X3D_1000n4k_GpuCpu") = [] {
         int n = 1000;
         int k = 4;
 
-        auto* Xa = new CuArray<float>;
-        auto* Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->init(1, 3 * n);
         Xb->init(1, 3 * n);
 
@@ -176,16 +168,14 @@ int main() {
 
         expect(approx(cpu, gpu, 1e-6f));
 
-        delete Xa;
-        delete Xb;
     };
 
     test("GeneralizedCorrelation_2X3D_2000n4k_GpuCpu") = [] {
         int n = 2000;
         int k = 4;
 
-        auto* Xa = new CuArray<float>;
-        auto* Xb = new CuArray<float>;
+        auto Xa = std::make_unique<CuArray<float>>();
+        auto Xb = std::make_unique<CuArray<float>>();
         Xa->init(1, 3 * n);
         Xb->init(1, 3 * n);
 
@@ -212,17 +202,15 @@ int main() {
 
         expect(approx(cpu, gpu, 1e-6f));
 
-        delete Xa;
-        delete Xb;
     };
 
     test("GeneralizedCorrelation_UsedCpuPlatform") = [] {
         int n = 1000;
         int k = 4;
 
-        auto* X  = new CuArray<float>;
-        auto* R  = new CuArray<float>;
-        auto* ab = new CuArray<int>;
+        auto X = std::make_unique<CuArray<float>>();
+        auto R = std::make_unique<CuArray<float>>();
+        auto ab = std::make_unique<CuArray<int>>();
 
         X->init(2, n);
 
@@ -244,22 +232,18 @@ int main() {
 
         expect(
             netcalc::generalizedCorrelation(
-                X, R, ab, k, n, 2, 1, netcalc::CPU_PLATFORM
-            ) == 1
+                        X, R, ab, k, n, 2, 1, netcalc::CPU_PLATFORM) == 1
         );
 
-        delete X;
-        delete R;
-        delete ab;
     };
 
     test("GeneralizedCorrelation_UsedGpuPlatform") = [] {
         int n = 1000;
         int k = 4;
 
-        auto* X  = new CuArray<float>;
-        auto* R  = new CuArray<float>;
-        auto* ab = new CuArray<int>;
+        auto X = std::make_unique<CuArray<float>>();
+        auto R = std::make_unique<CuArray<float>>();
+        auto ab = std::make_unique<CuArray<int>>();
 
         X->init(2, n);
 
@@ -281,13 +265,9 @@ int main() {
 
         expect(
             netcalc::generalizedCorrelation(
-                X, R, ab, k, n, 2, 1, netcalc::GPU_PLATFORM
-            ) == 0
+                        X, R, ab, k, n, 2, 1, netcalc::GPU_PLATFORM) == 0
         );
 
-        delete X;
-        delete R;
-        delete ab;
     };
 
     return 0;

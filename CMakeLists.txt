@@ -18,8 +18,6 @@ SET(BUILD_PYTHON_BINDINGS ON CACHE BOOL "Build python bindings for cuarray, netc
 
 SET(BUILD_SAMPLES ON CACHE BOOL "Compiles examples for CuArray, NetCalc, and NetChem")
 
-SET(GENERATE_DOCS OFF CACHE BOOL "Generate documentation for CuArray, NetCalc, and NetChem")
-
 #CMake build type defaults to Release
 SET(CMAKE_BUILD_TYPE Release)
 
@@ -161,60 +159,3 @@ IF (${BUILD_NETSCI})
         )
     ENDIF (${BUILD_PYTHON_BINDINGS})
 ENDIF (${BUILD_NETSCI})
-
-IF (${GENERATE_DOCS})
-    #Make sure sure Doxygen is installed for building documentation
-    FIND_PACKAGE(Doxygen REQUIRED)
-
-    SET(DOXYGEN_PROJECT_NAME NetSci)
-    SET(DOXYGEN_EXAMPLE_PATH
-            ${CMAKE_SOURCE_DIR}/cuarray/samples/cpp/src
-            ${CMAKE_SOURCE_DIR}/cuarray/samples/python
-            ${CMAKE_SOURCE_DIR}/netchem/samples/python
-            ${CMAKE_SOURCE_DIR}/netcalc/samples/python
-    )
-    SET(DOXYGEN_ALIASES
-            [[PythonExample{1}=<b>Python Example</b><br>\include \1]]
-            [[CppExample{1}=<b>C++ Example</b><br>\include \1]]
-            [[type{1}=<!-- \1 -->]]
-            [[function{1}=<!-- \1 -->]]
-            [[const=<!--  -->]]
-            [[AutoDocIgnore=<!--  -->]]
-    )
-    SET(DOXYGEN_EXTRACT_PRIVATE YES)
-    SET(DOXYGEN_FULL_PATH_NAMES NO)
-    SET(DOXYGEN_FILE_PATTERNS *.cu)
-    SET(DOXYGEN_EXTENSION_MAPPING cu=c++)
-    SET(DOXYGEN_ENABLE_PREPROCESSING NO)
-    SET(DOXYGEN_STRIP_CODE_COMMENTS NO)
-    SET(DOXYGEN_COMPACT_LATEX YES)
-    SET(DOXYGEN_EXTRACT_PRIVATE YES)
-    SET(DOXYGEN_GENERATE_DOCBOOK YES)
-    SET(DOXYGEN_GENERATE_LATEX YES)
-    SET(DOXYGEN_SHOW_FILES NO)
-    SET(DOXYGEN_USE_PDFLATEX YES)
-    SET(DOXYGEN_FULL_PATH_NAMES NO)
-    SET(DOXYGEN_GENERATE_XML TRUE)
-    SET(DOXYGEN_USE_MATHJAX YES)
-    SET(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/docs)
-    LIST(APPEND NETSCI_DOCUMENTATION_INPUT_FILES
-            ${CMAKE_SOURCE_DIR}/doxygen/index.h
-            ${CMAKE_SOURCE_DIR}/cuarray/src/cuarray.h
-            ${CMAKE_SOURCE_DIR}/netcalc/src/mutual_information.h
-            ${CMAKE_SOURCE_DIR}/netcalc/src/generalized_correlation.h
-            ${CMAKE_SOURCE_DIR}/netcalc/src/hedetniemi.h
-            ${CMAKE_SOURCE_DIR}/netchem/src/network.h
-            ${CMAKE_SOURCE_DIR}/netchem/src/node.h
-            ${CMAKE_SOURCE_DIR}/netchem/src/atom.h
-            ${CMAKE_SOURCE_DIR}/netchem/src/atoms.h
-    )
-    DOXYGEN_ADD_DOCS(
-            NetSci_docs
-            ${NETSCI_DOCUMENTATION_INPUT_FILES}
-    )
-    SET(DOCUMENTATION_ARGS "Doxyfile.NetSci_docs")
-    ADD_CUSTOM_TARGET(docs
-            COMMAND ${DOXYGEN_EXECUTABLE} ${DOCUMENTATION_ARGS}
-    )
-ENDIF (${GENERATE_DOCS})
-

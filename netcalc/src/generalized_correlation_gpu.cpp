@@ -6,13 +6,12 @@
 #include <cmath>
 
 float netcalc::generalizedCorrelationGpu(
-        CuArray<float> *Xa,
-        CuArray<float> *Xb,
+        const std::unique_ptr<CuArray<float>> &Xa,
+        const std::unique_ptr<CuArray<float>> &Xb,
         int k,
         int n,
         int xd,
-        int d
-) {
+        int d) {
     float mutualInformation =
             netcalc::mutualInformationGpu(
                     Xa,
@@ -20,8 +19,7 @@ float netcalc::generalizedCorrelationGpu(
                     k,
                     n,
                     xd,
-                    d
-            );
+                    d);
     if (mutualInformation <= 0.0) {
         return 0.0;
     } else {

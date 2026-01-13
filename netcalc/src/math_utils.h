@@ -8,6 +8,8 @@
 #include "cuarray.h"
 #include "platform.h"
 
+#include <memory>
+
 /**
  * \brief Computes the mean of the rows in a matrix.
  *
@@ -21,12 +23,11 @@
  * \param platform  Platform used for computation. Use 0 for GPU and 1 for CPU.
  */
 void mean(
-        CuArray<float>* a,
-        CuArray<float>* u,
+        const std::unique_ptr<CuArray<float>> &a,
+        const std::unique_ptr<CuArray<float>> &u,
         int m,
         int n,
-        int platform
-);
+        int platform);
 
 /**
  * \brief Computes the mean of the rows in a matrix on the GPU.
@@ -40,11 +41,10 @@ void mean(
  * \param n         Number of columns in the matrix.
  */
 void meanGpu(
-        CuArray<float>* a,
-        CuArray<float>* u,
+        const std::unique_ptr<CuArray<float>> &a,
+        const std::unique_ptr<CuArray<float>> &u,
         int m,
-        int n
-);
+        int n);
 
 /**
  * \brief Computes the standard deviation of each row in a matrix.
@@ -61,13 +61,12 @@ void meanGpu(
  * \param platform  Platform used for computation. Use 0 for GPU and 1 for CPU.
  */
 void standardDeviation(
-        CuArray<float>* a,
-        CuArray<float>* u,
-        CuArray<float>* sigma,
+        const std::unique_ptr<CuArray<float>> &a,
+        const std::unique_ptr<CuArray<float>> &u,
+        const std::unique_ptr<CuArray<float>> &sigma,
         int m,
         int n,
-        int platform
-);
+        int platform);
 
 /**
  * \brief Computes the standard deviation of each row in a matrix on the GPU.
@@ -83,11 +82,10 @@ void standardDeviation(
  * \param n         Number of columns in the matrix.
  */
 void standardDeviationGpu(
-        CuArray<float>* a,
-        CuArray<float>* u,
-        CuArray<float>* sigma,
+        const std::unique_ptr<CuArray<float>> &a,
+        const std::unique_ptr<CuArray<float>> &u,
+        const std::unique_ptr<CuArray<float>> &sigma,
         int m,
-        int n
-);
+        int n);
 
 #endif // NETSCI_MATH_UTILS_H

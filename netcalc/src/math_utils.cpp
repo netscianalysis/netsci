@@ -4,12 +4,11 @@
 #include "math_utils.h"
 
 void mean(
-        CuArray<float> *a,
-        CuArray<float> *u,
+        const std::unique_ptr<CuArray<float>> &a,
+        const std::unique_ptr<CuArray<float>> &u,
         int m,
-        int n,
-        int platform
-) {
+        const int n,
+        const int platform) {
 
     m = a->size() / n;
     u->init(1, m);
@@ -19,13 +18,12 @@ void mean(
 }
 
 void standardDeviation(
-        CuArray<float> *a,
-        CuArray<float> *u,
-        CuArray<float> *sigma,
+        const std::unique_ptr<CuArray<float>> &a,
+        const std::unique_ptr<CuArray<float>> &u,
+        const std::unique_ptr<CuArray<float>> &sigma,
         int m,
-        int n,
-        int platform
-) {
+        const int n,
+        const int platform) {
 
     m = a->size() / n;
     u->init(1, m);

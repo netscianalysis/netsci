@@ -28,9 +28,6 @@ add_library(netcalc SHARED
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mutual_information_cpu.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/generalized_correlation_cpu.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mutual_information.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/hedetniemi_cpu.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/hedetniemi.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/hedetniemi_gpu.cu
         ${CMAKE_CURRENT_SOURCE_DIR}/src/generalized_correlation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/psi.cpp
 )
@@ -67,19 +64,4 @@ if (${BUILD_PYTHON_BINDINGS})
     )
 endif (${BUILD_PYTHON_BINDINGS})
 
-add_executable(
-        hedetniemi_scratch
-        ${CMAKE_CURRENT_SOURCE_DIR}/scratch/hedetniemi_scratch.cpp
-)
-add_dependencies(hedetniemi_scratch netcalc)
 
-add_executable(
-       checkpointing_scratch
-        ${CMAKE_CURRENT_SOURCE_DIR}/scratch/checkpointing_scratch.cpp
-)
-add_dependencies(checkpointing_scratch netcalc)
-set_target_properties(
-        checkpointing_scratch
-        PROPERTIES
-        LINK_LIBRARIES "${NETCALC_SCRATCH_LINK_LIBRARIES}"
-)

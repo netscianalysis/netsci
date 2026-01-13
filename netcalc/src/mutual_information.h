@@ -7,6 +7,7 @@
 
 #include "cuarray.h"
 #include "platform.h"
+#include <memory>
 
 /*!
  * @namespace netcalc
@@ -32,15 +33,14 @@ namespace netcalc {
      * @PythonExample{"NetCalc_mutualInformation.py"}
      */
     int mutualInformation(
-            CuArray<float>* X,
-            CuArray<float>* I,
-            CuArray<int>* ab,
+            const std::unique_ptr<CuArray<float>> &X,
+            const std::unique_ptr<CuArray<float>> &I,
+            const std::unique_ptr<CuArray<int>> &ab,
             int k,
             int n,
             int xd,
             int d,
-            int platform
-    );
+            int platform);
 
     /*!
      * @brief Computes the mutual information between all pairs of random variables listed in 'ab'.
@@ -64,17 +64,16 @@ namespace netcalc {
      * @PythonExample{NetCalc_mutualInformationWithCheckpointing.py}
      */
     int mutualInformation(
-            CuArray<float>* X,
-            CuArray<float>* I,
-            CuArray<int>* ab,
+            const std::unique_ptr<CuArray<float>> &X,
+            const std::unique_ptr<CuArray<float>> &I,
+            const std::unique_ptr<CuArray<int>> &ab,
             int k,
             int n,
             int xd,
             int d,
             int platform,
             int checkpointFrequency,
-            std::string checkpointFileName
-    );
+            std::string checkpointFileName);
 
     /*!
      * @brief Computes the mutual information between two random variables Xa and Xb on the GPU.
@@ -89,13 +88,12 @@ namespace netcalc {
      * @return The computed mutual information value.
      */
     float mutualInformationGpu(
-            CuArray<float>* Xa,
-            CuArray<float>* Xb,
+            const std::unique_ptr<CuArray<float>> &Xa,
+            const std::unique_ptr<CuArray<float>> &Xb,
             int k,
             int n,
             int xd,
-            int d
-    );
+            int d);
 
 
     /*!
@@ -111,13 +109,12 @@ namespace netcalc {
      * @return The computed mutual information value.
      */
     float mutualInformationCpu(
-            CuArray<float>* Xa,
-            CuArray<float>* Xb,
+            const std::unique_ptr<CuArray<float>> &Xa,
+            const std::unique_ptr<CuArray<float>> &Xb,
             int k,
             int n,
             int xd,
-            int d
-    );
+            int d);
 
     /*!
      * @brief Creates an ab array of nodes that still need to have
@@ -132,8 +129,7 @@ namespace netcalc {
     void generateRestartAbFromCheckpointFile(
             CuArray<int> *ab,
             CuArray<int> *restartAb,
-            const std::string& checkpointFileName
-    );
-}
+            const std::string &checkpointFileName);
+}// namespace netcalc
 
-#endif // MUTUAL_INFORMATION_SHARED_MEMORY_MUTUAL_INFORMATION_H
+#endif// MUTUAL_INFORMATION_SHARED_MEMORY_MUTUAL_INFORMATION_H

@@ -1,9 +1,10 @@
 //
 // Created by astokely on 5/16/23.
 //
-#include <curand_kernel.h>
 #include "math_utils.h"
+#include <curand_kernel.h>
 
+#include <memory>
 
 
 __device__ void mathUtilsWarpReduce(
@@ -150,11 +151,10 @@ __global__ void standardDeviationKernel(
 }
 
 void meanGpu(
-        CuArray<float> *a,
-        CuArray<float> *u,
+        const std::unique_ptr<CuArray<float>> &a,
+        const std::unique_ptr<CuArray<float>> &u,
         int m,
-        int n
-) {
+        int n) {
     if (!a->allocatedDevice()) {
         a->allocateDevice();
         a->toDevice();
@@ -172,12 +172,11 @@ void meanGpu(
 }
 
 void standardDeviationGpu(
-        CuArray<float> *a,
-        CuArray<float> *u,
-        CuArray<float> *sigma,
+        const std::unique_ptr<CuArray<float>> &a,
+        const std::unique_ptr<CuArray<float>> &u,
+        const std::unique_ptr<CuArray<float>> &sigma,
         int m,
-        int n
-) {
+        int n) {
     if (!a->allocatedDevice()) {
         a->allocateDevice();
         a->toDevice();

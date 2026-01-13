@@ -1,9 +1,10 @@
 #include "mutual_information.h"
 #include "psi.h"
-#include <map>
-#include <vector>
-#include <iostream>
 #include <curand_kernel.h>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <vector>
 
 __global__ void initCurandKernel(
         curandState *state,
@@ -1005,13 +1006,12 @@ std::map<int, void *> mutualInformation2X3DKernels() {
 }
 
 float netcalc::mutualInformationGpu(
-        CuArray<float> *Xa,
-        CuArray<float> *Xb,
+        const std::unique_ptr<CuArray<float>> &Xa,
+        const std::unique_ptr<CuArray<float>> &Xb,
         int k,
         int n,
         int xd,
-        int d
-) {
+        int d) {
     void *kernel;
     if (xd == 2 && d == 1) {
         kernel = mutualInformation2X1DKernels()[
@@ -1028,15 +1028,14 @@ float netcalc::mutualInformationGpu(
                 (n / 1024) + 1
         ];
     }
-    auto psi = new CuArray<float>;
+    auto psi = std::make_unique<CuArray<float>>();
     psi->init(1, n + 1);
     generatePsi(
             psi,
-            n
-    );
-    auto nXa = new CuArray<int>;
+            n);
+    auto nXa = std::make_unique<CuArray<int>>();
     nXa->init(1, n);
-    auto nXb = new CuArray<int>;
+    auto nXb =  std::make_unique<CuArray<int>>();
     nXb->init(1, n);
     Xa->allocateDevice();
     Xb->allocateDevice();
@@ -1072,9 +1071,6 @@ float netcalc::mutualInformationGpu(
     float mutualInformation =
             psi->host()[n] + psi->host()[k]
             - (float) (1.0 / (float) k) - averageXaXbPsiK;
-    delete psi;
-    delete nXa;
-    delete nXb;
     return mutualInformation;
 }
 
