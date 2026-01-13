@@ -1,144 +1,109 @@
-//
-// Created by astokely on 9/7/23.
-//
-#include <gtest/gtest.h>
+#include <ut.hpp>
+
 #include "network.h"
 
-class NetworkTest : public ::testing::Test {
-protected:
-    void SetUp() override {
+using namespace boost::ut;
+
+// Replacement for the Google Test fixture
+struct NetworkStrideContext {
+    NetworkStrideContext() {
         networkStride2.init(
-                "data/test.dcd",
-                "data/test.pdb",
-                0,
-                9,
-                2
+            "data/test.dcd",
+            "data/test.pdb",
+            0,
+            9,
+            2
         );
         networkStride1.init(
-                "data/test.dcd",
-                "data/test.pdb",
-                0,
-                9,
-                1
+            "data/test.dcd",
+            "data/test.pdb",
+            0,
+            9,
+            1
         );
         networkStride3.init(
-                "data/test.dcd",
-                "data/test.pdb",
-                0,
-                9,
-                3
+            "data/test.dcd",
+            "data/test.pdb",
+            0,
+            9,
+            3
         );
     }
-
 
     Network networkStride3;
     Network networkStride2;
     Network networkStride1;
-
 };
 
-TEST_F(
-        NetworkTest,
-        NetworkStrideCoordinateEqualityStride1Stride2
-) {
-    for (int i = 0; i < 290; i++) {
-        for (int j = 0; j < 15; j++) {
-            EXPECT_EQ(
-                    networkStride1.nodeCoordinates()->get(i,
-                                                          2 * j),
-                    networkStride2.nodeCoordinates()->get(i,
-                                                          j)
+int main() {
+
+    test("NetworkStrideCoordinateEqualityStride1Stride2") = [] {
+        NetworkStrideContext ctx;
+
+        for (int i = 0; i < 290; i++) {
+            for (int j = 0; j < 15; j++) {
+                expect(
+                    ctx.networkStride1.nodeCoordinates()->get(i, 2 * j) ==
+                    ctx.networkStride2.nodeCoordinates()->get(i, j)
+                );
+            }
+        }
+    };
+
+    test("NetworkStrideCoordinateEqualityStride1Stride3") = [] {
+        NetworkStrideContext ctx;
+
+        for (int i = 0; i < 290; i++) {
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 0) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 0)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 10) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 4)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 20) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 8)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 3) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 1)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 13) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 5)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 23) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 9)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 6) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 2)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 16) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 6)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 26) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 10)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 9) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 3)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 19) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 7)
+            );
+            expect(
+                ctx.networkStride1.nodeCoordinates()->get(i, 29) ==
+                ctx.networkStride3.nodeCoordinates()->get(i, 11)
             );
         }
-    }
-}
+    };
 
-TEST_F(
-        NetworkTest,
-        NetworkStrideCoordinateEqualityStride1Stride3
-) {
-    for (int i = 0; i < 290; i++) {
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      0),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      0)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      10),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      4)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      20),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      8)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      3),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      1)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      13),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      5)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      23),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      9)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      6),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      2)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      16),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      6)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      26),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      10)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      9),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      3)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      19),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      7)
-        );
-        EXPECT_EQ(
-                networkStride1.nodeCoordinates()->get(i,
-                                                      29),
-                networkStride3.nodeCoordinates()->get(i,
-                                                      11)
-        );
-    }
-}
-
-
-int main(
-        int argc,
-        char **argv
-) {
-    ::testing::InitGoogleTest(&argc,
-                              argv);
-    return RUN_ALL_TESTS();
+    return 0;
 }
